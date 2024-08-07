@@ -1,5 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const checkboxVariants = cva(
   'h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary',
@@ -47,17 +48,33 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   ...props
 }) => {
   const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--checkbox-border-color': theme.colors.gray['300'],
+    '--checkbox-text-color': theme.colors.primary.DEFAULT,
+    '--checkbox-focus-ring-color': theme.colors.primary.DEFAULT,
+    '--label-text-color': theme.colors.gray['700'],
+  } as React.CSSProperties;
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center" style={customStyles}>
       <input
         type="checkbox"
         id={checkboxId}
         className={checkboxVariants({ size, className })}
+        style={{
+          borderColor: 'var(--checkbox-border-color)',
+          color: 'var(--checkbox-text-color)',
+        }}
         {...props}
       />
       {label && (
-        <label htmlFor={checkboxId} className={labelVariants({ size })}>
+        <label 
+          htmlFor={checkboxId} 
+          className={labelVariants({ size })}
+          style={{ color: 'var(--label-text-color)' }}
+        >
           {label}
         </label>
       )}

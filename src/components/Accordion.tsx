@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
-const accordionVariants = cva('border border-gray-200 rounded-md overflow-hidden');
+const accordionVariants = cva('border rounded-md overflow-hidden');
 
 const itemVariants = cva('border-b last:border-b-0');
 
 const headerVariants = cva(
-  'flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors',
+  'flex justify-between items-center p-4 cursor-pointer transition-colors',
   {
     variants: {
       isOpen: {
         true: 'bg-gray-100',
-        false: '',
+        false: 'bg-gray-50 hover:bg-gray-100',
       },
     },
     defaultVariants: {
@@ -53,6 +54,14 @@ export const Accordion: React.FC<AccordionProps> = ({
   ...props
 }) => {
   const [openItems, setOpenItems] = useState<boolean[]>(new Array(items.length).fill(false));
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--accordion-border-color': theme.colors.gray['200'],
+    '--accordion-bg-color': theme.colors.white,
+    '--accordion-text-color': theme.colors.gray['700'],
+    '--accordion-hover-bg-color': theme.colors.gray['100'],
+  } as React.CSSProperties;
 
   const toggleItem = (index: number) => {
     setOpenItems((prevOpenItems) => {
@@ -67,12 +76,24 @@ export const Accordion: React.FC<AccordionProps> = ({
   };
 
   return (
-    <div className={accordionVariants({ className })} {...props}>
+    <div 
+      className={accordionVariants({ className })} 
+      style={{
+        ...customStyles,
+        borderColor: 'var(--accordion-border-color)',
+        backgroundColor: 'var(--accordion-bg-color)',
+      }} 
+      {...props}
+    >
       {items.map((item, index) => (
-        <div key={index} className={itemVariants()}>
+        <div key={index} className={itemVariants()} style={{ borderColor: 'var(--accordion-border-color)' }}>
           <div
             className={headerVariants({ isOpen: openItems[index] })}
             onClick={() => toggleItem(index)}
+            style={{ 
+              color: 'var(--accordion-text-color)',
+              backgroundColor: openItems[index] ? 'var(--accordion-hover-bg-color)' : 'var(--accordion-bg-color)',
+            }}
           >
             <h3 className="text-sm font-medium">{item.title}</h3>
             <ChevronDown
@@ -80,7 +101,7 @@ export const Accordion: React.FC<AccordionProps> = ({
             />
           </div>
           <div className={contentVariants({ isOpen: openItems[index] })}>
-            <div className="p-4">{item.content}</div>
+            <div className="p-4" style={{ color: 'var(--accordion-text-color)' }}>{item.content}</div>
           </div>
         </div>
       ))}

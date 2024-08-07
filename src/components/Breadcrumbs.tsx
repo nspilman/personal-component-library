@@ -1,6 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronRight } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 const breadcrumbsVariants = cva('flex items-center space-x-2');
 
@@ -30,16 +31,34 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   className,
   ...props
 }) => {
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--breadcrumb-text-color': theme.colors.gray['500'],
+    '--breadcrumb-hover-color': theme.colors.gray['700'],
+    '--breadcrumb-active-color': theme.colors.gray['900'],
+    '--breadcrumb-separator-color': theme.colors.gray['400'],
+  } as React.CSSProperties;
+
   return (
-    <nav aria-label="Breadcrumb">
+    <nav aria-label="Breadcrumb" style={customStyles}>
       <ol className={breadcrumbsVariants({ className })} {...props}>
         {items.map((item, index) => (
           <li key={index} className="flex items-center">
-            {index > 0 && <ChevronRight className="w-4 h-4 text-gray-400 mx-2" />}
+            {index > 0 && <ChevronRight className="w-4 h-4 mx-2" style={{ color: 'var(--breadcrumb-separator-color)' }} />}
             {index === items.length - 1 ? (
-              <span className={itemVariants({ isLast: true })}>{item.label}</span>
+              <span 
+                className={itemVariants({ isLast: true })}
+                style={{ color: 'var(--breadcrumb-active-color)' }}
+              >
+                {item.label}
+              </span>
             ) : (
-              <a href={item.href} className={itemVariants()}>
+              <a 
+                href={item.href} 
+                className={itemVariants()}
+                style={{ color: 'var(--breadcrumb-text-color)' }}
+              >
                 {item.label}
               </a>
             )}

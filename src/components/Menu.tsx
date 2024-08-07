@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 const menuVariants = cva(
   'relative inline-block text-left',
@@ -61,6 +62,15 @@ export const Menu: React.FC<MenuProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--menu-bg-color': theme.colors.white,
+    '--menu-text-color': theme.colors.gray['700'],
+    '--menu-border-color': theme.colors.gray['300'],
+    '--menu-hover-bg-color': theme.colors.gray['100'],
+    '--menu-focus-ring-color': theme.colors.primary.DEFAULT,
+  } as React.CSSProperties;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -76,7 +86,7 @@ export const Menu: React.FC<MenuProps> = ({
   }, []);
 
   return (
-    <div className={menuVariants({ fullWidth, className })} ref={menuRef} {...props}>
+    <div className={menuVariants({ fullWidth, className })} ref={menuRef} style={customStyles} {...props}>
       <div>
         <button
           type="button"
@@ -84,6 +94,11 @@ export const Menu: React.FC<MenuProps> = ({
           onClick={() => setIsOpen(!isOpen)}
           aria-haspopup="true"
           aria-expanded={isOpen}
+          style={{
+            backgroundColor: 'var(--menu-bg-color)',
+            color: 'var(--menu-text-color)',
+            borderColor: 'var(--menu-border-color)',
+          }}
         >
           {label}
           <ChevronDown className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
@@ -91,7 +106,16 @@ export const Menu: React.FC<MenuProps> = ({
       </div>
 
       {isOpen && (
-        <div className={menuItemsVariants({ fullWidth })} role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+        <div 
+          className={menuItemsVariants({ fullWidth })} 
+          role="menu" 
+          aria-orientation="vertical" 
+          aria-labelledby="options-menu"
+          style={{
+            backgroundColor: 'var(--menu-bg-color)',
+            borderColor: 'var(--menu-border-color)',
+          }}
+        >
           <div className="py-1" role="none">
             {items.map((item, index) => (
               <button
@@ -100,8 +124,14 @@ export const Menu: React.FC<MenuProps> = ({
                   item.onClick();
                   setIsOpen(false);
                 }}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
                 role="menuitem"
+                style={{
+                  color: 'var(--menu-text-color)',
+                  ':hover': {
+                    backgroundColor: 'var(--menu-hover-bg-color)',
+                  },
+                }}
               >
                 {item.label}
               </button>

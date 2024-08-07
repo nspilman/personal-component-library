@@ -1,5 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const tableVariants = cva(
   'min-w-full divide-y divide-gray-200',
@@ -32,8 +33,20 @@ export const Table: React.FC<TableProps> = ({
   children,
   ...props
 }) => {
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--table-border-color': theme.colors.gray['200'],
+    '--table-header-bg-color': theme.colors.gray['50'],
+    '--table-header-text-color': theme.colors.gray['700'],
+    '--table-body-bg-color': theme.colors.white,
+    '--table-body-text-color': theme.colors.gray['900'],
+    '--table-hover-bg-color': theme.colors.gray['50'],
+    '--table-stripe-bg-color': theme.colors.gray['50'],
+  } as React.CSSProperties;
+
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto" style={customStyles}>
       <table className={tableVariants({ size, className })} {...props}>
         {children}
       </table>
@@ -47,7 +60,7 @@ export const TableHead: React.FC<React.HTMLAttributes<HTMLTableSectionElement>> 
   ...props
 }) => {
   return (
-    <thead className={`bg-gray-50 ${className}`} {...props}>
+    <thead className={`bg-gray-50 ${className}`} style={{ backgroundColor: 'var(--table-header-bg-color)' }} {...props}>
       {children}
     </thead>
   );
@@ -59,7 +72,14 @@ export const TableBody: React.FC<React.HTMLAttributes<HTMLTableSectionElement>> 
   ...props
 }) => {
   return (
-    <tbody className={`bg-white divide-y divide-gray-200 ${className}`} {...props}>
+    <tbody 
+      className={`bg-white divide-y divide-gray-200 ${className}`} 
+      style={{ 
+        backgroundColor: 'var(--table-body-bg-color)', 
+        borderColor: 'var(--table-border-color)' 
+      }} 
+      {...props}
+    >
       {children}
     </tbody>
   );
@@ -86,7 +106,11 @@ export const TableCell: React.FC<React.TdHTMLAttributes<HTMLTableCellElement>> =
   ...props
 }) => {
   return (
-    <td className={`px-6 py-4 whitespace-nowrap ${className}`} {...props}>
+    <td 
+      className={`px-6 py-4 whitespace-nowrap ${className}`} 
+      style={{ color: 'var(--table-body-text-color)' }} 
+      {...props}
+    >
       {children}
     </td>
   );
@@ -99,7 +123,8 @@ export const TableHeader: React.FC<React.ThHTMLAttributes<HTMLTableHeaderCellEle
 }) => {
   return (
     <th
-      className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${className}`}
+      className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${className}`}
+      style={{ color: 'var(--table-header-text-color)' }}
       {...props}
     >
       {children}

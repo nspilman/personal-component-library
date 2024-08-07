@@ -1,5 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const listVariants = cva(
   'list-none',
@@ -39,14 +40,29 @@ export interface ListProps extends React.HTMLAttributes<HTMLUListElement | HTMLO
 
 export const List: React.FC<ListProps> = ({ className, variant, items, ...props }) => {
   const ListComponent = variant === 'ordered' ? 'ol' : 'ul';
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--list-text-color': theme.colors.gray['700'],
+    '--list-bullet-color': theme.colors.gray['500'],
+  } as React.CSSProperties;
 
   return (
-    <ListComponent className={listVariants({ variant, className })} {...props}>
+    <ListComponent className={listVariants({ variant, className })} style={customStyles} {...props}>
       {items.map((item, index) => (
-        <li key={index} className={listItemVariants({ variant })}>
+        <li 
+          key={index} 
+          className={listItemVariants({ variant })}
+          style={{ 
+            color: 'var(--list-text-color)',
+            '::before': { color: 'var(--list-bullet-color)' }
+          }}
+        >
           {item}
         </li>
       ))}
     </ListComponent>
   );
 };
+
+List.displayName = 'List';

@@ -1,6 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 const chipVariants = cva(
   'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
@@ -38,9 +39,33 @@ export const Chip: React.FC<ChipProps> = ({
   onDelete,
   ...props
 }) => {
+  const { theme } = useTheme();
+
+  const getCustomStyles = () => {
+    const baseColor = variant === 'primary' ? 'primary' :
+                      variant === 'secondary' ? 'secondary' :
+                      variant === 'success' ? 'green' :
+                      variant === 'warning' ? 'yellow' :
+                      variant === 'danger' ? 'red' : 'gray';
+
+    return {
+      '--chip-bg-color': theme.colors[baseColor]['100'],
+      '--chip-text-color': theme.colors[baseColor]['800'],
+      '--chip-hover-bg-color': theme.colors[baseColor]['200'],
+      '--chip-delete-hover-bg-color': theme.colors[baseColor]['200'],
+    } as React.CSSProperties;
+  };
+
+  const customStyles = getCustomStyles();
+
   return (
     <div
       className={chipVariants({ variant, clickable, className })}
+      style={{
+        ...customStyles,
+        backgroundColor: 'var(--chip-bg-color)',
+        color: 'var(--chip-text-color)',
+      }}
       {...props}
     >
       {children}
@@ -51,6 +76,11 @@ export const Chip: React.FC<ChipProps> = ({
             onDelete();
           }}
           className="ml-1 p-0.5 rounded-full hover:bg-gray-200"
+          style={{
+            ':hover': {
+              backgroundColor: 'var(--chip-delete-hover-bg-color)',
+            },
+          }}
         >
           <X size={12} />
         </button>

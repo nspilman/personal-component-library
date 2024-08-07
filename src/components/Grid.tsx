@@ -1,5 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const gridVariants = cva('grid', {
   variants: {
@@ -34,10 +35,20 @@ export interface GridProps
 
 export const Grid = React.forwardRef<HTMLDivElement, GridProps>(
   ({ className, cols, gap, responsive, ...props }, ref) => {
+    const { theme } = useTheme();
+
+    const customStyles = {
+      '--grid-gap-color': theme.colors.gray['200'],
+    } as React.CSSProperties;
+
     return (
       <div 
         className={gridVariants({ cols, gap, responsive, className })}
         ref={ref}
+        style={{
+          ...customStyles,
+          gap: `var(--grid-gap-${gap})`,
+        }}
         {...props}
       />
     );
@@ -86,4 +97,3 @@ export const GridItem = React.forwardRef<HTMLDivElement, GridItemProps>(
 );
 
 GridItem.displayName = 'GridItem';
-

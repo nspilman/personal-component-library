@@ -1,13 +1,14 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const cardVariants = cva(
-  'bg-white rounded-lg overflow-hidden',
+  'rounded-lg overflow-hidden',
   {
     variants: {
       variant: {
-        elevated: 'shadow-md',
-        outlined: 'border border-gray-200',
+        elevated: 'shadow-md bg-white',
+        outlined: 'border border-gray-200 bg-white',
       },
       width: {
         fluid: 'w-full',
@@ -29,8 +30,20 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement>, Variant
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant, width, header, footer, image, children, ...props }, ref) => {
+    const { theme } = useTheme();
+
+    const customStyles = {
+      '--card-border-color': theme.colors.gray['200'],
+      '--card-bg-color': theme.colors.white,
+    } as React.CSSProperties;
+
     return (
-      <div className={cardVariants({ variant, width, className })} ref={ref} {...props}>
+      <div 
+        className={cardVariants({ variant, width, className })} 
+        ref={ref} 
+        style={customStyles}
+        {...props}
+      >
         {image && (
           <div className="w-full h-48 bg-gray-200">
             <img src={image} alt="Card" className="w-full h-full object-cover" />
@@ -55,4 +68,3 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
 );
 
 Card.displayName = 'Card';
-

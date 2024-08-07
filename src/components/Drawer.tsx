@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 const drawerVariants = cva(
   'fixed inset-y-0 bg-white shadow-xl transition-transform duration-300 ease-in-out',
@@ -39,6 +40,14 @@ export const Drawer: React.FC<DrawerProps> = ({
   ...props
 }) => {
   const drawerRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--drawer-bg-color': theme.colors.white,
+    '--drawer-text-color': theme.colors.gray['700'],
+    '--drawer-close-button-color': theme.colors.gray['500'],
+    '--drawer-close-button-hover-color': theme.colors.gray['700'],
+  } as React.CSSProperties;
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -73,7 +82,11 @@ export const Drawer: React.FC<DrawerProps> = ({
         ref={drawerRef}
         className={drawerVariants({ position, size, className })}
         style={{
+          ...customStyles,
+          backgroundColor: 'var(--drawer-bg-color)',
+          color: 'var(--drawer-text-color)',
           transform: isOpen ? 'translateX(0)' : `translateX(${position === 'left' ? '-100%' : '100%'})`,
+          zIndex: theme.zIndex['50'],
         }}
         {...props}
       >
@@ -81,6 +94,7 @@ export const Drawer: React.FC<DrawerProps> = ({
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
           aria-label="Close drawer"
+          style={{ color: 'var(--drawer-close-button-color)' }}
         >
           <X size={24} />
         </button>

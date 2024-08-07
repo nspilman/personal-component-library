@@ -1,5 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const progressVariants = cva('w-full bg-gray-200 rounded-full', {
   variants: {
@@ -44,13 +45,24 @@ export const Progress: React.FC<ProgressProps> = ({
   ...props
 }) => {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--progress-bg-color': theme.colors.gray['200'],
+    '--progress-bar-color': theme.colors[variant || 'primary'].DEFAULT,
+    '--progress-text-color': theme.colors.gray['600'],
+  } as React.CSSProperties;
 
   return (
-    <div className="w-full">
-      <div className={progressVariants({ size, className })} {...props}>
+    <div className="w-full" style={customStyles}>
+      <div 
+        className={progressVariants({ size, className })} 
+        style={{ backgroundColor: 'var(--progress-bg-color)' }}
+        {...props}
+      >
         <div 
           className={barVariants({ variant })}
-          style={{ width: `${percentage}%` }}
+          style={{ width: `${percentage}%`, backgroundColor: 'var(--progress-bar-color)' }}
           role="progressbar"
           aria-valuenow={value}
           aria-valuemin={0}
@@ -58,7 +70,7 @@ export const Progress: React.FC<ProgressProps> = ({
         />
       </div>
       {showLabel && (
-        <div className="mt-1 text-sm text-gray-600">
+        <div className="mt-1 text-sm" style={{ color: 'var(--progress-text-color)' }}>
           {percentage.toFixed(0)}%
         </div>
       )}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const badgeVariants = cva(
   'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
@@ -69,8 +70,36 @@ export const Badge: React.FC<BadgeProps> = ({
   children,
   ...props
 }) => {
+  const { theme } = useTheme();
+
+  const getCustomStyles = () => {
+    const baseColor = variant === 'default' ? 'gray' : 
+                      variant === 'primary' ? 'primary' :
+                      variant === 'secondary' ? 'secondary' :
+                      variant === 'success' ? 'green' :
+                      variant === 'warning' ? 'yellow' :
+                      variant === 'danger' ? 'red' : 'gray';
+
+    return {
+      '--badge-bg-color': theme.colors[baseColor][outline ? '100' : '500'],
+      '--badge-text-color': theme.colors[baseColor][outline ? '800' : '50'],
+      '--badge-border-color': theme.colors[baseColor]['300'],
+    } as React.CSSProperties;
+  };
+
+  const customStyles = getCustomStyles();
+
   return (
-    <span className={badgeVariants({ variant, outline, className })} {...props}>
+    <span 
+      className={badgeVariants({ variant, outline, className })} 
+      style={{
+        ...customStyles,
+        backgroundColor: outline ? 'transparent' : 'var(--badge-bg-color)',
+        color: 'var(--badge-text-color)',
+        borderColor: outline ? 'var(--badge-border-color)' : 'transparent',
+      }}
+      {...props}
+    >
       {children}
     </span>
   );

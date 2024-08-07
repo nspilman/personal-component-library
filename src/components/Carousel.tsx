@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 export interface CarouselProps {
   slides: React.ReactNode[];
@@ -15,6 +16,15 @@ export const Carousel: React.FC<CarouselProps> = ({
   showIndicators = true,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--carousel-bg-color': theme.colors.gray['200'],
+    '--carousel-control-bg-color': theme.colors.white,
+    '--carousel-control-color': theme.colors.gray['700'],
+    '--carousel-indicator-color': theme.colors.white,
+    '--carousel-indicator-active-color': theme.colors.primary.DEFAULT,
+  } as React.CSSProperties;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -37,7 +47,7 @@ export const Carousel: React.FC<CarouselProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative" style={customStyles}>
       <div className="overflow-hidden">
         <div
           className="flex transition-transform duration-300 ease-in-out"
@@ -56,12 +66,14 @@ export const Carousel: React.FC<CarouselProps> = ({
           <button
             className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2"
             onClick={goToPrevSlide}
+            style={{ backgroundColor: 'var(--carousel-control-bg-color)', color: 'var(--carousel-control-color)' }}
           >
             <ChevronLeft />
           </button>
           <button
             className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2"
             onClick={goToNextSlide}
+            style={{ backgroundColor: 'var(--carousel-control-bg-color)', color: 'var(--carousel-control-color)' }}
           >
             <ChevronRight />
           </button>
@@ -74,9 +86,14 @@ export const Carousel: React.FC<CarouselProps> = ({
             <button
               key={index}
               className={`w-3 h-3 rounded-full ${
-                index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'
+                index === currentSlide ? 'bg-primary' : 'bg-white bg-opacity-50'
               }`}
               onClick={() => goToSlide(index)}
+              style={{ 
+                backgroundColor: index === currentSlide 
+                  ? 'var(--carousel-indicator-active-color)' 
+                  : 'var(--carousel-indicator-color)' 
+              }}
             />
           ))}
         </div>

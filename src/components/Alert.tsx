@@ -1,6 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { AlertTriangleIcon as AlertIcon, CheckCircle, XCircle, Info } from 'lucide-react';
+import { AlertTriangleIcon as AlertIcon, CheckCircle, XCircle, Info, X } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 const alertVariants = cva(
   'p-4 rounded-md flex items-start',
@@ -46,6 +47,7 @@ export const Alert: React.FC<AlertProps> = ({
   className,
   ...props 
 }) => {
+  const { theme } = useTheme();
   const IconComponent = {
     info: Info,
     success: CheckCircle,
@@ -53,9 +55,24 @@ export const Alert: React.FC<AlertProps> = ({
     error: XCircle,
   }[variant || 'info'];
 
+  const customStyles = {
+    '--alert-bg-color': theme.colors[variant || 'info']['100'],
+    '--alert-text-color': theme.colors[variant || 'info']['800'],
+    '--alert-icon-color': theme.colors[variant || 'info']['500'],
+  } as React.CSSProperties;
+
   return (
-    <div className={alertVariants({ variant, className })} role="alert" {...props}>
-      <IconComponent className={iconVariants({ variant })} />
+    <div 
+      className={alertVariants({ variant, className })} 
+      role="alert" 
+      style={{
+        ...customStyles,
+        backgroundColor: 'var(--alert-bg-color)',
+        color: 'var(--alert-text-color)',
+      }}
+      {...props}
+    >
+      <IconComponent className={iconVariants({ variant })} style={{ color: 'var(--alert-icon-color)' }} />
       <div className="flex-1">
         {title && <h3 className="font-semibold mb-1">{title}</h3>}
         <div>{children}</div>
@@ -66,7 +83,7 @@ export const Alert: React.FC<AlertProps> = ({
           className="ml-auto -mr-1 -mt-1 p-1 rounded-full hover:bg-black hover:bg-opacity-10 transition-colors"
           aria-label="Close alert"
         >
-          <XCircle className="w-5 h-5" />
+          <X className="w-5 h-5" />
         </button>
       )}
     </div>

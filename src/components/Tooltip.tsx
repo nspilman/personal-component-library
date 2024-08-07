@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const tooltipVariants = cva(
-  'absolute z-10 px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm',
+  'absolute z-10 px-3 py-2 text-sm font-medium text-white rounded-lg shadow-sm',
   {
     variants: {
       position: {
@@ -33,6 +34,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--tooltip-bg-color': theme.colors.gray['900'],
+    '--tooltip-text-color': theme.colors.white,
+  } as React.CSSProperties;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -62,6 +69,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
           ref={tooltipRef}
           className={tooltipVariants({ position, className })}
           role="tooltip"
+          style={{
+            ...customStyles,
+            backgroundColor: 'var(--tooltip-bg-color)',
+            color: 'var(--tooltip-text-color)',
+          }}
           {...props}
         >
           {content}

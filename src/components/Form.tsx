@@ -1,5 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const formVariants = cva('space-y-4', {
   variants: {
@@ -55,8 +56,18 @@ export const FormLabel: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = 
   children,
   ...props
 }) => {
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--label-text-color': theme.colors.gray['700'],
+  } as React.CSSProperties;
+
   return (
-    <label className={`block text-sm font-medium text-gray-700 ${className}`} {...props}>
+    <label 
+      className={`block text-sm font-medium ${className}`} 
+      style={customStyles}
+      {...props}
+    >
       {children}
     </label>
   );
@@ -67,8 +78,18 @@ export const FormHelperText: React.FC<React.HTMLAttributes<HTMLParagraphElement>
   children,
   ...props
 }) => {
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--helper-text-color': theme.colors.gray['500'],
+  } as React.CSSProperties;
+
   return (
-    <p className={`mt-1 text-sm text-gray-500 ${className}`} {...props}>
+    <p 
+      className={`mt-1 text-sm ${className}`} 
+      style={customStyles}
+      {...props}
+    >
       {children}
     </p>
   );

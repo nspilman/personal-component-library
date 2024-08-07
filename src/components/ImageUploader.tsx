@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Upload, X } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 const uploaderVariants = cva(
   'border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors',
@@ -34,6 +35,17 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const [dragState, setDragState] = useState<'idle' | 'drag' | 'error'>('idle');
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--uploader-border-color': theme.colors.gray['300'],
+    '--uploader-hover-border-color': theme.colors.gray['400'],
+    '--uploader-drag-border-color': theme.colors.primary['500'],
+    '--uploader-drag-bg-color': theme.colors.primary['50'],
+    '--uploader-error-border-color': theme.colors.red['500'],
+    '--uploader-error-bg-color': theme.colors.red['50'],
+    '--uploader-text-color': theme.colors.gray['700'],
+  } as React.CSSProperties;
 
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault();
@@ -83,6 +95,16 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       onClick={() => fileInputRef.current?.click()}
+      style={{
+        ...customStyles,
+        borderColor: dragState === 'drag' ? 'var(--uploader-drag-border-color)' : 
+                     dragState === 'error' ? 'var(--uploader-error-border-color)' : 
+                     'var(--uploader-border-color)',
+        backgroundColor: dragState === 'drag' ? 'var(--uploader-drag-bg-color)' : 
+                         dragState === 'error' ? 'var(--uploader-error-bg-color)' : 
+                         'transparent',
+        color: 'var(--uploader-text-color)',
+      }}
       {...props}
     >
       <input

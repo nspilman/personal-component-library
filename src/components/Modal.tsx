@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const modalVariants = cva(
   'fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black bg-opacity-50',
@@ -49,6 +50,14 @@ export const Modal: React.FC<ModalProps> = ({
   ...props 
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--modal-bg-color': theme.colors.white,
+    '--modal-text-color': theme.colors.gray['900'],
+    '--modal-border-color': theme.colors.gray['200'],
+    '--modal-shadow-color': 'rgba(0, 0, 0, 0.1)',
+  } as React.CSSProperties;
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -76,16 +85,22 @@ export const Modal: React.FC<ModalProps> = ({
         className={contentVariants({ size })}
         onClick={(e) => e.stopPropagation()} 
         ref={modalRef}
+        style={{
+          ...customStyles,
+          backgroundColor: 'var(--modal-bg-color)',
+          color: 'var(--modal-text-color)',
+          boxShadow: `0 4px 6px -1px var(--modal-shadow-color), 0 2px 4px -1px var(--modal-shadow-color)`,
+        }}
       >
         {title && (
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-6 py-4 border-b" style={{ borderColor: 'var(--modal-border-color)' }}>
             <h3 className="text-lg font-semibold">{title}</h3>
           </div>
         )}
         <div className="px-6 py-4">
           {children}
         </div>
-        <div className="px-6 py-4 border-t border-gray-200 flex justify-end">
+        <div className="px-6 py-4 border-t flex justify-end" style={{ borderColor: 'var(--modal-border-color)' }}>
           <button 
             onClick={onClose}
             className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"

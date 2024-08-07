@@ -1,11 +1,12 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 const paginationVariants = cva('flex items-center justify-center space-x-1');
 
 const pageButtonVariants = cva(
-  'px-3 py-1 rounded-md text-sm font-medium',
+  'px-3 py-1 rounded-md text-sm font-medium transition-colors',
   {
     variants: {
       isActive: {
@@ -39,6 +40,16 @@ export const Pagination: React.FC<PaginationProps> = ({
   className,
   ...props
 }) => {
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--pagination-text-color': theme.colors.gray['700'],
+    '--pagination-bg-color': theme.colors.gray['100'],
+    '--pagination-hover-bg-color': theme.colors.gray['200'],
+    '--pagination-active-bg-color': theme.colors.primary.DEFAULT,
+    '--pagination-active-text-color': theme.colors.white,
+  } as React.CSSProperties;
+
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       onPageChange(page);
@@ -62,6 +73,10 @@ export const Pagination: React.FC<PaginationProps> = ({
           key={page}
           className={pageButtonVariants({ isActive: page === currentPage })}
           onClick={() => handlePageChange(page)}
+          style={{
+            backgroundColor: page === currentPage ? 'var(--pagination-active-bg-color)' : 'var(--pagination-bg-color)',
+            color: page === currentPage ? 'var(--pagination-active-text-color)' : 'var(--pagination-text-color)',
+          }}
         >
           {page}
         </button>
@@ -72,12 +87,13 @@ export const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div className={paginationVariants({ className })} {...props}>
+    <div className={paginationVariants({ className })} style={customStyles} {...props}>
       {showFirstLast && (
         <button
           className={pageButtonVariants({ isDisabled: currentPage === 1 })}
           onClick={() => handlePageChange(1)}
           disabled={currentPage === 1}
+          style={{ color: 'var(--pagination-text-color)' }}
         >
           First
         </button>
@@ -86,6 +102,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         className={pageButtonVariants({ isDisabled: currentPage === 1 })}
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
+        style={{ color: 'var(--pagination-text-color)' }}
       >
         <ChevronLeft size={16} />
       </button>
@@ -94,6 +111,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         className={pageButtonVariants({ isDisabled: currentPage === totalPages })}
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
+        style={{ color: 'var(--pagination-text-color)' }}
       >
         <ChevronRight size={16} />
       </button>
@@ -102,6 +120,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           className={pageButtonVariants({ isDisabled: currentPage === totalPages })}
           onClick={() => handlePageChange(totalPages)}
           disabled={currentPage === totalPages}
+          style={{ color: 'var(--pagination-text-color)' }}
         >
           Last
         </button>
@@ -111,5 +130,3 @@ export const Pagination: React.FC<PaginationProps> = ({
 };
 
 Pagination.displayName = 'Pagination';
-
-export default Pagination;

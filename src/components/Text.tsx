@@ -1,5 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const textVariants = cva('', {
   variants: {
@@ -37,10 +38,25 @@ export interface TypographyProps
 export const Text = React.forwardRef<HTMLElement, TypographyProps>(
   ({ className, variant, color, component, ...props }, ref) => {
     const Component = component || 'p';
+    const { theme } = useTheme();
+
+    const customStyles = {
+      '--text-default-color': theme.colors.gray['900'],
+      '--text-secondary-color': theme.colors.gray['600'],
+      '--text-primary-color': theme.colors.primary.DEFAULT,
+    } as React.CSSProperties;
+
     return (
       <Component
         className={textVariants({ variant, color, className })}
         ref={ref}
+        style={{
+          ...customStyles,
+          color: color === 'default' ? 'var(--text-default-color)' :
+                 color === 'secondary' ? 'var(--text-secondary-color)' :
+                 color === 'primary' ? 'var(--text-primary-color)' :
+                 undefined,
+        }}
         {...props}
       />
     );

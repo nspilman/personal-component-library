@@ -1,6 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 const selectVariants = cva(
   'block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50',
@@ -39,9 +40,18 @@ export const Select: React.FC<SelectProps> = ({
   ...props
 }) => {
   const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--select-border-color': theme.colors.gray['300'],
+    '--select-focus-border-color': theme.colors.primary.DEFAULT,
+    '--select-focus-ring-color': theme.colors.primary.DEFAULT,
+    '--select-text-color': theme.colors.gray['700'],
+    '--select-bg-color': theme.colors.white,
+  } as React.CSSProperties;
 
   return (
-    <div className="relative">
+    <div className="relative" style={customStyles}>
       {label && (
         <label htmlFor={selectId} className="block text-sm font-medium text-gray-700 mb-1">
           {label}
@@ -51,6 +61,11 @@ export const Select: React.FC<SelectProps> = ({
         <select
           id={selectId}
           className={selectVariants({ size, className })}
+          style={{
+            borderColor: 'var(--select-border-color)',
+            color: 'var(--select-text-color)',
+            backgroundColor: 'var(--select-bg-color)',
+          }}
           {...props}
         >
           {options.map((option) => (

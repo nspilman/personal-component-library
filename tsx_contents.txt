@@ -1,0 +1,6552 @@
+--- File: src/components/Calendar.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Calendar } from './Calendar';
+
+const meta: Meta<typeof Calendar> = {
+  title: 'Components/Inputs/Calendar',
+  component: Calendar,
+  argTypes: {
+    selectedDate: { control: 'date' },
+    onDateSelect: { action: 'date selected' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Calendar>;
+
+export const Default: Story = {
+  args: {},
+};
+
+export const WithSelectedDate: Story = {
+  args: {
+    selectedDate: new Date(2023, 5, 15),
+  },
+};
+
+--- File: src/components/Card.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Card } from './Card';
+
+const meta: Meta<typeof Card> = {
+  title: 'Components/Layout/Card',
+  component: Card,
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['elevated', 'outlined'],
+    },
+    width: {
+      control: 'select',
+      options: ['fluid', 'fixed'],
+    },
+    header: {
+      control: 'text',
+    },
+    footer: {
+      control: 'text',
+    },
+    image: {
+      control: 'text',
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Card>;
+
+export const Default: Story = {
+  args: {
+    children: <p>This is the main content of the card.</p>,
+  },
+};
+
+export const WithHeaderAndFooter: Story = {
+  args: {
+    ...Default.args,
+    header: <h3 className="text-lg font-semibold">Card Header</h3>,
+    footer: <p className="text-sm text-gray-500">Card Footer</p>,
+  },
+};
+
+export const WithImage: Story = {
+  args: {
+    ...Default.args,
+    image: '/api/placeholder/400/200',
+  },
+};
+
+export const Outlined: Story = {
+  args: {
+    ...Default.args,
+    variant: 'outlined',
+  },
+};
+
+export const FixedWidth: Story = {
+  args: {
+    ...Default.args,
+    width: 'fixed',
+  },
+};
+
+export const CompleteCard: Story = {
+  args: {
+    header: <h3 className="text-lg font-semibold">Complete Card</h3>,
+    children: (
+      <div>
+        <p className="mb-2">This card demonstrates all available features.</p>
+        <button className="bg-primary text-white px-4 py-2 rounded">Action</button>
+      </div>
+    ),
+    footer: <p className="text-sm text-gray-500">Last updated: 2 days ago</p>,
+    image: '/api/placeholder/400/200',
+    variant: 'elevated',
+    width: 'fixed',
+  },
+};
+
+--- File: src/components/Form.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Form, FormGroup, FormLabel, FormHelperText } from './Form';
+import { Input } from './Input';
+import { Button } from './Button';
+
+const meta: Meta<typeof Form> = {
+  title: 'Components/Inputs/Form',
+  component: Form,
+  argTypes: {
+    layout: {
+      control: 'select',
+      options: ['vertical', 'horizontal'],
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Form>;
+
+export const Default: Story = {
+  render: (args) => (
+    <Form {...args} onSubmit={(e) => console.log('Form submitted', e)}>
+      <FormGroup>
+        <FormLabel htmlFor="name">Name</FormLabel>
+        <Input id="name" placeholder="Enter your name" />
+      </FormGroup>
+      <FormGroup>
+        <FormLabel htmlFor="email">Email</FormLabel>
+        <Input id="email" type="email" placeholder="Enter your email" />
+        <FormHelperText>We'll never share your email with anyone else.</FormHelperText>
+      </FormGroup>
+      <Button type="submit">Submit</Button>
+    </Form>
+  ),
+};
+
+export const Horizontal: Story = {
+  ...Default,
+  args: {
+    layout: 'horizontal',
+  },
+};
+
+export const WithValidation: Story = {
+  render: (args) => (
+    <Form {...args} onSubmit={(e) => console.log('Form submitted', e)}>
+      <FormGroup>
+        <FormLabel htmlFor="username">Username</FormLabel>
+        <Input id="username" placeholder="Enter your username" required />
+      </FormGroup>
+      <FormGroup>
+        <FormLabel htmlFor="password">Password</FormLabel>
+        <Input id="password" type="password" placeholder="Enter your password" required minLength={8} />
+        <FormHelperText>Password must be at least 8 characters long.</FormHelperText>
+      </FormGroup>
+      <Button type="submit">Sign In</Button>
+    </Form>
+  ),
+};
+
+export const ComplexForm: Story = {
+  render: (args) => (
+    <Form {...args} onSubmit={(e) => console.log('Form submitted', e)}>
+      <FormGroup>
+        <FormLabel htmlFor="fullName">Full Name</FormLabel>
+        <Input id="fullName" placeholder="Enter your full name" required />
+      </FormGroup>
+      <FormGroup>
+        <FormLabel htmlFor="email">Email</FormLabel>
+        <Input id="email" type="email" placeholder="Enter your email" required />
+      </FormGroup>
+      <FormGroup>
+        <FormLabel htmlFor="phone">Phone</FormLabel>
+        <Input id="phone" type="tel" placeholder="Enter your phone number" />
+      </FormGroup>
+      <FormGroup>
+        <FormLabel htmlFor="message">Message</FormLabel>
+        <textarea
+          id="message"
+          className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+          rows={4}
+          placeholder="Enter your message"
+          required
+        ></textarea>
+      </FormGroup>
+      <Button type="submit">Send Message</Button>
+    </Form>
+  ),
+};
+
+--- File: src/components/Input.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Input } from './Input';
+
+const meta: Meta<typeof Input> = {
+  title: 'Components/Inputs/Input',
+  component: Input,
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['default', 'success', 'error'],
+    },
+    type: {
+      control: 'select',
+      options: ['text', 'number', 'password', 'email'],
+    },
+    disabled: {
+      control: 'boolean',
+    },
+    helperText: {
+      control: 'text',
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Input>;
+
+export const Default: Story = {
+  args: {
+    label: 'Username',
+    placeholder: 'Enter your username',
+    type: 'text',
+  },
+};
+
+export const Password: Story = {
+  args: {
+    ...Default.args,
+    label: 'Password',
+    type: 'password',
+    placeholder: 'Enter your password',
+  },
+};
+
+export const Email: Story = {
+  args: {
+    ...Default.args,
+    label: 'Email',
+    type: 'email',
+    placeholder: 'Enter your email',
+  },
+};
+
+export const Number: Story = {
+  args: {
+    ...Default.args,
+    label: 'Age',
+    type: 'number',
+    placeholder: 'Enter your age',
+  },
+};
+
+export const WithHelperText: Story = {
+  args: {
+    ...Default.args,
+    helperText: 'This is some helper text',
+  },
+};
+
+export const Success: Story = {
+  args: {
+    ...Default.args,
+    variant: 'success',
+    helperText: 'Username is available',
+  },
+};
+
+export const Error: Story = {
+  args: {
+    ...Default.args,
+    variant: 'error',
+    helperText: 'Username is already taken',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    ...Default.args,
+    disabled: true,
+  },
+};
+
+--- File: src/components/Pagination.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const paginationVariants = cva('flex items-center justify-center space-x-1');
+
+const pageButtonVariants = cva(
+  'px-3 py-1 rounded-md text-sm font-medium',
+  {
+    variants: {
+      isActive: {
+        true: 'bg-primary text-white',
+        false: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+      },
+      isDisabled: {
+        true: 'opacity-50 cursor-not-allowed',
+        false: 'cursor-pointer',
+      },
+    },
+    defaultVariants: {
+      isActive: false,
+      isDisabled: false,
+    },
+  }
+);
+
+export interface PaginationProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof paginationVariants> {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  showFirstLast?: boolean;
+}
+
+export const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+  showFirstLast = true,
+  className,
+  ...props
+}) => {
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      onPageChange(page);
+    }
+  };
+
+  const renderPageButtons = () => {
+    const buttons = [];
+    const maxVisiblePages = 5;
+
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let page = startPage; page <= endPage; page++) {
+      buttons.push(
+        <button
+          key={page}
+          className={pageButtonVariants({ isActive: page === currentPage })}
+          onClick={() => handlePageChange(page)}
+        >
+          {page}
+        </button>
+      );
+    }
+
+    return buttons;
+  };
+
+  return (
+    <div className={paginationVariants({ className })} {...props}>
+      {showFirstLast && (
+        <button
+          className={pageButtonVariants({ isDisabled: currentPage === 1 })}
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
+        >
+          First
+        </button>
+      )}
+      <button
+        className={pageButtonVariants({ isDisabled: currentPage === 1 })}
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        <ChevronLeft size={16} />
+      </button>
+      {renderPageButtons()}
+      <button
+        className={pageButtonVariants({ isDisabled: currentPage === totalPages })}
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        <ChevronRight size={16} />
+      </button>
+      {showFirstLast && (
+        <button
+          className={pageButtonVariants({ isDisabled: currentPage === totalPages })}
+          onClick={() => handlePageChange(totalPages)}
+          disabled={currentPage === totalPages}
+        >
+          Last
+        </button>
+      )}
+    </div>
+  );
+};
+
+Pagination.displayName = 'Pagination';
+
+export default Pagination;
+
+--- File: src/components/ImageUploader.tsx ---
+
+import React, { useState, useRef } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { Upload, X } from 'lucide-react';
+
+const uploaderVariants = cva(
+  'border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors',
+  {
+    variants: {
+      state: {
+        idle: 'border-gray-300 hover:border-gray-400',
+        drag: 'border-primary-500 bg-primary-50',
+        error: 'border-red-500 bg-red-50',
+      },
+    },
+    defaultVariants: {
+      state: 'idle',
+    },
+  }
+);
+
+export interface ImageUploaderProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof uploaderVariants> {
+  onImageUpload: (file: File) => void;
+  maxSizeInMB?: number;
+  acceptedFileTypes?: string[];
+}
+
+export const ImageUploader: React.FC<ImageUploaderProps> = ({
+  className,
+  onImageUpload,
+  maxSizeInMB = 5,
+  acceptedFileTypes = ['image/jpeg', 'image/png', 'image/gif'],
+  ...props
+}) => {
+  const [dragState, setDragState] = useState<'idle' | 'drag' | 'error'>('idle');
+  const [preview, setPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragState('drag');
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragState('idle');
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragState('idle');
+    const file = e.dataTransfer.files[0];
+    handleFile(file);
+  };
+
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFile(file);
+  };
+
+  const handleFile = (file: File) => {
+    if (!acceptedFileTypes.includes(file.type)) {
+      setDragState('error');
+      return;
+    }
+    if (file.size > maxSizeInMB * 1024 * 1024) {
+      setDragState('error');
+      return;
+    }
+    setPreview(URL.createObjectURL(file));
+    onImageUpload(file);
+  };
+
+  const removeImage = () => {
+    setPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  return (
+    <div
+      className={uploaderVariants({ state: dragState, className })}
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      onClick={() => fileInputRef.current?.click()}
+      {...props}
+    >
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileInput}
+        accept={acceptedFileTypes.join(',')}
+        className="hidden"
+      />
+      {preview ? (
+        <div className="relative">
+          <img src={preview} alt="Preview" className="max-w-full max-h-64 mx-auto" />
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              removeImage();
+            }}
+            className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+          >
+            <X size={16} />
+          </button>
+        </div>
+      ) : (
+        <div>
+          <Upload className="mx-auto mb-2" size={24} />
+          <p>Drag and drop an image here, or click to select a file</p>
+          <p className="text-sm text-gray-500 mt-1">
+            Max size: {maxSizeInMB}MB. Accepted types: {acceptedFileTypes.join(', ')}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+ImageUploader.displayName = 'ImageUploader';
+
+--- File: src/components/Menu.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Menu } from './Menu';
+
+const meta: Meta<typeof Menu> = {
+  title: 'Components/Navigation/Menu',
+  component: Menu,
+  argTypes: {
+    label: { control: 'text' },
+    fullWidth: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Menu>;
+
+export const Default: Story = {
+  args: {
+    label: 'Options',
+    items: [
+      { label: 'Edit', onClick: () => console.log('Edit clicked') },
+      { label: 'Duplicate', onClick: () => console.log('Duplicate clicked') },
+      { label: 'Delete', onClick: () => console.log('Delete clicked') },
+    ],
+  },
+};
+
+export const FullWidth: Story = {
+  args: {
+    ...Default.args,
+    fullWidth: true,
+  },
+};
+
+export const WithIcons: Story = {
+  args: {
+    label: 'Actions',
+    items: [
+      { label: '📝 Edit', onClick: () => console.log('Edit clicked') },
+      { label: '📋 Copy', onClick: () => console.log('Copy clicked') },
+      { label: '🗑️ Delete', onClick: () => console.log('Delete clicked') },
+    ],
+  },
+};
+
+export const LongList: Story = {
+  args: {
+    label: 'Select a fruit',
+    items: [
+      'Apple', 'Banana', 'Cherry', 'Date', 'Elderberry', 
+      'Fig', 'Grape', 'Honeydew', 'Kiwi', 'Lemon'
+    ].map(fruit => ({
+      label: fruit,
+      onClick: () => console.log(`${fruit} selected`),
+    })),
+  },
+};
+
+export const NestedContent: Story = {
+  args: {
+    label: 'Advanced Options',
+    items: [
+      { 
+        label: 'Change Status',
+        onClick: () => console.log('Change Status clicked')
+      },
+      { 
+        label: 'Permissions',
+        onClick: () => console.log('Permissions clicked')
+      },
+      { 
+        label: 'Analytics',
+        onClick: () => console.log('Analytics clicked')
+      },
+    ],
+  },
+};
+
+export const CustomStyling: Story = {
+  args: {
+    ...Default.args,
+    className: 'bg-gray-100 p-4 rounded-lg',
+  },
+};
+
+--- File: src/components/Stepper.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Stepper } from './Stepper';
+
+const meta: Meta<typeof Stepper> = {
+  title: 'Components/Navigation/Stepper',
+  component: Stepper,
+  argTypes: {
+    currentStep: { control: 'number' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Stepper>;
+
+const steps = [
+  { label: 'Step 1', description: 'Description for step 1' },
+  { label: 'Step 2', description: 'Description for step 2' },
+  { label: 'Step 3', description: 'Description for step 3' },
+  { label: 'Step 4', description: 'Description for step 4' },
+];
+
+export const Default: Story = {
+  args: {
+    steps: steps,
+    currentStep: 1,
+  },
+};
+
+export const Halfway: Story = {
+  args: {
+    ...Default.args,
+    currentStep: 2,
+  },
+};
+
+export const Completed: Story = {
+  args: {
+    ...Default.args,
+    currentStep: 4,
+  },
+};
+
+export const WithoutDescriptions: Story = {
+  args: {
+    steps: steps.map(({ label }) => ({ label })),
+    currentStep: 2,
+  },
+};
+
+export const ManySteps: Story = {
+  args: {
+    steps: [
+      { label: 'Step 1' },
+      { label: 'Step 2' },
+      { label: 'Step 3' },
+      { label: 'Step 4' },
+      { label: 'Step 5' },
+      { label: 'Step 6' },
+    ],
+    currentStep: 3,
+  },
+};
+
+--- File: src/components/Tabs.tsx ---
+
+import React, { useState } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const tabsContainerVariants = cva('border-b border-gray-200');
+
+const tabListVariants = cva('-mb-px flex');
+
+const tabVariants = cva(
+  'inline-block py-2 px-4 text-sm font-medium',
+  {
+    variants: {
+      isActive: {
+        true: 'border-b-2 border-primary text-primary',
+        false: 'text-gray-500 hover:text-gray-700 hover:border-gray-300',
+      },
+    },
+    defaultVariants: {
+      isActive: false,
+    },
+  }
+);
+
+export interface Tab {
+  label: string;
+  content: React.ReactNode;
+}
+
+export interface TabsProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof tabsContainerVariants> {
+  tabs: Tab[];
+  defaultActiveTab?: number;
+}
+
+export const Tabs: React.FC<TabsProps> = ({
+  tabs,
+  defaultActiveTab = 0,
+  className,
+  ...props
+}) => {
+  const [activeTabIndex, setActiveTabIndex] = useState(defaultActiveTab);
+
+  return (
+    <div className={tabsContainerVariants({ className })} {...props}>
+      <div className={tabListVariants()} role="tablist">
+        {tabs.map((tab, index) => (
+          <button
+            key={index}
+            className={tabVariants({ isActive: index === activeTabIndex })}
+            role="tab"
+            aria-selected={index === activeTabIndex}
+            onClick={() => setActiveTabIndex(index)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      <div className="py-4">
+        {tabs[activeTabIndex].content}
+      </div>
+    </div>
+  );
+};
+
+Tabs.displayName = 'Tabs';
+
+
+--- File: src/components/Button.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Button } from './Button';
+import { ArrowRight, Plus } from 'lucide-react';
+
+const meta: Meta<typeof Button> = {
+  title: 'Components/Inputs/Button',
+  component: Button,
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['primary', 'secondary', 'ghost', 'danger'],
+    },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
+    disabled: {
+      control: 'boolean',
+    },
+    leftIcon: {
+      control: 'boolean',
+    },
+    rightIcon: {
+      control: 'boolean',
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Button>;
+
+export const Default: Story = {
+  args: {
+    children: 'Button',
+    variant: 'primary',
+    size: 'md',
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    ...Default.args,
+    variant: 'secondary',
+    children: 'Secondary Button',
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    ...Default.args,
+    variant: 'ghost',
+    children: 'Ghost Button',
+  },
+};
+
+export const Danger: Story = {
+  args: {
+    ...Default.args,
+    variant: 'danger',
+    children: 'Danger Button',
+  },
+};
+
+export const Small: Story = {
+  args: {
+    ...Default.args,
+    size: 'sm',
+    children: 'Small Button',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    ...Default.args,
+    size: 'lg',
+    children: 'Large Button',
+  },
+};
+
+export const WithLeftIcon: Story = {
+  args: {
+    ...Default.args,
+    children: 'Add Item',
+    leftIcon: <Plus />,
+  },
+};
+
+export const WithRightIcon: Story = {
+  args: {
+    ...Default.args,
+    children: 'Next',
+    rightIcon: <ArrowRight />,
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    ...Default.args,
+    children: 'Disabled Button',
+    disabled: true,
+  },
+};
+
+--- File: src/components/Toast.stories.tsx ---
+
+import React, { useState } from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Toast, ToastContainer } from './Toast';
+import { Button } from './Button';
+
+const meta: Meta<typeof Toast> = {
+  title: 'Components/Feedback/Toast',
+  component: Toast,
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['success', 'error', 'warning', 'info'],
+    },
+    position: {
+      control: 'select',
+      options: ['top-right', 'top-left', 'bottom-right', 'bottom-left'],
+    },
+    duration: {
+      control: 'number',
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Toast>;
+
+const ToastTemplate: Story = {
+  render: (args) => {
+    const [toasts, setToasts] = useState<React.ReactNode[]>([]);
+
+    const addToast = () => {
+      const newToast = (
+        <Toast
+          key={Date.now()}
+          {...args}
+          onClose={() => setToasts((prev) => prev.slice(1))}
+        />
+      );
+      setToasts((prev) => [...prev, newToast]);
+    };
+
+    return (
+      <div>
+        <Button onClick={addToast}>Show Toast</Button>
+        <ToastContainer>{toasts}</ToastContainer>
+      </div>
+    );
+  },
+};
+
+export const Success: Story = {
+  ...ToastTemplate,
+  args: {
+    variant: 'success',
+    message: 'Operation completed successfully!',
+  },
+};
+
+export const Error: Story = {
+  ...ToastTemplate,
+  args: {
+    variant: 'error',
+    message: 'An error occurred. Please try again.',
+  },
+};
+
+export const Warning: Story = {
+  ...ToastTemplate,
+  args: {
+    variant: 'warning',
+    message: 'Warning: This action cannot be undone.',
+  },
+};
+
+export const Info: Story = {
+  ...ToastTemplate,
+  args: {
+    variant: 'info',
+    message: 'New update available. Please refresh the page.',
+  },
+};
+
+export const LongDuration: Story = {
+  ...ToastTemplate,
+  args: {
+    variant: 'info',
+    message: 'This toast will stay for 10 seconds.',
+    duration: 10000,
+  },
+};
+
+export const BottomLeft: Story = {
+  ...ToastTemplate,
+  args: {
+    variant: 'success',
+    message: 'Toast in bottom-left corner',
+    position: 'bottom-left',
+  },
+};
+
+export const MultipleToasts: Story = {
+  render: (args) => {
+    const [toasts, setToasts] = useState<React.ReactNode[]>([]);
+
+    const addToast = (variant: 'success' | 'error' | 'warning' | 'info') => {
+      const newToast = (
+        <Toast
+          key={Date.now()}
+          variant={variant}
+          message={`This is a ${variant} toast`}
+          onClose={() => setToasts((prev) => prev.slice(1))}
+          {...args}
+        />
+      );
+      setToasts((prev) => [...prev, newToast]);
+    };
+
+    return (
+      <div>
+        <div className="space-x-2">
+          <Button onClick={() => addToast('success')}>Success</Button>
+          <Button onClick={() => addToast('error')}>Error</Button>
+          <Button onClick={() => addToast('warning')}>Warning</Button>
+          <Button onClick={() => addToast('info')}>Info</Button>
+        </div>
+        <ToastContainer>{toasts}</ToastContainer>
+      </div>
+    );
+  },
+};
+
+--- File: src/components/Card.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const cardVariants = cva(
+  'bg-white rounded-lg overflow-hidden',
+  {
+    variants: {
+      variant: {
+        elevated: 'shadow-md',
+        outlined: 'border border-gray-200',
+      },
+      width: {
+        fluid: 'w-full',
+        fixed: 'w-80',
+      },
+    },
+    defaultVariants: {
+      variant: 'elevated',
+      width: 'fluid',
+    },
+  }
+);
+
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof cardVariants> {
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
+  image?: string;
+}
+
+export const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant, width, header, footer, image, children, ...props }, ref) => {
+    return (
+      <div className={cardVariants({ variant, width, className })} ref={ref} {...props}>
+        {image && (
+          <div className="w-full h-48 bg-gray-200">
+            <img src={image} alt="Card" className="w-full h-full object-cover" />
+          </div>
+        )}
+        {header && (
+          <div className="px-4 py-3 border-b border-gray-200">
+            {header}
+          </div>
+        )}
+        <div className="p-4">
+          {children}
+        </div>
+        {footer && (
+          <div className="px-4 py-3 border-t border-gray-200">
+            {footer}
+          </div>
+        )}
+      </div>
+    );
+  }
+);
+
+Card.displayName = 'Card';
+
+
+
+--- File: src/components/Slider.tsx ---
+
+import React, { useState, useRef, useEffect } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const sliderVariants = cva('relative w-full h-2 bg-gray-200 rounded-full');
+
+const thumbVariants = cva(
+  'absolute top-1/2 w-4 h-4 bg-primary rounded-full shadow transform -translate-y-1/2 -translate-x-1/2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50',
+  {
+    variants: {
+      disabled: {
+        true: 'bg-gray-400 cursor-not-allowed',
+        false: 'cursor-pointer',
+      },
+    },
+    defaultVariants: {
+      disabled: false,
+    },
+  }
+);
+
+export interface SliderProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof sliderVariants> {
+  min: number;
+  max: number;
+  step?: number;
+  value: number;
+  onChange: (value: number) => void;
+  disabled?: boolean;
+}
+
+export const Slider: React.FC<SliderProps> = ({
+  min,
+  max,
+  step = 1,
+  value,
+  onChange,
+  disabled = false,
+  className,
+  ...props
+}) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const handleMove = (clientX: number) => {
+    if (sliderRef.current && !disabled) {
+      const rect = sliderRef.current.getBoundingClientRect();
+      const percentage = (clientX - rect.left) / rect.width;
+      const newValue = Math.round((percentage * (max - min) + min) / step) * step;
+      onChange(Math.max(min, Math.min(max, newValue)));
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!disabled) {
+      setIsDragging(true);
+      handleMove(e.clientX);
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!disabled) {
+      setIsDragging(true);
+      handleMove(e.touches[0].clientX);
+    }
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        handleMove(e.clientX);
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isDragging) {
+        handleMove(e.touches[0].clientX);
+      }
+    };
+
+    const handleEnd = () => {
+      setIsDragging(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleEnd);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleEnd);
+    };
+  }, [isDragging]);
+
+  const percentage = ((value - min) / (max - min)) * 100;
+
+  return (
+    <div
+      className={sliderVariants({ className })}
+      ref={sliderRef}
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
+      {...props}
+    >
+      <div
+        className="absolute h-full bg-primary rounded-full"
+        style={{ width: `${percentage}%` }}
+      />
+      <div
+        className={thumbVariants({ disabled })}
+        style={{ left: `${percentage}%` }}
+      />
+    </div>
+  );
+};
+
+Slider.displayName = 'Slider';
+
+
+--- File: src/components/Popover.tsx ---
+
+import React, { useState, useRef, useEffect } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const popoverVariants = cva(
+  'absolute z-10 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5',
+  {
+    variants: {
+      position: {
+        top: 'bottom-full mb-2',
+        bottom: 'top-full mt-2',
+        left: 'right-full mr-2',
+        right: 'left-full ml-2',
+      },
+    },
+    defaultVariants: {
+      position: 'bottom',
+    },
+  }
+);
+
+export interface PopoverProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof popoverVariants> {
+  trigger: React.ReactElement;
+  content: React.ReactNode;
+  isOpen?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
+}
+
+export const Popover: React.FC<PopoverProps> = ({
+  className,
+  position,
+  trigger,
+  content,
+  isOpen: controlledIsOpen,
+  onOpenChange,
+  ...props
+}) => {
+  const [isOpenState, setIsOpenState] = useState(false);
+  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : isOpenState;
+  const setIsOpen = (newIsOpen: boolean) => {
+    if (controlledIsOpen === undefined) {
+      setIsOpenState(newIsOpen);
+    }
+    onOpenChange?.(newIsOpen);
+  };
+
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popoverRef.current &&
+        !popoverRef.current.contains(event.target as Node) &&
+        triggerRef.current &&
+        !triggerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className="relative inline-block">
+      <div
+        ref={triggerRef}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {trigger}
+      </div>
+      {isOpen && (
+        <div
+          ref={popoverRef}
+          className={popoverVariants({ position, className })}
+          {...props}
+        >
+          {content}
+        </div>
+      )}
+    </div>
+  );
+};
+
+Popover.displayName = 'Popover';
+
+--- File: src/components/Radio.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const radioVariants = cva(
+  'h-4 w-4 border-gray-300 text-primary focus:ring-primary',
+  {
+    variants: {
+      size: {
+        sm: 'h-3 w-3',
+        md: 'h-4 w-4',
+        lg: 'h-5 w-5',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+const labelVariants = cva(
+  'ml-2 text-gray-700',
+  {
+    variants: {
+      size: {
+        sm: 'text-sm',
+        md: 'text-base',
+        lg: 'text-lg',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+export interface RadioProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
+    VariantProps<typeof radioVariants> {
+  label?: string;
+}
+
+export const Radio: React.FC<RadioProps> = ({
+  className,
+  size,
+  label,
+  id,
+  ...props
+}) => {
+  const radioId = id || `radio-${Math.random().toString(36).substr(2, 9)}`;
+
+  return (
+    <div className="flex items-center">
+      <input
+        type="radio"
+        id={radioId}
+        className={radioVariants({ size, className })}
+        {...props}
+      />
+      {label && (
+        <label htmlFor={radioId} className={labelVariants({ size })}>
+          {label}
+        </label>
+      )}
+    </div>
+  );
+};
+
+Radio.displayName = 'Radio';
+
+--- File: src/components/Progress.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const progressVariants = cva('w-full bg-gray-200 rounded-full', {
+  variants: {
+    size: {
+      sm: 'h-1',
+      md: 'h-2',
+      lg: 'h-4',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const barVariants = cva('h-full rounded-full transition-all duration-300 ease-in-out', {
+  variants: {
+    variant: {
+      default: 'bg-primary',
+      success: 'bg-green-500',
+      warning: 'bg-yellow-500',
+      error: 'bg-red-500',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof progressVariants>, VariantProps<typeof barVariants> {
+  value: number;
+  max?: number;
+  showLabel?: boolean;
+}
+
+export const Progress: React.FC<ProgressProps> = ({
+  value,
+  max = 100,
+  size,
+  variant,
+  showLabel = false,
+  className,
+  ...props
+}) => {
+  const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+
+  return (
+    <div className="w-full">
+      <div className={progressVariants({ size, className })} {...props}>
+        <div 
+          className={barVariants({ variant })}
+          style={{ width: `${percentage}%` }}
+          role="progressbar"
+          aria-valuenow={value}
+          aria-valuemin={0}
+          aria-valuemax={max}
+        />
+      </div>
+      {showLabel && (
+        <div className="mt-1 text-sm text-gray-600">
+          {percentage.toFixed(0)}%
+        </div>
+      )}
+    </div>
+  );
+};
+
+Progress.displayName = 'Progress';
+
+--- File: src/components/ImageUploader.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ImageUploader } from './ImageUploader';
+
+const meta: Meta<typeof ImageUploader> = {
+  title: 'Components/Inputs/ImageUploader',
+  component: ImageUploader,
+  argTypes: {
+    maxSizeInMB: { control: 'number' },
+    acceptedFileTypes: { control: 'array' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof ImageUploader>;
+
+export const Default: Story = {
+  args: {
+    onImageUpload: (file: File) => console.log('Uploaded file:', file),
+  },
+};
+
+export const CustomSize: Story = {
+  args: {
+    ...Default.args,
+    maxSizeInMB: 2,
+  },
+};
+
+export const CustomFileTypes: Story = {
+  args: {
+    ...Default.args,
+    acceptedFileTypes: ['image/jpeg', 'image/png'],
+  },
+};
+
+--- File: src/components/Popover.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Popover } from './Popover';
+import { Button } from './Button';
+
+const meta: Meta<typeof Popover> = {
+  title: 'Components/Data Display/Popover',
+  component: Popover,
+  argTypes: {
+    position: {
+      control: 'select',
+      options: ['top', 'bottom', 'left', 'right'],
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div className="h-64 flex items-center justify-center">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Popover>;
+
+export const Default: Story = {
+  args: {
+    trigger: <Button>Open Popover</Button>,
+    content: (
+      <div className="p-4">
+        <h3 className="text-lg font-semibold mb-2">Popover Title</h3>
+        <p>This is the popover content.</p>
+      </div>
+    ),
+  },
+};
+
+export const PositionTop: Story = {
+  args: {
+    ...Default.args,
+    position: 'top',
+  },
+};
+
+export const PositionLeft: Story = {
+  args: {
+    ...Default.args,
+    position: 'left',
+  },
+};
+
+export const PositionRight: Story = {
+  args: {
+    ...Default.args,
+    position: 'right',
+  },
+};
+
+export const WithForm: Story = {
+  args: {
+    trigger: <Button>Edit Profile</Button>,
+    content: (
+      <form className="p-4">
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="name">
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+          />
+        </div>
+        <Button>Save Changes</Button>
+      </form>
+    ),
+  },
+};
+
+export const WithCustomTrigger: Story = {
+  args: {
+    trigger: (
+      <span className="text-blue-600 cursor-pointer underline">
+        More info
+      </span>
+    ),
+    content: (
+      <div className="p-4 max-w-xs">
+        <p>This popover is triggered by a text link instead of a button.</p>
+      </div>
+    ),
+  },
+};
+
+export const Interactive: Story = {
+  args: {
+    trigger: <Button>Interactive Popover</Button>,
+    content: (
+      <div className="p-4">
+        <h3 className="text-lg font-semibold mb-2">Choose an option</h3>
+        <div className="space-y-2">
+          <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+            Option 1
+          </button>
+          <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+            Option 2
+          </button>
+          <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+            Option 3
+          </button>
+        </div>
+      </div>
+    ),
+  },
+};
+
+--- File: src/components/Switch.stories.tsx ---
+
+import React, { useState } from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Switch } from './Switch';
+
+const meta: Meta<typeof Switch> = {
+  title: 'Components/Inputs/Switch',
+  component: Switch,
+  argTypes: {
+    checked: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    label: { control: 'text' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Switch>;
+
+const SwitchTemplate: Story = {
+  render: (args) => {
+    const [checked, setChecked] = useState(args.checked);
+    return (
+      <Switch
+        {...args}
+        checked={checked}
+        onChange={(newChecked) => {
+          setChecked(newChecked);
+          console.log(`Switch toggled: ${newChecked}`);
+        }}
+      />
+    );
+  },
+};
+
+export const Default: Story = {
+  ...SwitchTemplate,
+  args: {
+    checked: false,
+  },
+};
+
+export const Checked: Story = {
+  ...SwitchTemplate,
+  args: {
+    checked: true,
+  },
+};
+
+export const WithLabel: Story = {
+  ...SwitchTemplate,
+  args: {
+    checked: false,
+    label: 'Enable notifications',
+  },
+};
+
+export const Disabled: Story = {
+  ...SwitchTemplate,
+  args: {
+    checked: false,
+    disabled: true,
+  },
+};
+
+export const DisabledChecked: Story = {
+  ...SwitchTemplate,
+  args: {
+    checked: true,
+    disabled: true,
+  },
+};
+
+export const WithLongLabel: Story = {
+  ...SwitchTemplate,
+  args: {
+    checked: false,
+    label: 'This is a very long label to demonstrate how the switch component handles wrapping text',
+  },
+};
+
+--- File: src/components/Alert.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Alert } from './Alert';
+
+const meta: Meta<typeof Alert> = {
+  title: 'Components/Feedback/Alert',
+  component: Alert,
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['info', 'success', 'warning', 'error'],
+    },
+    title: {
+      control: 'text',
+    },
+    onClose: { action: 'closed' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Alert>;
+
+export const Info: Story = {
+  args: {
+    variant: 'info',
+    children: 'This is an informational alert.',
+  },
+};
+
+export const Success: Story = {
+  args: {
+    variant: 'success',
+    children: 'Operation completed successfully.',
+  },
+};
+
+export const Warning: Story = {
+  args: {
+    variant: 'warning',
+    children: 'Please be cautious about this action.',
+  },
+};
+
+export const Error: Story = {
+  args: {
+    variant: 'error',
+    children: 'An error occurred. Please try again.',
+  },
+};
+
+export const WithTitle: Story = {
+  args: {
+    variant: 'info',
+    title: 'Important Information',
+    children: 'This alert includes a title for additional context.',
+  },
+};
+
+export const Dismissible: Story = {
+  args: {
+    variant: 'success',
+    title: 'Task Complete',
+    children: 'You can dismiss this alert by clicking the close button.',
+    onClose: () => alert('Alert closed'),
+  },
+};
+
+export const LongContent: Story = {
+  args: {
+    variant: 'warning',
+    title: 'Long Alert',
+    children: `This alert contains a longer message to demonstrate how the component handles 
+               multiple lines of text. It should wrap properly and maintain proper spacing.
+               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, 
+               nisi vel consectetur interdum, nisl nunc egestas nunc, vitae tincidunt nisl
+               nunc euismod nunc.`,
+  },
+};
+
+--- File: src/components/Grid.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Grid, GridItem } from './Grid';
+
+const meta: Meta<typeof Grid> = {
+  title: 'Components/Layout/Grid',
+  component: Grid,
+  argTypes: {
+    cols: {
+      control: 'select',
+      options: [1, 2, 3, 4, 6, 12],
+    },
+    gap: {
+      control: 'select',
+      options: [1, 2, 4, 6, 8],
+    },
+    responsive: {
+      control: 'boolean',
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Grid>;
+
+const GridItemWrapper = ({ children }: { children: React.ReactNode }) => (
+  <div className="bg-gray-200 p-4 text-center">{children}</div>
+);
+
+export const Default: Story = {
+  args: {
+    cols: 3,
+    gap: 4,
+    children: (
+      <>
+        <GridItemWrapper>1</GridItemWrapper>
+        <GridItemWrapper>2</GridItemWrapper>
+        <GridItemWrapper>3</GridItemWrapper>
+        <GridItemWrapper>4</GridItemWrapper>
+        <GridItemWrapper>5</GridItemWrapper>
+        <GridItemWrapper>6</GridItemWrapper>
+      </>
+    ),
+  },
+};
+
+export const Responsive: Story = {
+  args: {
+    ...Default.args,
+    responsive: true,
+  },
+};
+
+export const DifferentColumnSpans: Story = {
+  args: {
+    cols: 12,
+    gap: 4,
+    children: (
+      <>
+        <GridItem span={6}><GridItemWrapper>Span 6</GridItemWrapper></GridItem>
+        <GridItem span={6}><GridItemWrapper>Span 6</GridItemWrapper></GridItem>
+        <GridItem span={4}><GridItemWrapper>Span 4</GridItemWrapper></GridItem>
+        <GridItem span={4}><GridItemWrapper>Span 4</GridItemWrapper></GridItem>
+        <GridItem span={4}><GridItemWrapper>Span 4</GridItemWrapper></GridItem>
+        <GridItem span={3}><GridItemWrapper>Span 3</GridItemWrapper></GridItem>
+        <GridItem span={3}><GridItemWrapper>Span 3</GridItemWrapper></GridItem>
+        <GridItem span={3}><GridItemWrapper>Span 3</GridItemWrapper></GridItem>
+        <GridItem span={3}><GridItemWrapper>Span 3</GridItemWrapper></GridItem>
+        <GridItem span={12}><GridItemWrapper>Span 12 (Full Width)</GridItemWrapper></GridItem>
+      </>
+    ),
+  },
+};
+
+export const NestedGrids: Story = {
+  args: {
+    cols: 2,
+    gap: 4,
+    children: (
+      <>
+        <GridItem>
+          <GridItemWrapper>
+            <Grid cols={2} gap={2}>
+              <GridItemWrapper>Nested 1</GridItemWrapper>
+              <GridItemWrapper>Nested 2</GridItemWrapper>
+            </Grid>
+          </GridItemWrapper>
+        </GridItem>
+        <GridItem>
+          <GridItemWrapper>
+            <Grid cols={2} gap={2}>
+              <GridItemWrapper>Nested 3</GridItemWrapper>
+              <GridItemWrapper>Nested 4</GridItemWrapper>
+            </Grid>
+          </GridItemWrapper>
+        </GridItem>
+      </>
+    ),
+  },
+};
+
+--- File: src/components/Drawer.stories.tsx ---
+
+import React, { useState } from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Drawer } from './Drawer';
+import { Button } from './Button';
+
+const meta: Meta<typeof Drawer> = {
+  title: 'Components/Layout/Drawer',
+  component: Drawer,
+  argTypes: {
+    position: {
+      control: 'select',
+      options: ['left', 'right'],
+    },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg', 'full'],
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Drawer>;
+
+const DrawerTemplate: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)}>Open Drawer</Button>
+        <Drawer {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+          <h2 className="text-2xl font-bold mb-4">Drawer Content</h2>
+          <p>This is the content of the drawer.</p>
+        </Drawer>
+      </>
+    );
+  },
+};
+
+export const Default: Story = {
+  ...DrawerTemplate,
+  args: {
+    position: 'left',
+    size: 'md',
+  },
+};
+
+export const RightPosition: Story = {
+  ...DrawerTemplate,
+  args: {
+    position: 'right',
+    size: 'md',
+  },
+};
+
+export const SmallSize: Story = {
+  ...DrawerTemplate,
+  args: {
+    position: 'left',
+    size: 'sm',
+  },
+};
+
+export const LargeSize: Story = {
+  ...DrawerTemplate,
+  args: {
+    position: 'left',
+    size: 'lg',
+  },
+};
+
+export const FullWidth: Story = {
+  ...DrawerTemplate,
+  args: {
+    position: 'left',
+    size: 'full',
+  },
+};
+
+export const WithNavigation: Story = {
+  ...DrawerTemplate,
+  args: {
+    position: 'left',
+    size: 'md',
+  },
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)}>Open Navigation</Button>
+        <Drawer {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+          <nav>
+            <ul className="space-y-4">
+              <li><a href="#" className="text-blue-600 hover:underline">Home</a></li>
+              <li><a href="#" className="text-blue-600 hover:underline">About</a></li>
+              <li><a href="#" className="text-blue-600 hover:underline">Services</a></li>
+              <li><a href="#" className="text-blue-600 hover:underline">Contact</a></li>
+            </ul>
+          </nav>
+        </Drawer>
+      </>
+    );
+  },
+};
+
+export const WithForm: Story = {
+  ...DrawerTemplate,
+  args: {
+    position: 'right',
+    size: 'md',
+  },
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)}>Open Form</Button>
+        <Drawer {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+          <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
+          <form className="space-y-4">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+              <input type="text" id="name" name="name" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <input type="email" id="email" name="email" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+            </div>
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
+              <textarea id="message" name="message" rows={4} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+            <Button type="submit">Send</Button>
+          </form>
+        </Drawer>
+      </>
+    );
+  },
+};
+
+--- File: src/components/Chip.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Chip } from './Chip';
+
+const meta: Meta<typeof Chip> = {
+  title: 'Components/Data Display/Chip',
+  component: Chip,
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['default', 'primary', 'secondary', 'success', 'warning', 'danger'],
+    },
+    clickable: {
+      control: 'boolean',
+    },
+    onDelete: { action: 'deleted' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Chip>;
+
+export const Default: Story = {
+  args: {
+    children: 'Chip',
+  },
+};
+
+export const Primary: Story = {
+  args: {
+    ...Default.args,
+    variant: 'primary',
+  },
+};
+
+export const Clickable: Story = {
+  args: {
+    ...Default.args,
+    clickable: true,
+    onClick: () => alert('Chip clicked!'),
+  },
+};
+
+export const Deletable: Story = {
+  args: {
+    ...Default.args,
+    onDelete: () => {},
+  },
+};
+
+export const ClickableAndDeletable: Story = {
+  args: {
+    ...Default.args,
+    clickable: true,
+    onClick: () => alert('Chip clicked!'),
+    onDelete: () => {},
+  },
+};
+
+export const ChipGroup: Story = {
+  render: () => (
+    <div className="flex flex-wrap gap-2">
+      <Chip>Tag 1</Chip>
+      <Chip variant="primary">Tag 2</Chip>
+      <Chip variant="secondary">Tag 3</Chip>
+      <Chip variant="success">Tag 4</Chip>
+      <Chip variant="warning">Tag 5</Chip>
+      <Chip variant="danger">Tag 6</Chip>
+    </div>
+  ),
+};
+
+--- File: src/components/Checkbox.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Checkbox } from './Checkbox';
+
+const meta: Meta<typeof Checkbox> = {
+  title: 'Components/Inputs/Checkbox',
+  component: Checkbox,
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
+    label: { control: 'text' },
+    checked: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Checkbox>;
+
+export const Default: Story = {
+  args: {
+    label: 'Default Checkbox',
+  },
+};
+
+export const Checked: Story = {
+  args: {
+    label: 'Checked Checkbox',
+    checked: true,
+  },
+};
+
+export const WithoutLabel: Story = {
+  args: {},
+};
+
+export const Disabled: Story = {
+  args: {
+    label: 'Disabled Checkbox',
+    disabled: true,
+  },
+};
+
+export const DisabledChecked: Story = {
+  args: {
+    label: 'Disabled Checked Checkbox',
+    disabled: true,
+    checked: true,
+  },
+};
+
+export const Small: Story = {
+  args: {
+    label: 'Small Checkbox',
+    size: 'sm',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    label: 'Large Checkbox',
+    size: 'lg',
+  },
+};
+
+export const Group: Story = {
+  render: (args) => (
+    <div className="space-y-2">
+      <Checkbox {...args} label="Option 1" />
+      <Checkbox {...args} label="Option 2" />
+      <Checkbox {...args} label="Option 3" />
+    </div>
+  ),
+};
+
+--- File: src/components/Avatar.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Avatar } from './Avatar';
+
+const meta: Meta<typeof Avatar> = {
+  title: 'Components/Data Display/Avatar',
+  component: Avatar,
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg', 'xl'],
+    },
+    src: { control: 'text' },
+    alt: { control: 'text' },
+    initials: { control: 'text' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Avatar>;
+
+export const Default: Story = {
+  args: {},
+};
+
+export const WithImage: Story = {
+  args: {
+    src: 'https://i.pravatar.cc/300',
+    alt: 'User avatar',
+  },
+};
+
+export const WithInitials: Story = {
+  args: {
+    initials: 'JD',
+  },
+};
+
+export const Small: Story = {
+  args: {
+    size: 'sm',
+    initials: 'SM',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    size: 'lg',
+    initials: 'LG',
+  },
+};
+
+export const ExtraLarge: Story = {
+  args: {
+    size: 'xl',
+    src: 'https://i.pravatar.cc/300',
+  },
+};
+
+export const Fallback: Story = {
+  args: {
+    src: 'invalid-image-url',
+  },
+};
+
+export const Group: Story = {
+  render: (args) => (
+    <div className="flex -space-x-4">
+      <Avatar {...args} src="https://i.pravatar.cc/300?img=1" />
+      <Avatar {...args} src="https://i.pravatar.cc/300?img=2" />
+      <Avatar {...args} src="https://i.pravatar.cc/300?img=3" />
+      <Avatar {...args} initials="+2" />
+    </div>
+  ),
+};
+
+--- File: src/components/Divider.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Divider } from './Divider';
+
+const meta: Meta<typeof Divider> = {
+  title: 'Components/Layout/Divider',
+  component: Divider,
+  argTypes: {
+    color: {
+      control: 'select',
+      options: ['light', 'dark'],
+    },
+    thickness: {
+      control: 'select',
+      options: ['thin', 'medium', 'thick'],
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Divider>;
+
+export const Default: Story = {
+  args: {},
+};
+
+export const DarkThick: Story = {
+  args: {
+    color: 'dark',
+    thickness: 'thick',
+  },
+};
+
+export const WithContent: Story = {
+  render: (args) => (
+    <div>
+      <p>Above content</p>
+      <Divider {...args} />
+      <p>Below content</p>
+    </div>
+  ),
+};
+
+--- File: src/components/Grid.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const gridVariants = cva('grid', {
+  variants: {
+    cols: {
+      1: 'grid-cols-1',
+      2: 'grid-cols-2',
+      3: 'grid-cols-3',
+      4: 'grid-cols-4',
+      6: 'grid-cols-6',
+      12: 'grid-cols-12',
+    },
+    gap: {
+      1: 'gap-1',
+      2: 'gap-2',
+      4: 'gap-4',
+      6: 'gap-6',
+      8: 'gap-8',
+    },
+    responsive: {
+      true: 'md:grid-cols-2 lg:grid-cols-3',
+    },
+  },
+  defaultVariants: {
+    cols: 12,
+    gap: 4,
+  },
+});
+
+export interface GridProps 
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof gridVariants> {}
+
+export const Grid = React.forwardRef<HTMLDivElement, GridProps>(
+  ({ className, cols, gap, responsive, ...props }, ref) => {
+    return (
+      <div 
+        className={gridVariants({ cols, gap, responsive, className })}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+
+Grid.displayName = 'Grid';
+
+const colVariants = cva('', {
+  variants: {
+    span: {
+      1: 'col-span-1',
+      2: 'col-span-2',
+      3: 'col-span-3',
+      4: 'col-span-4',
+      5: 'col-span-5',
+      6: 'col-span-6',
+      7: 'col-span-7',
+      8: 'col-span-8',
+      9: 'col-span-9',
+      10: 'col-span-10',
+      11: 'col-span-11',
+      12: 'col-span-12',
+      full: 'col-span-full',
+    },
+  },
+  defaultVariants: {
+    span: 1,
+  },
+});
+
+export interface GridItemProps 
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof colVariants> {}
+
+export const GridItem = React.forwardRef<HTMLDivElement, GridItemProps>(
+  ({ className, span, ...props }, ref) => {
+    return (
+      <div 
+        className={colVariants({ span, className })}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+
+GridItem.displayName = 'GridItem';
+
+
+
+--- File: src/components/List.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const listVariants = cva(
+  'list-none',
+  {
+    variants: {
+      variant: {
+        unordered: 'pl-5',
+        ordered: 'pl-8',
+        none: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'unordered',
+    },
+  }
+);
+
+const listItemVariants = cva(
+  'mb-2',
+  {
+    variants: {
+      variant: {
+        unordered: 'before:content-["•"] before:mr-2 before:text-gray-500',
+        ordered: '',
+        none: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'unordered',
+    },
+  }
+);
+
+export interface ListProps extends React.HTMLAttributes<HTMLUListElement | HTMLOListElement>, VariantProps<typeof listVariants> {
+  items: React.ReactNode[];
+}
+
+export const List: React.FC<ListProps> = ({ className, variant, items, ...props }) => {
+  const ListComponent = variant === 'ordered' ? 'ol' : 'ul';
+
+  return (
+    <ListComponent className={listVariants({ variant, className })} {...props}>
+      {items.map((item, index) => (
+        <li key={index} className={listItemVariants({ variant })}>
+          {item}
+        </li>
+      ))}
+    </ListComponent>
+  );
+};
+
+--- File: src/components/Backdrop.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const backdropVariants = cva(
+  'fixed inset-0 z-40 flex items-center justify-center transition-opacity',
+  {
+    variants: {
+      color: {
+        dark: 'bg-black bg-opacity-50',
+        light: 'bg-white bg-opacity-50',
+      },
+      blur: {
+        true: 'backdrop-blur-sm',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      color: 'dark',
+      blur: false,
+    },
+  }
+);
+
+export interface BackdropProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof backdropVariants> {
+  open: boolean;
+  onClose?: () => void;
+}
+
+export const Backdrop: React.FC<BackdropProps> = ({
+  open,
+  onClose,
+  color,
+  blur,
+  children,
+  className,
+  ...props
+}) => {
+  if (!open) return null;
+
+  return (
+    <div
+      className={backdropVariants({ color, blur, className })}
+      onClick={onClose}
+      {...props}
+    >
+      <div onClick={(e) => e.stopPropagation()}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+--- File: src/components/Accordion.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Accordion } from './Accordion';
+
+const meta: Meta<typeof Accordion> = {
+  title: 'Components/Layout/Accordion',
+  component: Accordion,
+  argTypes: {
+    allowMultiple: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Accordion>;
+
+const defaultItems = [
+  {
+    title: 'Section 1',
+    content: <p>Content for section 1</p>,
+  },
+  {
+    title: 'Section 2',
+    content: <p>Content for section 2</p>,
+  },
+  {
+    title: 'Section 3',
+    content: <p>Content for section 3</p>,
+  },
+];
+
+export const Default: Story = {
+  args: {
+    items: defaultItems,
+  },
+};
+
+export const AllowMultiple: Story = {
+  args: {
+    items: defaultItems,
+    allowMultiple: true,
+  },
+};
+
+export const WithLongContent: Story = {
+  args: {
+    items: [
+      ...defaultItems,
+      {
+        title: 'Section with long content',
+        content: (
+          <div>
+            <p>This is a longer piece of content to demonstrate how the accordion handles larger amounts of text.</p>
+            <p>It includes multiple paragraphs and can contain any React elements.</p>
+            <ul>
+              <li>List item 1</li>
+              <li>List item 2</li>
+              <li>List item 3</li>
+            </ul>
+          </div>
+        ),
+      },
+    ],
+  },
+};
+
+export const ManyItems: Story = {
+  args: {
+    items: Array.from({ length: 10 }, (_, i) => ({
+      title: `Section ${i + 1}`,
+      content: <p>Content for section {i + 1}</p>,
+    })),
+  },
+};
+
+export const NestedContent: Story = {
+  args: {
+    items: [
+      ...defaultItems,
+      {
+        title: 'Section with nested accordion',
+        content: (
+          <Accordion
+            items={[
+              { title: 'Nested 1', content: <p>Nested content 1</p> },
+              { title: 'Nested 2', content: <p>Nested content 2</p> },
+            ]}
+          />
+        ),
+      },
+    ],
+  },
+};
+
+--- File: src/components/TreeView.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { TreeView, TreeNode } from './TreeView';
+
+const meta: Meta<typeof TreeView> = {
+  title: 'Components/Data Display/TreeView',
+  component: TreeView,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof TreeView>;
+
+const sampleData: TreeNode[] = [
+  {
+    id: '1',
+    label: 'Root',
+    children: [
+      {
+        id: '2',
+        label: 'Child 1',
+        children: [
+          { id: '5', label: 'Grandchild 1' },
+          { id: '6', label: 'Grandchild 2' },
+        ],
+      },
+      { id: '3', label: 'Child 2' },
+      {
+        id: '4',
+        label: 'Child 3',
+        children: [
+          { id: '7', label: 'Grandchild 3' },
+        ],
+      },
+    ],
+  },
+];
+
+export const Default: Story = {
+  args: {
+    data: sampleData,
+  },
+};
+
+export const FlatList: Story = {
+  args: {
+    data: [
+      { id: '1', label: 'Item 1' },
+      { id: '2', label: 'Item 2' },
+      { id: '3', label: 'Item 3' },
+    ],
+  },
+};
+
+export const DeepNesting: Story = {
+  args: {
+    data: [
+      {
+        id: '1',
+        label: 'Level 1',
+        children: [
+          {
+            id: '2',
+            label: 'Level 2',
+            children: [
+              {
+                id: '3',
+                label: 'Level 3',
+                children: [
+                  { id: '4', label: 'Level 4' },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+};
+
+--- File: src/components/Divider.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const dividerVariants = cva(
+  'border-t',
+  {
+    variants: {
+      color: {
+        light: 'border-gray-200',
+        dark: 'border-gray-700',
+      },
+      thickness: {
+        thin: 'border-t',
+        medium: 'border-t-2',
+        thick: 'border-t-4',
+      },
+    },
+    defaultVariants: {
+      color: 'light',
+      thickness: 'thin',
+    },
+  }
+);
+
+export interface DividerProps extends React.HTMLAttributes<HTMLHRElement>, VariantProps<typeof dividerVariants> {}
+
+export const Divider: React.FC<DividerProps> = ({ className, color, thickness, ...props }) => {
+  return <hr className={dividerVariants({ color, thickness, className })} {...props} />;
+};
+
+--- File: src/components/Breadcrumbs.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { ChevronRight } from 'lucide-react';
+
+const breadcrumbsVariants = cva('flex items-center space-x-2');
+
+const itemVariants = cva('text-sm', {
+  variants: {
+    isLast: {
+      true: 'font-semibold text-gray-900',
+      false: 'text-gray-500 hover:text-gray-700',
+    },
+  },
+  defaultVariants: {
+    isLast: false,
+  },
+});
+
+export interface BreadcrumbItem {
+  label: string;
+  href: string;
+}
+
+export interface BreadcrumbsProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof breadcrumbsVariants> {
+  items: BreadcrumbItem[];
+}
+
+export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
+  items,
+  className,
+  ...props
+}) => {
+  return (
+    <nav aria-label="Breadcrumb">
+      <ol className={breadcrumbsVariants({ className })} {...props}>
+        {items.map((item, index) => (
+          <li key={index} className="flex items-center">
+            {index > 0 && <ChevronRight className="w-4 h-4 text-gray-400 mx-2" />}
+            {index === items.length - 1 ? (
+              <span className={itemVariants({ isLast: true })}>{item.label}</span>
+            ) : (
+              <a href={item.href} className={itemVariants()}>
+                {item.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+};
+
+Breadcrumbs.displayName = 'Breadcrumbs';
+
+--- File: src/components/Accordion.tsx ---
+
+import React, { useState } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { ChevronDown } from 'lucide-react';
+
+const accordionVariants = cva('border border-gray-200 rounded-md overflow-hidden');
+
+const itemVariants = cva('border-b last:border-b-0');
+
+const headerVariants = cva(
+  'flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors',
+  {
+    variants: {
+      isOpen: {
+        true: 'bg-gray-100',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      isOpen: false,
+    },
+  }
+);
+
+const contentVariants = cva(
+  'overflow-hidden transition-all duration-300 ease-in-out',
+  {
+    variants: {
+      isOpen: {
+        true: 'max-h-96',
+        false: 'max-h-0',
+      },
+    },
+    defaultVariants: {
+      isOpen: false,
+    },
+  }
+);
+
+export interface AccordionItem {
+  title: string;
+  content: React.ReactNode;
+}
+
+export interface AccordionProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof accordionVariants> {
+  items: AccordionItem[];
+  allowMultiple?: boolean;
+}
+
+export const Accordion: React.FC<AccordionProps> = ({
+  items,
+  allowMultiple = false,
+  className,
+  ...props
+}) => {
+  const [openItems, setOpenItems] = useState<boolean[]>(new Array(items.length).fill(false));
+
+  const toggleItem = (index: number) => {
+    setOpenItems((prevOpenItems) => {
+      if (allowMultiple) {
+        const newOpenItems = [...prevOpenItems];
+        newOpenItems[index] = !newOpenItems[index];
+        return newOpenItems;
+      } else {
+        return prevOpenItems.map((_, i) => i === index ? !prevOpenItems[i] : false);
+      }
+    });
+  };
+
+  return (
+    <div className={accordionVariants({ className })} {...props}>
+      {items.map((item, index) => (
+        <div key={index} className={itemVariants()}>
+          <div
+            className={headerVariants({ isOpen: openItems[index] })}
+            onClick={() => toggleItem(index)}
+          >
+            <h3 className="text-sm font-medium">{item.title}</h3>
+            <ChevronDown
+              className={`w-5 h-5 transition-transform ${openItems[index] ? 'transform rotate-180' : ''}`}
+            />
+          </div>
+          <div className={contentVariants({ isOpen: openItems[index] })}>
+            <div className="p-4">{item.content}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+Accordion.displayName = 'Accordion';
+
+
+--- File: src/components/Drawer.tsx ---
+
+import React, { useEffect, useRef } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { X } from 'lucide-react';
+
+const drawerVariants = cva(
+  'fixed inset-y-0 bg-white shadow-xl transition-transform duration-300 ease-in-out',
+  {
+    variants: {
+      position: {
+        left: 'left-0',
+        right: 'right-0',
+      },
+      size: {
+        sm: 'w-64',
+        md: 'w-80',
+        lg: 'w-96',
+        full: 'w-full',
+      },
+    },
+    defaultVariants: {
+      position: 'left',
+      size: 'md',
+    },
+  }
+);
+
+export interface DrawerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof drawerVariants> {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const Drawer: React.FC<DrawerProps> = ({
+  className,
+  position,
+  size,
+  isOpen,
+  onClose,
+  children,
+  ...props
+}) => {
+  const drawerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (drawerRef.current && !drawerRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-40" />
+      <div
+        ref={drawerRef}
+        className={drawerVariants({ position, size, className })}
+        style={{
+          transform: isOpen ? 'translateX(0)' : `translateX(${position === 'left' ? '-100%' : '100%'})`,
+        }}
+        {...props}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
+          aria-label="Close drawer"
+        >
+          <X size={24} />
+        </button>
+        <div className="p-6 h-full overflow-y-auto">
+          {children}
+        </div>
+      </div>
+    </>
+  );
+};
+
+Drawer.displayName = 'Drawer';
+
+--- File: src/components/Tooltip.tsx ---
+
+import React, { useState, useRef, useEffect } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const tooltipVariants = cva(
+  'absolute z-10 px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm',
+  {
+    variants: {
+      position: {
+        top: 'bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2',
+        bottom: 'top-full left-1/2 transform -translate-x-1/2 translate-y-2',
+        left: 'right-full top-1/2 transform -translate-y-1/2 -translate-x-2',
+        right: 'left-full top-1/2 transform -translate-y-1/2 translate-x-2',
+      },
+    },
+    defaultVariants: {
+      position: 'top',
+    },
+  }
+);
+
+export interface TooltipProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof tooltipVariants> {
+  content: string;
+  children: React.ReactElement;
+}
+
+export const Tooltip: React.FC<TooltipProps> = ({
+  content,
+  position,
+  children,
+  className,
+  ...props
+}) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (triggerRef.current && !triggerRef.current.contains(event.target as Node)) {
+        setIsVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleMouseEnter = () => setIsVisible(true);
+  const handleMouseLeave = () => setIsVisible(false);
+
+  return (
+    <div className="relative inline-block">
+      {React.cloneElement(children, {
+        ref: triggerRef,
+        onMouseEnter: handleMouseEnter,
+        onMouseLeave: handleMouseLeave,
+      })}
+      {isVisible && (
+        <div
+          ref={tooltipRef}
+          className={tooltipVariants({ position, className })}
+          role="tooltip"
+          {...props}
+        >
+          {content}
+        </div>
+      )}
+    </div>
+  );
+};
+
+Tooltip.displayName = 'Tooltip';
+
+export default Tooltip;
+
+--- File: src/components/Alert.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { AlertTriangleIcon as AlertIcon, CheckCircle, XCircle, Info } from 'lucide-react';
+
+const alertVariants = cva(
+  'p-4 rounded-md flex items-start',
+  {
+    variants: {
+      variant: {
+        info: 'bg-blue-100 text-blue-800',
+        success: 'bg-green-100 text-green-800',
+        warning: 'bg-yellow-100 text-yellow-800',
+        error: 'bg-red-100 text-red-800',
+      },
+    },
+    defaultVariants: {
+      variant: 'info',
+    },
+  }
+);
+
+const iconVariants = cva(
+  'w-5 h-5 mr-3 mt-0.5',
+  {
+    variants: {
+      variant: {
+        info: 'text-blue-500',
+        success: 'text-green-500',
+        warning: 'text-yellow-500',
+        error: 'text-red-500',
+      },
+    },
+  }
+);
+
+export interface AlertProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof alertVariants> {
+  title?: string;
+  onClose?: () => void;
+}
+
+export const Alert: React.FC<AlertProps> = ({ 
+  variant, 
+  title, 
+  children, 
+  onClose,
+  className,
+  ...props 
+}) => {
+  const IconComponent = {
+    info: Info,
+    success: CheckCircle,
+    warning: AlertIcon,
+    error: XCircle,
+  }[variant || 'info'];
+
+  return (
+    <div className={alertVariants({ variant, className })} role="alert" {...props}>
+      <IconComponent className={iconVariants({ variant })} />
+      <div className="flex-1">
+        {title && <h3 className="font-semibold mb-1">{title}</h3>}
+        <div>{children}</div>
+      </div>
+      {onClose && (
+        <button 
+          onClick={onClose}
+          className="ml-auto -mr-1 -mt-1 p-1 rounded-full hover:bg-black hover:bg-opacity-10 transition-colors"
+          aria-label="Close alert"
+        >
+          <XCircle className="w-5 h-5" />
+        </button>
+      )}
+    </div>
+  );
+};
+
+Alert.displayName = 'Alert';
+
+export default Alert;
+
+--- File: src/components/Select.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Select } from './Select';
+
+const meta: Meta<typeof Select> = {
+  title: 'Components/Inputs/Select',
+  component: Select,
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
+    label: { control: 'text' },
+    disabled: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Select>;
+
+const defaultOptions = [
+  { value: '', label: 'Select an option' },
+  { value: 'option1', label: 'Option 1' },
+  { value: 'option2', label: 'Option 2' },
+  { value: 'option3', label: 'Option 3' },
+];
+
+export const Default: Story = {
+  args: {
+    options: defaultOptions,
+  },
+};
+
+export const WithLabel: Story = {
+  args: {
+    options: defaultOptions,
+    label: 'Select an option',
+  },
+};
+
+export const Small: Story = {
+  args: {
+    options: defaultOptions,
+    size: 'sm',
+    label: 'Small Select',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    options: defaultOptions,
+    size: 'lg',
+    label: 'Large Select',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    options: defaultOptions,
+    label: 'Disabled Select',
+    disabled: true,
+  },
+};
+
+export const WithManyOptions: Story = {
+  args: {
+    options: [
+      { value: '', label: 'Select a country' },
+      { value: 'us', label: 'United States' },
+      { value: 'ca', label: 'Canada' },
+      { value: 'uk', label: 'United Kingdom' },
+      { value: 'au', label: 'Australia' },
+      { value: 'de', label: 'Germany' },
+      { value: 'fr', label: 'France' },
+      { value: 'jp', label: 'Japan' },
+    ],
+    label: 'Select a country',
+  },
+};
+
+export const WithDefaultValue: Story = {
+  args: {
+    options: defaultOptions,
+    label: 'Select with default value',
+    defaultValue: 'option2',
+  },
+};
+
+--- File: src/components/TimePicker.tsx ---
+
+import React, { useState } from 'react';
+
+export interface TimePickerProps {
+  value?: string;
+  onChange?: (time: string) => void;
+}
+
+export const TimePicker: React.FC<TimePickerProps> = ({ value = '', onChange }) => {
+  const [time, setTime] = useState(value);
+
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTime(e.target.value);
+    onChange && onChange(e.target.value);
+  };
+
+  return (
+    <input
+      type="time"
+      value={time}
+      onChange={handleTimeChange}
+      className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+    />
+  );
+};
+
+--- File: src/components/Chip.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { X } from 'lucide-react';
+
+const chipVariants = cva(
+  'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+  {
+    variants: {
+      variant: {
+        default: 'bg-gray-100 text-gray-800',
+        primary: 'bg-primary-100 text-primary-800',
+        secondary: 'bg-secondary-100 text-secondary-800',
+        success: 'bg-green-100 text-green-800',
+        warning: 'bg-yellow-100 text-yellow-800',
+        danger: 'bg-red-100 text-red-800',
+      },
+      clickable: {
+        true: 'cursor-pointer hover:bg-opacity-80',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);
+
+export interface ChipProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof chipVariants> {
+  onDelete?: () => void;
+}
+
+export const Chip: React.FC<ChipProps> = ({
+  className,
+  variant,
+  clickable,
+  children,
+  onDelete,
+  ...props
+}) => {
+  return (
+    <div
+      className={chipVariants({ variant, clickable, className })}
+      {...props}
+    >
+      {children}
+      {onDelete && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          className="ml-1 p-0.5 rounded-full hover:bg-gray-200"
+        >
+          <X size={12} />
+        </button>
+      )}
+    </div>
+  );
+};
+
+Chip.displayName = 'Chip';
+
+--- File: src/components/TreeView.tsx ---
+
+import React, { useState } from 'react';
+import { ChevronRight, ChevronDown } from 'lucide-react';
+
+export interface TreeNode {
+  id: string;
+  label: string;
+  children?: TreeNode[];
+}
+
+interface TreeNodeProps {
+  node: TreeNode;
+  level: number;
+}
+
+const TreeNodeComponent: React.FC<TreeNodeProps> = ({ node, level }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const hasChildren = node.children && node.children.length > 0;
+
+  return (
+    <div className="ml-4">
+      <div className="flex items-center">
+        {hasChildren && (
+          <button onClick={() => setIsOpen(!isOpen)} className="mr-1">
+            {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+          </button>
+        )}
+        <span>{node.label}</span>
+      </div>
+      {isOpen && hasChildren && (
+        <div className="ml-4">
+          {node.children!.map((child) => (
+            <TreeNodeComponent key={child.id} node={child} level={level + 1} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export interface TreeViewProps {
+  data: TreeNode[];
+}
+
+export const TreeView: React.FC<TreeViewProps> = ({ data }) => {
+  return (
+    <div className="border p-4 rounded-md">
+      {data.map((node) => (
+        <TreeNodeComponent key={node.id} node={node} level={0} />
+      ))}
+    </div>
+  );
+};
+
+--- File: src/components/Switch.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const switchVariants = cva(
+  'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
+  {
+    variants: {
+      checked: {
+        true: 'bg-primary',
+        false: 'bg-gray-200',
+      },
+      disabled: {
+        true: 'opacity-50 cursor-not-allowed',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      checked: false,
+      disabled: false,
+    },
+  }
+);
+
+const toggleVariants = cva(
+  'pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200',
+  {
+    variants: {
+      checked: {
+        true: 'translate-x-5',
+        false: 'translate-x-0',
+      },
+    },
+    defaultVariants: {
+      checked: false,
+    },
+  }
+);
+
+export interface SwitchProps extends React.HTMLAttributes<HTMLButtonElement>, VariantProps<typeof switchVariants> {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
+  label?: string;
+}
+
+export const Switch: React.FC<SwitchProps> = ({
+  checked,
+  onChange,
+  disabled = false,
+  label,
+  className,
+  ...props
+}) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (!disabled) {
+        onChange(!checked);
+      }
+    }
+  };
+
+  return (
+    <label className="flex items-center">
+      <button
+        type="button"
+        className={switchVariants({ checked, disabled, className })}
+        onClick={() => !disabled && onChange(!checked)}
+        onKeyDown={handleKeyDown}
+        role="switch"
+        aria-checked={checked}
+        disabled={disabled}
+        {...props}
+      >
+        <span className="sr-only">{label || 'Toggle'}</span>
+        <span className={toggleVariants({ checked })} />
+      </button>
+      {label && <span className="ml-3 text-sm">{label}</span>}
+    </label>
+  );
+};
+
+Switch.displayName = 'Switch';
+
+
+--- File: src/components/Calendar.tsx ---
+
+import React, { useState } from 'react';
+import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay } from 'date-fns';
+
+export interface CalendarProps {
+  selectedDate?: Date;
+  onDateSelect?: (date: Date) => void;
+}
+
+export const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date(), onDateSelect }) => {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+
+  const daysInMonth = eachDayOfInterval({
+    start: startOfMonth(currentMonth),
+    end: endOfMonth(currentMonth)
+  });
+
+  const handleDateClick = (date: Date) => {
+    onDateSelect && onDateSelect(date);
+  };
+
+  return (
+    <div className="w-64">
+      <div className="flex justify-between items-center mb-4">
+        <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>&lt;</button>
+        <h2 className="text-lg font-semibold">{format(currentMonth, 'MMMM yyyy')}</h2>
+        <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>&gt;</button>
+      </div>
+      <div className="grid grid-cols-7 gap-1">
+        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => (
+          <div key={day} className="text-center font-medium">{day}</div>
+        ))}
+        {daysInMonth.map(day => (
+          <button
+            key={day.toString()}
+            className={`p-2 text-center ${
+              !isSameMonth(day, currentMonth) ? 'text-gray-300' :
+              isSameDay(day, selectedDate) ? 'bg-blue-500 text-white' : ''
+            }`}
+            onClick={() => handleDateClick(day)}
+          >
+            {format(day, 'd')}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+--- File: src/components/Spinner.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Spinner } from './Spinner';
+
+const meta: Meta<typeof Spinner> = {
+  title: 'Components/Feedback/Spinner',
+  component: Spinner,
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg', 'xl'],
+    },
+    color: {
+      control: 'select',
+      options: ['default', 'primary', 'secondary', 'white'],
+    },
+    srText: { control: 'text' },
+  },
+  decorators: [
+    (Story) => (
+      <div className="p-4 flex items-center justify-center">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Spinner>;
+
+export const Default: Story = {
+  args: {},
+};
+
+export const Small: Story = {
+  args: {
+    size: 'sm',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    size: 'lg',
+  },
+};
+
+export const ExtraLarge: Story = {
+  args: {
+    size: 'xl',
+  },
+};
+
+export const Primary: Story = {
+  args: {
+    color: 'primary',
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    color: 'secondary',
+  },
+};
+
+export const White: Story = {
+  args: {
+    color: 'white',
+  },
+  decorators: [
+    (Story) => (
+      <div className="p-4 flex items-center justify-center bg-gray-800">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const CustomSRText: Story = {
+  args: {
+    srText: 'Please wait while content is loading...',
+  },
+};
+
+export const WithText: Story = {
+  render: (args) => (
+    <div className="flex items-center space-x-2">
+      <Spinner {...args} />
+      <span>Loading...</span>
+    </div>
+  ),
+};
+
+--- File: src/components/Tabs.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Tabs } from './Tabs';
+
+const meta: Meta<typeof Tabs> = {
+  title: 'Components/Navigation/Tabs',
+  component: Tabs,
+  argTypes: {
+    defaultActiveTab: {
+      control: 'number',
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Tabs>;
+
+export const Default: Story = {
+  args: {
+    tabs: [
+      { label: 'Tab 1', content: <p>Content for Tab 1</p> },
+      { label: 'Tab 2', content: <p>Content for Tab 2</p> },
+      { label: 'Tab 3', content: <p>Content for Tab 3</p> },
+    ],
+  },
+};
+
+export const WithDefaultActiveTab: Story = {
+  args: {
+    ...Default.args,
+    defaultActiveTab: 1,
+  },
+};
+
+export const ManyTabs: Story = {
+  args: {
+    tabs: [
+      { label: 'Tab 1', content: <p>Content for Tab 1</p> },
+      { label: 'Tab 2', content: <p>Content for Tab 2</p> },
+      { label: 'Tab 3', content: <p>Content for Tab 3</p> },
+      { label: 'Tab 4', content: <p>Content for Tab 4</p> },
+      { label: 'Tab 5', content: <p>Content for Tab 5</p> },
+      { label: 'Tab 6', content: <p>Content for Tab 6</p> },
+    ],
+  },
+};
+
+export const WithComplexContent: Story = {
+  args: {
+    tabs: [
+      {
+        label: 'Profile',
+        content: (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">User Profile</h3>
+            <p>Name: John Doe</p>
+            <p>Email: john@example.com</p>
+            <p>Role: Administrator</p>
+          </div>
+        ),
+      },
+      {
+        label: 'Settings',
+        content: (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">User Settings</h3>
+            <label className="block mb-2">
+              <input type="checkbox" className="mr-2" />
+              Receive notifications
+            </label>
+            <label className="block mb-2">
+              <input type="checkbox" className="mr-2" />
+              Dark mode
+            </label>
+          </div>
+        ),
+      },
+      {
+        label: 'Activity',
+        content: (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Recent Activity</h3>
+            <ul className="list-disc pl-5">
+              <li>Logged in at 09:30 AM</li>
+              <li>Updated profile picture</li>
+              <li>Posted a new comment</li>
+            </ul>
+          </div>
+        ),
+      },
+    ],
+  },
+};
+
+--- File: src/components/Backdrop.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Backdrop } from './Backdrop';
+
+const meta: Meta<typeof Backdrop> = {
+  title: 'Components/Feedback/Backdrop',
+  component: Backdrop,
+  argTypes: {
+    open: { control: 'boolean' },
+    color: { control: 'select', options: ['dark', 'light'] },
+    blur: { control: 'boolean' },
+    onClose: { action: 'closed' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Backdrop>;
+
+export const Default: Story = {
+  args: {
+    open: true,
+    children: <div className="bg-white p-4 rounded-md">Backdrop Content</div>,
+  },
+};
+
+export const LightBackdrop: Story = {
+  args: {
+    ...Default.args,
+    color: 'light',
+  },
+};
+
+export const WithBlur: Story = {
+  args: {
+    ...Default.args,
+    blur: true,
+  },
+};
+
+export const WithComplexContent: Story = {
+  args: {
+    open: true,
+    children: (
+      <div className="bg-white p-6 rounded-lg shadow-xl">
+        <h2 className="text-2xl font-bold mb-4">Modal Title</h2>
+        <p className="mb-4">This is some content inside the backdrop.</p>
+        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Close
+        </button>
+      </div>
+    ),
+  },
+};
+
+--- File: src/components/Toggle.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Toggle } from './Toggle';
+
+const meta: Meta<typeof Toggle> = {
+  title: 'Components/Inputs/Toggle',
+  component: Toggle,
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
+    label: { control: 'text' },
+    checked: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Toggle>;
+
+export const Default: Story = {
+  args: {
+    label: 'Toggle me',
+  },
+};
+
+export const Checked: Story = {
+  args: {
+    label: 'Toggle me',
+    checked: true,
+  },
+};
+
+export const WithoutLabel: Story = {
+  args: {},
+};
+
+export const Disabled: Story = {
+  args: {
+    label: 'Disabled toggle',
+    disabled: true,
+  },
+};
+
+export const DisabledChecked: Story = {
+  args: {
+    label: 'Disabled checked toggle',
+    disabled: true,
+    checked: true,
+  },
+};
+
+export const Small: Story = {
+  args: {
+    label: 'Small toggle',
+    size: 'sm',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    label: 'Large toggle',
+    size: 'lg',
+  },
+};
+
+export const Group: Story = {
+  render: (args) => (
+    <div className="space-y-4">
+      <Toggle {...args} label="Option 1" />
+      <Toggle {...args} label="Option 2" />
+      <Toggle {...args} label="Option 3" />
+    </div>
+  ),
+};
+
+--- File: src/components/Text.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import {Text} from './Text';
+
+const meta: Meta<typeof Text> = {
+  title: 'Components/Data Display/Typography',
+  component: Text,
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'body1', 'body2', 'caption'],
+    },
+    color: {
+      control: 'select',
+      options: ['default', 'secondary', 'primary'],
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Text>;
+
+export const Default: Story = {
+  args: {
+    children: 'This is some text',
+  },
+};
+
+export const Heading1: Story = {
+  args: {
+    variant: 'h1',
+    children: 'Heading 1',
+  },
+};
+
+export const Heading2: Story = {
+  args: {
+    variant: 'h2',
+    children: 'Heading 2',
+  },
+};
+
+export const Heading3: Story = {
+  args: {
+    variant: 'h3',
+    children: 'Heading 3',
+  },
+};
+
+export const Body1Text: Story = {
+  args: {
+    variant: 'body1',
+    children: 'This is body1 text.',
+  },
+};
+
+export const Body2Text: Story = {
+  args: {
+    variant: 'body2',
+    children: 'This is body2 text.',
+  },
+};
+
+export const CaptionText: Story = {
+  args: {
+    variant: 'caption',
+    children: 'This is caption text.',
+  },
+};
+
+export const ColorVariants: Story = {
+  args: {
+    children: 'This text has different color variants.',
+  },
+  render: (args) => (
+    <div className="space-y-2">
+      <Text {...args} color="default">Default Color</Text>
+      <Text {...args} color="secondary">Secondary Color</Text>
+      <Text {...args} color="primary">Primary Color</Text>
+    </div>
+  ),
+};
+
+export const AllVariants: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <Text variant="h1">Heading 1</Text>
+      <Text variant="h2">Heading 2</Text>
+      <Text variant="h3">Heading 3</Text>
+      <Text variant="h4">Heading 4</Text>
+      <Text variant="h5">Heading 5</Text>
+      <Text variant="h6">Heading 6</Text>
+      <Text variant="body1">This is Body1 text. It's the default size for body copy.</Text>
+      <Text variant="body2">This is Body2 text. It's slightly smaller than Body1.</Text>
+      <Text variant="caption">This is Caption text. It's the smallest text size.</Text>
+    </div>
+  ),
+};
+
+--- File: src/components/Dropdown.tsx ---
+
+import React, { useState, useRef, useEffect } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { ChevronDown } from 'lucide-react';
+
+const dropdownVariants = cva(
+  'relative inline-block text-left',
+  {
+    variants: {
+      width: {
+        auto: '',
+        full: 'w-full',
+      },
+    },
+    defaultVariants: {
+      width: 'auto',
+    },
+  }
+);
+
+const buttonVariants = cva(
+  'inline-flex justify-between items-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-primary',
+  {
+    variants: {
+      isOpen: {
+        true: 'bg-gray-100',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      isOpen: false,
+    },
+  }
+);
+
+const menuVariants = cva(
+  'origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none',
+  {
+    variants: {
+      isOpen: {
+        true: 'block',
+        false: 'hidden',
+      },
+    },
+    defaultVariants: {
+      isOpen: false,
+    },
+  }
+);
+
+export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof dropdownVariants> {
+  label: string;
+  items: { label: string; onClick: () => void }[];
+}
+
+export const Dropdown: React.FC<DropdownProps> = ({ 
+  label, 
+  items, 
+  width,
+  className,
+  ...props 
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className={dropdownVariants({ width, className })} ref={dropdownRef} {...props}>
+      <div>
+        <button 
+          type="button" 
+          className={buttonVariants({ isOpen })}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-haspopup="true"
+          aria-expanded={isOpen}
+        >
+          {label}
+          <ChevronDown className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+        </button>
+      </div>
+
+      <div className={menuVariants({ isOpen })} role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+        <div className="py-1" role="none">
+          {items.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                item.onClick();
+                setIsOpen(false);
+              }}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              role="menuitem"
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+Dropdown.displayName = 'Dropdown';
+
+
+--- File: src/components/TimePicker.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { TimePicker } from './TimePicker';
+
+const meta: Meta<typeof TimePicker> = {
+  title: 'Components/Inputs/TimePicker',
+  component: TimePicker,
+  argTypes: {
+    value: { control: 'text' },
+    onChange: { action: 'time changed' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof TimePicker>;
+
+export const Default: Story = {
+  args: {},
+};
+
+export const WithInitialValue: Story = {
+  args: {
+    value: '14:30',
+  },
+};
+
+--- File: src/components/Avatar.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const avatarVariants = cva(
+  'inline-flex items-center justify-center overflow-hidden rounded-full bg-gray-100',
+  {
+    variants: {
+      size: {
+        sm: 'w-8 h-8 text-xs',
+        md: 'w-12 h-12 text-sm',
+        lg: 'w-16 h-16 text-base',
+        xl: 'w-20 h-20 text-lg',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+export interface AvatarProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof avatarVariants> {
+  src?: string;
+  alt?: string;
+  initials?: string;
+}
+
+export const Avatar: React.FC<AvatarProps> = ({
+  className,
+  size,
+  src,
+  alt,
+  initials,
+  ...props
+}) => {
+  return (
+    <div className={avatarVariants({ size, className })} {...props}>
+      {src ? (
+        <img src={src} alt={alt || 'Avatar'} className="w-full h-full object-cover" />
+      ) : initials ? (
+        <span className="font-medium text-gray-600">{initials}</span>
+      ) : (
+        <svg className="w-full h-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      )}
+    </div>
+  );
+};
+
+Avatar.displayName = 'Avatar';
+
+--- File: src/components/Dropdown.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Dropdown } from './Dropdown';
+
+const meta: Meta<typeof Dropdown> = {
+  title: 'Components/Inputs/Dropdown',
+  component: Dropdown,
+  argTypes: {
+    width: {
+      control: 'select',
+      options: ['auto', 'full'],
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Dropdown>;
+
+export const Default: Story = {
+  args: {
+    label: 'Options',
+    items: [
+      { label: 'Edit', onClick: () => console.log('Edit clicked') },
+      { label: 'Duplicate', onClick: () => console.log('Duplicate clicked') },
+      { label: 'Delete', onClick: () => console.log('Delete clicked') },
+    ],
+  },
+};
+
+export const FullWidth: Story = {
+  args: {
+    ...Default.args,
+    width: 'full',
+  },
+};
+
+export const ManyOptions: Story = {
+  args: {
+    label: 'Select a fruit',
+    items: [
+      'Apple', 'Banana', 'Cherry', 'Date', 'Elderberry', 
+      'Fig', 'Grape', 'Honeydew', 'Kiwi', 'Lemon'
+    ].map(fruit => ({
+      label: fruit,
+      onClick: () => console.log(`${fruit} selected`),
+    })),
+  },
+};
+
+export const LongLabels: Story = {
+  args: {
+    label: 'Select an option',
+    items: [
+      { label: 'This is a very long option that should wrap nicely', onClick: () => {} },
+      { label: 'Another lengthy option to demonstrate text wrapping', onClick: () => {} },
+      { label: 'Short option', onClick: () => {} },
+    ],
+  },
+};
+
+--- File: src/components/Progress.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Progress } from './Progress';
+
+const meta: Meta<typeof Progress> = {
+  title: 'Components/Feedback/Progress',
+  component: Progress,
+  argTypes: {
+    value: { control: { type: 'range', min: 0, max: 100, step: 1 } },
+    max: { control: 'number' },
+    size: { control: 'select', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'select', options: ['default', 'success', 'warning', 'error'] },
+    showLabel: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Progress>;
+
+export const Default: Story = {
+  args: {
+    value: 50,
+    max: 100,
+    size: 'md',
+    variant: 'default',
+    showLabel: false,
+  },
+};
+
+export const Small: Story = {
+  args: {
+    ...Default.args,
+    size: 'sm',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    ...Default.args,
+    size: 'lg',
+  },
+};
+
+export const WithLabel: Story = {
+  args: {
+    ...Default.args,
+    showLabel: true,
+  },
+};
+
+export const Success: Story = {
+  args: {
+    ...Default.args,
+    variant: 'success',
+    value: 100,
+  },
+};
+
+export const Warning: Story = {
+  args: {
+    ...Default.args,
+    variant: 'warning',
+    value: 70,
+  },
+};
+
+export const Error: Story = {
+  args: {
+    ...Default.args,
+    variant: 'error',
+    value: 30,
+  },
+};
+
+export const CustomMax: Story = {
+  args: {
+    ...Default.args,
+    value: 75,
+    max: 200,
+    showLabel: true,
+  },
+};
+
+--- File: src/components/Skeleton.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Skeleton, SkeletonText, SkeletonCircular, SkeletonRectangular } from './Skeleton';
+
+const meta: Meta<typeof Skeleton> = {
+  title: 'Components/Feedback/Skeleton',
+  component: Skeleton,
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['text', 'circular', 'rectangular'],
+    },
+    width: {
+      control: 'text',
+    },
+    height: {
+      control: 'text',
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Skeleton>;
+
+export const Default: Story = {
+  args: {
+    variant: 'text',
+    width: '100%',
+  },
+};
+
+export const CircularSkeleton: Story = {
+  args: {
+    variant: 'circular',
+    width: 50,
+    height: 50,
+  },
+};
+
+export const RectangularSkeleton: Story = {
+  args: {
+    variant: 'rectangular',
+    width: '100%',
+    height: 100,
+  },
+};
+
+export const TextLines: Story = {
+  render: () => (
+    <div className="space-y-2">
+      <SkeletonText />
+      <SkeletonText width="75%" />
+      <SkeletonText width="50%" />
+    </div>
+  ),
+};
+
+export const AvatarWithText: Story = {
+  render: () => (
+    <div className="flex items-center space-x-4">
+      <SkeletonCircular width={50} height={50} />
+      <div className="space-y-2">
+        <SkeletonText width={120} />
+        <SkeletonText width={200} />
+      </div>
+    </div>
+  ),
+};
+
+export const CardSkeleton: Story = {
+  render: () => (
+    <div className="w-64 p-4 border rounded-lg space-y-4">
+      <SkeletonRectangular height={150} />
+      <SkeletonText />
+      <SkeletonText width="75%" />
+      <SkeletonText width="50%" />
+    </div>
+  ),
+};
+
+export const TableSkeleton: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <div className="flex space-x-4">
+        <SkeletonText width={100} />
+        <SkeletonText width={100} />
+        <SkeletonText width={100} />
+      </div>
+      {[...Array(5)].map((_, index) => (
+        <div key={index} className="flex space-x-4">
+          <SkeletonText width={100} />
+          <SkeletonText width={100} />
+          <SkeletonText width={100} />
+        </div>
+      ))}
+    </div>
+  ),
+};
+
+--- File: src/components/Menu.tsx ---
+
+import React, { useState, useRef, useEffect } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { ChevronDown } from 'lucide-react';
+
+const menuVariants = cva(
+  'relative inline-block text-left',
+  {
+    variants: {
+      fullWidth: {
+        true: 'w-full',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      fullWidth: false,
+    },
+  }
+);
+
+const menuButtonVariants = cva(
+  'inline-flex justify-center items-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-primary',
+  {
+    variants: {
+      fullWidth: {
+        true: 'w-full',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      fullWidth: false,
+    },
+  }
+);
+
+const menuItemsVariants = cva(
+  'absolute z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none',
+  {
+    variants: {
+      fullWidth: {
+        true: 'w-full',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      fullWidth: false,
+    },
+  }
+);
+
+export interface MenuProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof menuVariants> {
+  label: string;
+  items: { label: string; onClick: () => void }[];
+}
+
+export const Menu: React.FC<MenuProps> = ({
+  className,
+  fullWidth,
+  label,
+  items,
+  ...props
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className={menuVariants({ fullWidth, className })} ref={menuRef} {...props}>
+      <div>
+        <button
+          type="button"
+          className={menuButtonVariants({ fullWidth })}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-haspopup="true"
+          aria-expanded={isOpen}
+        >
+          {label}
+          <ChevronDown className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
+        </button>
+      </div>
+
+      {isOpen && (
+        <div className={menuItemsVariants({ fullWidth })} role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+          <div className="py-1" role="none">
+            {items.map((item, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  item.onClick();
+                  setIsOpen(false);
+                }}
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                role="menuitem"
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+Menu.displayName = 'Menu';
+
+--- File: src/components/Badge.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const badgeVariants = cva(
+  'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+  {
+    variants: {
+      variant: {
+        default: 'bg-gray-100 text-gray-800',
+        primary: 'bg-primary-100 text-primary-800',
+        secondary: 'bg-secondary-100 text-secondary-800',
+        success: 'bg-green-100 text-green-800',
+        warning: 'bg-yellow-100 text-yellow-800',
+        danger: 'bg-red-100 text-red-800',
+      },
+      outline: {
+        true: 'bg-transparent border',
+      },
+    },
+    compoundVariants: [
+      {
+        variant: 'default',
+        outline: true,
+        class: 'border-gray-300 text-gray-800',
+      },
+      {
+        variant: 'primary',
+        outline: true,
+        class: 'border-primary-300 text-primary-800',
+      },
+      {
+        variant: 'secondary',
+        outline: true,
+        class: 'border-secondary-300 text-secondary-800',
+      },
+      {
+        variant: 'success',
+        outline: true,
+        class: 'border-green-300 text-green-800',
+      },
+      {
+        variant: 'warning',
+        outline: true,
+        class: 'border-yellow-300 text-yellow-800',
+      },
+      {
+        variant: 'danger',
+        outline: true,
+        class: 'border-red-300 text-red-800',
+      },
+    ],
+    defaultVariants: {
+      variant: 'default',
+      outline: false,
+    },
+  }
+);
+
+export interface BadgeProps
+  extends React.HTMLAttributes<HTMLSpanElement>,
+    VariantProps<typeof badgeVariants> {
+  children: React.ReactNode;
+}
+
+export const Badge: React.FC<BadgeProps> = ({
+  className,
+  variant,
+  outline,
+  children,
+  ...props
+}) => {
+  return (
+    <span className={badgeVariants({ variant, outline, className })} {...props}>
+      {children}
+    </span>
+  );
+};
+
+Badge.displayName = 'Badge';
+
+--- File: src/components/List.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { List } from './List';
+
+const meta: Meta<typeof List> = {
+  title: 'Components/Data Display/List',
+  component: List,
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['unordered', 'ordered', 'none'],
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof List>;
+
+const sampleItems = [
+  'First item',
+  'Second item',
+  'Third item',
+  'Fourth item',
+];
+
+export const Unordered: Story = {
+  args: {
+    variant: 'unordered',
+    items: sampleItems,
+  },
+};
+
+export const Ordered: Story = {
+  args: {
+    variant: 'ordered',
+    items: sampleItems,
+  },
+};
+
+export const None: Story = {
+  args: {
+    variant: 'none',
+    items: sampleItems,
+  },
+};
+
+export const WithComplexItems: Story = {
+  args: {
+    items: [
+      <span key="1">Item with <strong>bold</strong> text</span>,
+      <a key="2" href="#">Item with a link</a>,
+      <div key="3">Item with multiple<br/>lines</div>,
+    ],
+  },
+};
+
+--- File: src/components/Rating.tsx ---
+
+import React from 'react';
+import { Star } from 'lucide-react';
+
+export interface RatingProps {
+  value: number;
+  onChange?: (value: number) => void;
+  max?: number;
+  readOnly?: boolean;
+}
+
+export const Rating: React.FC<RatingProps> = ({
+  value,
+  onChange,
+  max = 5,
+  readOnly = false,
+}) => {
+  const handleClick = (newValue: number) => {
+    if (!readOnly && onChange) {
+      onChange(newValue);
+    }
+  };
+
+  return (
+    <div className="flex">
+      {[...Array(max)].map((_, index) => (
+        <Star
+          key={index}
+          size={24}
+          className={`cursor-pointer ${
+            index < value ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
+          } ${readOnly ? 'cursor-default' : ''}`}
+          onClick={() => handleClick(index + 1)}
+        />
+      ))}
+    </div>
+  );
+};
+
+--- File: src/components/Table.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const tableVariants = cva(
+  'min-w-full divide-y divide-gray-200',
+  {
+    variants: {
+      size: {
+        sm: 'text-sm',
+        md: 'text-base',
+        lg: 'text-lg',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+export interface TableProps
+  extends React.TableHTMLAttributes<HTMLTableElement>,
+    VariantProps<typeof tableVariants> {
+  striped?: boolean;
+  hoverable?: boolean;
+}
+
+export const Table: React.FC<TableProps> = ({
+  className,
+  size,
+  striped = false,
+  hoverable = false,
+  children,
+  ...props
+}) => {
+  return (
+    <div className="overflow-x-auto">
+      <table className={tableVariants({ size, className })} {...props}>
+        {children}
+      </table>
+    </div>
+  );
+};
+
+export const TableHead: React.FC<React.HTMLAttributes<HTMLTableSectionElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <thead className={`bg-gray-50 ${className}`} {...props}>
+      {children}
+    </thead>
+  );
+};
+
+export const TableBody: React.FC<React.HTMLAttributes<HTMLTableSectionElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <tbody className={`bg-white divide-y divide-gray-200 ${className}`} {...props}>
+      {children}
+    </tbody>
+  );
+};
+
+export const TableRow: React.FC<React.HTMLAttributes<HTMLTableRowElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <tr
+      className={`${className} ${props.onClick ? 'cursor-pointer' : ''}`}
+      {...props}
+    >
+      {children}
+    </tr>
+  );
+};
+
+export const TableCell: React.FC<React.TdHTMLAttributes<HTMLTableCellElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <td className={`px-6 py-4 whitespace-nowrap ${className}`} {...props}>
+      {children}
+    </td>
+  );
+};
+
+export const TableHeader: React.FC<React.ThHTMLAttributes<HTMLTableHeaderCellElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <th
+      className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${className}`}
+      {...props}
+    >
+      {children}
+    </th>
+  );
+};
+
+Table.displayName = 'Table';
+TableHead.displayName = 'TableHead';
+TableBody.displayName = 'TableBody';
+TableRow.displayName = 'TableRow';
+TableCell.displayName = 'TableCell';
+TableHeader.displayName = 'TableHeader';
+
+--- File: src/components/Radio.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Radio } from './Radio';
+
+const meta: Meta<typeof Radio> = {
+  title: 'Components/Inputs/Radio',
+  component: Radio,
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
+    label: { control: 'text' },
+    checked: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Radio>;
+
+export const Default: Story = {
+  args: {
+    label: 'Default Radio',
+    name: 'default-radio',
+  },
+};
+
+export const Checked: Story = {
+  args: {
+    label: 'Checked Radio',
+    checked: true,
+    name: 'checked-radio',
+  },
+};
+
+export const WithoutLabel: Story = {
+  args: {
+    name: 'no-label-radio',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    label: 'Disabled Radio',
+    disabled: true,
+    name: 'disabled-radio',
+  },
+};
+
+export const DisabledChecked: Story = {
+  args: {
+    label: 'Disabled Checked Radio',
+    disabled: true,
+    checked: true,
+    name: 'disabled-checked-radio',
+  },
+};
+
+export const Small: Story = {
+  args: {
+    label: 'Small Radio',
+    size: 'sm',
+    name: 'small-radio',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    label: 'Large Radio',
+    size: 'lg',
+    name: 'large-radio',
+  },
+};
+
+export const Group: Story = {
+  render: (args) => (
+    <div className="space-y-2">
+      <Radio {...args} name="radio-group" label="Option 1" value="1" />
+      <Radio {...args} name="radio-group" label="Option 2" value="2" />
+      <Radio {...args} name="radio-group" label="Option 3" value="3" />
+    </div>
+  ),
+};
+
+--- File: src/components/Pagination.stories.tsx ---
+
+import React, { useState } from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Pagination } from './Pagination';
+
+const meta: Meta<typeof Pagination> = {
+  title: 'Components/Navigation/Pagination',
+  component: Pagination,
+  argTypes: {
+    currentPage: { control: 'number' },
+    totalPages: { control: 'number' },
+    showFirstLast: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Pagination>;
+
+const PaginationTemplate: Story = {
+  render: (args) => {
+    const [currentPage, setCurrentPage] = useState(args.currentPage);
+    return (
+      <Pagination
+        {...args}
+        currentPage={currentPage}
+        onPageChange={(page) => {
+          setCurrentPage(page);
+          console.log(`Page changed to ${page}`);
+        }}
+      />
+    );
+  },
+};
+
+export const Default: Story = {
+  ...PaginationTemplate,
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+  },
+};
+
+export const WithoutFirstLast: Story = {
+  ...PaginationTemplate,
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    showFirstLast: false,
+  },
+};
+
+export const ManyPages: Story = {
+  ...PaginationTemplate,
+  args: {
+    currentPage: 50,
+    totalPages: 100,
+  },
+};
+
+export const FewPages: Story = {
+  ...PaginationTemplate,
+  args: {
+    currentPage: 1,
+    totalPages: 3,
+  },
+};
+
+export const LastPage: Story = {
+  ...PaginationTemplate,
+  args: {
+    currentPage: 10,
+    totalPages: 10,
+  },
+};
+
+--- File: src/components/Table.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Table, TableHead, TableBody, TableRow, TableCell, TableHeader } from './Table';
+
+const meta: Meta<typeof Table> = {
+  title: 'Components/Data Display/Table',
+  component: Table,
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
+    striped: { control: 'boolean' },
+    hoverable: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Table>;
+
+const sampleData = [
+  { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User' },
+  { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'User' },
+];
+
+export const Default: Story = {
+  render: (args) => (
+    <Table {...args}>
+      <TableHead>
+        <TableRow>
+          <TableHeader>Name</TableHeader>
+          <TableHeader>Email</TableHeader>
+          <TableHeader>Role</TableHeader>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {sampleData.map((item) => (
+          <TableRow key={item.id}>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.email}</TableCell>
+            <TableCell>{item.role}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  ),
+};
+
+export const Striped: Story = {
+  ...Default,
+  args: {
+    striped: true,
+  },
+};
+
+export const Hoverable: Story = {
+  ...Default,
+  args: {
+    hoverable: true,
+  },
+};
+
+export const Small: Story = {
+  ...Default,
+  args: {
+    size: 'sm',
+  },
+};
+
+export const Large: Story = {
+  ...Default,
+  args: {
+    size: 'lg',
+  },
+};
+
+export const WithActions: Story = {
+  render: (args) => (
+    <Table {...args}>
+      <TableHead>
+        <TableRow>
+          <TableHeader>Name</TableHeader>
+          <TableHeader>Email</TableHeader>
+          <TableHeader>Role</TableHeader>
+          <TableHeader>Actions</TableHeader>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {sampleData.map((item) => (
+          <TableRow key={item.id}>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.email}</TableCell>
+            <TableCell>{item.role}</TableCell>
+            <TableCell>
+              <button className="text-blue-600 hover:text-blue-800 mr-2">Edit</button>
+              <button className="text-red-600 hover:text-red-800">Delete</button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  ),
+};
+
+--- File: src/components/Button.tsx ---
+
+// src/components/Button.tsx
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
+
+const buttonVariants = cva(
+  'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+  {
+    variants: {
+      variant: {
+        primary: 'bg-primary text-white hover:bg-primary-dark focus-visible:ring-primary',
+        secondary: 'bg-secondary text-white hover:bg-secondary-dark focus-visible:ring-secondary',
+        ghost: 'bg-transparent hover:bg-gray-100 text-gray-900 focus-visible:ring-gray-500',
+        danger: 'bg-error text-white hover:bg-red-700 focus-visible:ring-red-500',
+      },
+      size: {
+        sm: 'h-8 px-3 text-sm',
+        md: 'h-10 px-4 text-base',
+        lg: 'h-12 px-6 text-lg',
+      },
+    },
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md',
+    },
+  }
+);
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+}
+
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, leftIcon, rightIcon, children, ...props }, ref) => {
+    const { theme } = useTheme();
+
+    // Custom styles that depend on the theme
+    const customStyles = {
+      '--button-focus-ring-offset-color': theme.colors.gray['100'],
+    } as React.CSSProperties;
+
+    return (
+      <button
+        className={buttonVariants({ variant, size, className })}
+        ref={ref}
+        style={customStyles}
+        {...props}
+      >
+        {leftIcon && <span className="mr-2">{leftIcon}</span>}
+        {children}
+        {rightIcon && <span className="ml-2">{rightIcon}</span>}
+      </button>
+    );
+  }
+);
+
+Button.displayName = 'Button';
+
+--- File: src/components/Toggle.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const toggleVariants = cva(
+  'relative inline-flex flex-shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+  {
+    variants: {
+      size: {
+        sm: 'h-6 w-11',
+        md: 'h-7 w-14',
+        lg: 'h-8 w-16',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+const toggleSwitchVariants = cva(
+  'pointer-events-none inline-block transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+  {
+    variants: {
+      size: {
+        sm: 'h-5 w-5',
+        md: 'h-6 w-6',
+        lg: 'h-7 w-7',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+export interface ToggleProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
+    VariantProps<typeof toggleVariants> {
+  label?: string;
+}
+
+export const Toggle: React.FC<ToggleProps> = ({
+  className,
+  size,
+  label,
+  checked,
+  onChange,
+  ...props
+}) => {
+  const id = props.id || `toggle-${Math.random().toString(36).substr(2, 9)}`;
+
+  return (
+    <label htmlFor={id} className="flex items-center">
+      <div className={toggleVariants({ size, className })}>
+        <input
+          type="checkbox"
+          id={id}
+          className="sr-only"
+          checked={checked}
+          onChange={onChange}
+          {...props}
+        />
+        <span
+          className={toggleSwitchVariants({ size })}
+          style={{
+            transform: checked
+              ? size === 'sm'
+                ? 'translateX(20px)'
+                : size === 'md'
+                ? 'translateX(28px)'
+                : 'translateX(32px)'
+              : 'translateX(0)',
+            backgroundColor: checked ? '#3B82F6' : '#D1D5DB',
+          }}
+        />
+      </div>
+      {label && (
+        <span className="ml-3 text-sm font-medium text-gray-900">{label}</span>
+      )}
+    </label>
+  );
+};
+
+Toggle.displayName = 'Toggle';
+
+--- File: src/components/Modal.tsx ---
+
+import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const modalVariants = cva(
+  'fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black bg-opacity-50',
+  {
+    variants: {
+      size: {
+        sm: 'p-4',
+        md: 'p-6',
+        lg: 'p-8',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+const contentVariants = cva(
+  'bg-white rounded-lg shadow-xl',
+  {
+    variants: {
+      size: {
+        sm: 'w-full max-w-sm',
+        md: 'w-full max-w-md',
+        lg: 'w-full max-w-lg',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+export interface ModalProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof modalVariants> {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+}
+
+export const Modal: React.FC<ModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  title, 
+  size, 
+  children, 
+  ...props 
+}) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div className={modalVariants({ size })} onClick={onClose} {...props}>
+      <div 
+        className={contentVariants({ size })}
+        onClick={(e) => e.stopPropagation()} 
+        ref={modalRef}
+      >
+        {title && (
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h3 className="text-lg font-semibold">{title}</h3>
+          </div>
+        )}
+        <div className="px-6 py-4">
+          {children}
+        </div>
+        <div className="px-6 py-4 border-t border-gray-200 flex justify-end">
+          <button 
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+};
+
+Modal.displayName = 'Modal';
+
+
+--- File: src/components/Slider.stories.tsx ---
+
+import React, { useState } from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Slider } from './Slider';
+
+const meta: Meta<typeof Slider> = {
+  title: 'Components/Inputs/Slider',
+  component: Slider,
+  argTypes: {
+    min: { control: 'number' },
+    max: { control: 'number' },
+    step: { control: 'number' },
+    disabled: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Slider>;
+
+const SliderTemplate: Story = {
+  render: (args) => {
+    const [value, setValue] = useState(args.value);
+    return (
+      <div className="w-64">
+        <Slider {...args} value={value} onChange={setValue} />
+        <p className="mt-2">Current value: {value}</p>
+      </div>
+    );
+  },
+};
+
+export const Default: Story = {
+  ...SliderTemplate,
+  args: {
+    min: 0,
+    max: 100,
+    value: 50,
+  },
+};
+
+export const WithStep: Story = {
+  ...SliderTemplate,
+  args: {
+    min: 0,
+    max: 100,
+    step: 10,
+    value: 50,
+  },
+};
+
+export const CustomRange: Story = {
+  ...SliderTemplate,
+  args: {
+    min: -50,
+    max: 50,
+    value: 0,
+  },
+};
+
+export const Disabled: Story = {
+  ...SliderTemplate,
+  args: {
+    min: 0,
+    max: 100,
+    value: 30,
+    disabled: true,
+  },
+};
+
+export const SmallRange: Story = {
+  ...SliderTemplate,
+  args: {
+    min: 0,
+    max: 5,
+    step: 0.1,
+    value: 2.5,
+  },
+};
+
+--- File: src/components/Text.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const textVariants = cva('', {
+  variants: {
+    variant: {
+      h1: 'text-4xl font-bold',
+      h2: 'text-3xl font-bold',
+      h3: 'text-2xl font-bold',
+      h4: 'text-xl font-semibold',
+      h5: 'text-lg font-semibold',
+      h6: 'text-base font-semibold',
+      body1: 'text-base',
+      body2: 'text-sm',
+      caption: 'text-xs',
+    },
+    color: {
+      default: 'text-gray-900',
+      secondary: 'text-gray-600',
+      primary: 'text-primary',
+    },
+  },
+  defaultVariants: {
+    variant: 'body1',
+    color: 'default',
+  },
+});
+
+type HTMLPropsWithoutColor = Omit<React.HTMLAttributes<HTMLElement>, 'color'>;
+
+export interface TypographyProps
+  extends HTMLPropsWithoutColor,
+    VariantProps<typeof textVariants> {
+  component?: React.ElementType;
+}
+
+export const Text = React.forwardRef<HTMLElement, TypographyProps>(
+  ({ className, variant, color, component, ...props }, ref) => {
+    const Component = component || 'p';
+    return (
+      <Component
+        className={textVariants({ variant, color, className })}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+
+Text.displayName = 'Text';
+
+export default Text;
+
+
+--- File: src/components/Toast.tsx ---
+
+import React, { useState, useEffect } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
+
+const toastVariants = cva(
+  'fixed flex items-center w-full max-w-sm rounded-lg shadow-lg p-4 text-white',
+  {
+    variants: {
+      variant: {
+        success: 'bg-green-500',
+        error: 'bg-red-500',
+        warning: 'bg-yellow-500',
+        info: 'bg-blue-500',
+      },
+      position: {
+        'top-right': 'top-4 right-4',
+        'top-left': 'top-4 left-4',
+        'bottom-right': 'bottom-4 right-4',
+        'bottom-left': 'bottom-4 left-4',
+      },
+    },
+    defaultVariants: {
+      variant: 'info',
+      position: 'top-right',
+    },
+  }
+);
+
+export interface ToastProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof toastVariants> {
+  message: string;
+  duration?: number;
+  onClose: () => void;
+}
+
+export const Toast: React.FC<ToastProps> = ({
+  className,
+  variant,
+  position,
+  message,
+  duration = 3000,
+  onClose,
+  ...props
+}) => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      onClose();
+    }, duration);
+
+    return () => clearTimeout(timer);
+  }, [duration, onClose]);
+
+  if (!isVisible) return null;
+
+  const IconComponent = {
+    success: CheckCircle,
+    error: AlertCircle,
+    warning: AlertTriangle,
+    info: Info,
+  }[variant || 'info'];
+
+  return (
+    <div className={toastVariants({ variant, position, className })} role="alert" {...props}>
+      <IconComponent className="w-5 h-5 mr-2" />
+      <div className="flex-1">{message}</div>
+      <button
+        onClick={() => {
+          setIsVisible(false);
+          onClose();
+        }}
+        className="ml-auto bg-white bg-opacity-20 rounded-full p-1 hover:bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-white"
+        aria-label="Close"
+      >
+        <X className="w-4 h-4" />
+      </button>
+    </div>
+  );
+};
+
+Toast.displayName = 'Toast';
+
+// Toast Container Component
+export const ToastContainer: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, ...props }) => {
+  return (
+    <div className="fixed inset-0 pointer-events-none flex flex-col items-end justify-start p-4 gap-4" {...props}>
+      {children}
+    </div>
+  );
+};
+
+ToastContainer.displayName = 'ToastContainer';
+
+--- File: src/components/Checkbox.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const checkboxVariants = cva(
+  'h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary',
+  {
+    variants: {
+      size: {
+        sm: 'h-3 w-3',
+        md: 'h-4 w-4',
+        lg: 'h-5 w-5',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+const labelVariants = cva(
+  'ml-2 text-gray-700',
+  {
+    variants: {
+      size: {
+        sm: 'text-sm',
+        md: 'text-base',
+        lg: 'text-lg',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+export interface CheckboxProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
+    VariantProps<typeof checkboxVariants> {
+  label?: string;
+}
+
+export const Checkbox: React.FC<CheckboxProps> = ({
+  className,
+  size,
+  label,
+  id,
+  ...props
+}) => {
+  const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
+
+  return (
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id={checkboxId}
+        className={checkboxVariants({ size, className })}
+        {...props}
+      />
+      {label && (
+        <label htmlFor={checkboxId} className={labelVariants({ size })}>
+          {label}
+        </label>
+      )}
+    </div>
+  );
+};
+
+Checkbox.displayName = 'Checkbox';
+
+--- File: src/components/Stepper.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { Check } from 'lucide-react';
+
+const stepperVariants = cva('flex items-center');
+
+const stepVariants = cva(
+  'flex items-center',
+  {
+    variants: {
+      status: {
+        incomplete: 'text-gray-500',
+        current: 'text-primary-600',
+        complete: 'text-green-600',
+      },
+    },
+    defaultVariants: {
+      status: 'incomplete',
+    },
+  }
+);
+
+const stepCircleVariants = cva(
+  'flex items-center justify-center w-8 h-8 rounded-full border-2',
+  {
+    variants: {
+      status: {
+        incomplete: 'border-gray-300 bg-white',
+        current: 'border-primary-600 bg-primary-600 text-white',
+        complete: 'border-green-600 bg-green-600 text-white',
+      },
+    },
+    defaultVariants: {
+      status: 'incomplete',
+    },
+  }
+);
+
+export interface Step {
+  label: string;
+  description?: string;
+}
+
+export interface StepperProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof stepperVariants> {
+  steps: Step[];
+  currentStep: number;
+}
+
+export const Stepper: React.FC<StepperProps> = ({
+  className,
+  steps,
+  currentStep,
+  ...props
+}) => {
+  return (
+    <div className={stepperVariants({ className })} {...props}>
+      {steps.map((step, index) => (
+        <React.Fragment key={index}>
+          <div className={stepVariants({ status: index < currentStep ? 'complete' : index === currentStep ? 'current' : 'incomplete' })}>
+            <div className={stepCircleVariants({ status: index < currentStep ? 'complete' : index === currentStep ? 'current' : 'incomplete' })}>
+              {index < currentStep ? (
+                <Check size={16} />
+              ) : (
+                <span>{index + 1}</span>
+              )}
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium">{step.label}</p>
+              {step.description && (
+                <p className="text-sm text-gray-500">{step.description}</p>
+              )}
+            </div>
+          </div>
+          {index < steps.length - 1 && (
+            <div className="flex-1 border-t-2 border-gray-300 mx-4" />
+          )}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+};
+
+Stepper.displayName = 'Stepper';
+
+--- File: src/components/Spinner.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const spinnerVariants = cva(
+  'inline-block animate-spin rounded-full border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]',
+  {
+    variants: {
+      size: {
+        sm: 'h-4 w-4 border-2',
+        md: 'h-6 w-6 border-2',
+        lg: 'h-8 w-8 border-3',
+        xl: 'h-12 w-12 border-4',
+      },
+      color: {
+        default: 'text-gray-600',
+        primary: 'text-primary',
+        secondary: 'text-secondary',
+        white: 'text-white',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+      color: 'default',
+    },
+  }
+);
+
+export interface SpinnerProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof spinnerVariants> {
+  srText?: string;
+}
+
+export const Spinner: React.FC<SpinnerProps> = ({
+  className,
+  size,
+  color,
+  srText = 'Loading...',
+  ...props
+}) => {
+  return (
+    <div className={spinnerVariants({ size, color, className })} role="status" {...props}>
+      <span className="sr-only">{srText}</span>
+    </div>
+  );
+};
+
+Spinner.displayName = 'Spinner';
+
+--- File: src/components/Carousel.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Carousel } from './Carousel';
+
+const meta: Meta<typeof Carousel> = {
+  title: 'Components/Data Display/Carousel',
+  component: Carousel,
+  argTypes: {
+    interval: { control: 'number' },
+    showControls: { control: 'boolean' },
+    showIndicators: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Carousel>;
+
+const slides = [
+  <div key="1" className="bg-red-500 h-64 flex items-center justify-center text-white text-2xl">Slide 1</div>,
+  <div key="2" className="bg-blue-500 h-64 flex items-center justify-center text-white text-2xl">Slide 2</div>,
+  <div key="3" className="bg-green-500 h-64 flex items-center justify-center text-white text-2xl">Slide 3</div>,
+];
+
+export const Default: Story = {
+  args: {
+    slides: slides,
+  },
+};
+
+export const NoControls: Story = {
+  args: {
+    ...Default.args,
+    showControls: false,
+  },
+};
+
+export const NoIndicators: Story = {
+  args: {
+    ...Default.args,
+    showIndicators: false,
+  },
+};
+
+export const CustomInterval: Story = {
+  args: {
+    ...Default.args,
+    interval: 2000,
+  },
+};
+
+--- File: src/components/Badge.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Badge } from './Badge';
+
+const meta: Meta<typeof Badge> = {
+  title: 'Components/Data Display/Badge',
+  component: Badge,
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['default', 'primary', 'secondary', 'success', 'warning', 'danger'],
+    },
+    outline: { control: 'boolean' },
+    children: { control: 'text' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Badge>;
+
+export const Default: Story = {
+  args: {
+    children: 'Badge',
+    variant: 'default',
+  },
+};
+
+export const Primary: Story = {
+  args: {
+    ...Default.args,
+    variant: 'primary',
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    ...Default.args,
+    variant: 'secondary',
+  },
+};
+
+export const Success: Story = {
+  args: {
+    ...Default.args,
+    variant: 'success',
+  },
+};
+
+export const Warning: Story = {
+  args: {
+    ...Default.args,
+    variant: 'warning',
+  },
+};
+
+export const Danger: Story = {
+  args: {
+    ...Default.args,
+    variant: 'danger',
+  },
+};
+
+export const Outline: Story = {
+  args: {
+    ...Default.args,
+    outline: true,
+  },
+};
+
+export const OutlinePrimary: Story = {
+  args: {
+    ...Primary.args,
+    outline: true,
+  },
+};
+
+export const LongText: Story = {
+  args: {
+    ...Default.args,
+    children: 'This is a badge with long text',
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    ...Default.args,
+    children: (
+      <>
+        <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+        </svg>
+        Verified
+      </>
+    ),
+  },
+};
+
+--- File: src/components/Breadcrumbs.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Breadcrumbs } from './Breadcrumbs';
+
+const meta: Meta<typeof Breadcrumbs> = {
+  title: 'Components/Navigation/Breadcrumbs',
+  component: Breadcrumbs,
+  argTypes: {
+    items: { control: 'object' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Breadcrumbs>;
+
+export const Default: Story = {
+  args: {
+    items: [
+      { label: 'Home', href: '/' },
+      { label: 'Category', href: '/category' },
+      { label: 'Product', href: '/category/product' },
+    ],
+  },
+};
+
+export const SingleItem: Story = {
+  args: {
+    items: [
+      { label: 'Home', href: '/' },
+    ],
+  },
+};
+
+export const ManyItems: Story = {
+  args: {
+    items: [
+      { label: 'Home', href: '/' },
+      { label: 'Category', href: '/category' },
+      { label: 'Subcategory', href: '/category/subcategory' },
+      { label: 'Sub-subcategory', href: '/category/subcategory/sub-subcategory' },
+      { label: 'Product', href: '/category/subcategory/sub-subcategory/product' },
+    ],
+  },
+};
+
+export const LongLabels: Story = {
+  args: {
+    items: [
+      { label: 'Home', href: '/' },
+      { label: 'This is a very long category name that might wrap', href: '/category' },
+      { label: 'Another long product name to test wrapping', href: '/category/product' },
+    ],
+  },
+};
+
+--- File: src/components/Tooltip.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Tooltip } from './Tooltip';
+import { Button } from './Button'; // Assuming we have a Button component
+
+const meta: Meta<typeof Tooltip> = {
+  title: 'Components/Data Display/Tooltip',
+  component: Tooltip,
+  argTypes: {
+    position: {
+      control: 'select',
+      options: ['top', 'bottom', 'left', 'right'],
+    },
+    content: {
+      control: 'text',
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Tooltip>;
+
+export const Default: Story = {
+  args: {
+    content: 'This is a tooltip',
+    children: <Button>Hover me</Button>,
+  },
+};
+
+export const PositionTop: Story = {
+  args: {
+    ...Default.args,
+    position: 'top',
+  },
+};
+
+export const PositionBottom: Story = {
+  args: {
+    ...Default.args,
+    position: 'bottom',
+  },
+};
+
+export const PositionLeft: Story = {
+  args: {
+    ...Default.args,
+    position: 'left',
+  },
+};
+
+export const PositionRight: Story = {
+  args: {
+    ...Default.args,
+    position: 'right',
+  },
+};
+
+export const LongContent: Story = {
+  args: {
+    content: 'This is a tooltip with a rather long content to demonstrate how it handles wrapping.',
+    children: <Button>Hover for long tooltip</Button>,
+  },
+};
+
+export const CustomTrigger: Story = {
+  args: {
+    content: 'Custom trigger example',
+    children: <span className="underline cursor-help">Hover over this text</span>,
+  },
+};
+
+export const WithinText: Story = {
+  render: (args) => (
+    <p>
+      This is a paragraph with a 
+      <Tooltip content="I'm a tooltip within text!" {...args}>
+        <span className="text-blue-500 cursor-help"> tooltip </span>
+      </Tooltip>
+      inside it.
+    </p>
+  ),
+};
+
+--- File: src/components/Select.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { ChevronDown } from 'lucide-react';
+
+const selectVariants = cva(
+  'block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50',
+  {
+    variants: {
+      size: {
+        sm: 'py-1 text-sm',
+        md: 'py-2 text-base',
+        lg: 'py-3 text-lg',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+export interface SelectOption {
+  value: string;
+  label: string;
+}
+
+export interface SelectProps
+  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'>,
+    VariantProps<typeof selectVariants> {
+  options: SelectOption[];
+  label?: string;
+}
+
+export const Select: React.FC<SelectProps> = ({
+  className,
+  size,
+  options,
+  label,
+  id,
+  ...props
+}) => {
+  const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
+
+  return (
+    <div className="relative">
+      {label && (
+        <label htmlFor={selectId} className="block text-sm font-medium text-gray-700 mb-1">
+          {label}
+        </label>
+      )}
+      <div className="relative">
+        <select
+          id={selectId}
+          className={selectVariants({ size, className })}
+          {...props}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+          <ChevronDown className="h-4 w-4" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+Select.displayName = 'Select';
+
+--- File: src/components/Modal.stories.tsx ---
+
+import React, { useState } from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Modal } from './Modal';
+import { Button } from './Button'; // Assuming we have a Button component
+
+const meta: Meta<typeof Modal> = {
+  title: 'Components/Feedback/Modal',
+  component: Modal,
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
+    isOpen: {
+      control: 'boolean',
+    },
+    onClose: { action: 'closed' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Modal>;
+
+const ModalTemplate: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
+        <Modal {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+          <p>This is the content of the modal.</p>
+        </Modal>
+      </>
+    );
+  },
+};
+
+export const Default: Story = {
+  ...ModalTemplate,
+  args: {
+    title: 'Example Modal',
+    size: 'md',
+  },
+};
+
+export const SmallModal: Story = {
+  ...ModalTemplate,
+  args: {
+    ...Default.args,
+    size: 'sm',
+    title: 'Small Modal',
+  },
+};
+
+export const LargeModal: Story = {
+  ...ModalTemplate,
+  args: {
+    ...Default.args,
+    size: 'lg',
+    title: 'Large Modal',
+  },
+};
+
+export const ModalWithLongContent: Story = {
+  ...ModalTemplate,
+  args: {
+    ...Default.args,
+    title: 'Modal with Long Content',
+    children: (
+      <>
+        <p>This modal has a lot of content to demonstrate scrolling behavior.</p>
+        {Array(20).fill(0).map((_, i) => (
+          <p key={i}>This is paragraph {i + 1}.</p>
+        ))}
+      </>
+    ),
+  },
+};
+
+export const ModalWithoutTitle: Story = {
+  ...ModalTemplate,
+  args: {
+    ...Default.args,
+    title: undefined,
+  },
+};
+
+--- File: src/components/Input.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const inputVariants = cva(
+  'w-full rounded-md border bg-white px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+  {
+    variants: {
+      variant: {
+        default: 'border-gray-300 focus-visible:ring-primary',
+        success: 'border-green-500 focus-visible:ring-green-500',
+        error: 'border-red-500 focus-visible:ring-red-500',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);
+
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement>,
+    VariantProps<typeof inputVariants> {
+  label?: string;
+  helperText?: string;
+}
+
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, variant, label, helperText, id, ...props }, ref) => {
+    const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
+
+    return (
+      <div className="w-full">
+        <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1">
+          {label}
+        </label>
+        <input
+          id={inputId}
+          className={inputVariants({ variant, className })}
+          ref={ref}
+          {...props}
+        />
+        {helperText && (
+          <p className={`mt-1 text-sm ${variant === 'error' ? 'text-red-500' : 'text-gray-500'}`}>
+            {helperText}
+          </p>
+        )}
+      </div>
+    );
+  }
+);
+
+Input.displayName = 'Input';
+
+
+--- File: src/components/Skeleton.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const skeletonVariants = cva(
+  'animate-pulse bg-gray-200 rounded',
+  {
+    variants: {
+      variant: {
+        text: 'h-4 w-full',
+        circular: 'rounded-full',
+        rectangular: 'w-full',
+      },
+    },
+    defaultVariants: {
+      variant: 'text',
+    },
+  }
+);
+
+export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof skeletonVariants> {
+  width?: string | number;
+  height?: string | number;
+}
+
+export const Skeleton: React.FC<SkeletonProps> = ({
+  className,
+  variant,
+  width,
+  height,
+  ...props
+}) => {
+  const styles: React.CSSProperties = {
+    width: width ? (typeof width === 'number' ? `${width}px` : width) : undefined,
+    height: height ? (typeof height === 'number' ? `${height}px` : height) : undefined,
+  };
+
+  return (
+    <div
+      className={skeletonVariants({ variant, className })}
+      style={styles}
+      {...props}
+    />
+  );
+};
+
+Skeleton.displayName = 'Skeleton';
+
+export const SkeletonText: React.FC<Omit<SkeletonProps, 'variant'>> = (props) => (
+  <Skeleton variant="text" {...props} />
+);
+
+export const SkeletonCircular: React.FC<Omit<SkeletonProps, 'variant'>> = (props) => (
+  <Skeleton variant="circular" {...props} />
+);
+
+export const SkeletonRectangular: React.FC<Omit<SkeletonProps, 'variant'>> = (props) => (
+  <Skeleton variant="rectangular" {...props} />
+);
+
+--- File: src/components/Rating.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Rating } from './Rating';
+
+const meta: Meta<typeof Rating> = {
+  title: 'Components/Inputs/Rating',
+  component: Rating,
+  argTypes: {
+    value: { control: { type: 'number', min: 0, max: 5, step: 0.5 } },
+    max: { control: { type: 'number', min: 1, max: 10 } },
+    readOnly: { control: 'boolean' },
+    onChange: { action: 'rating changed' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Rating>;
+
+export const Default: Story = {
+  args: {
+    value: 3,
+  },
+};
+
+export const ReadOnly: Story = {
+  args: {
+    value: 4,
+    readOnly: true,
+  },
+};
+
+export const CustomMax: Story = {
+  args: {
+    value: 7,
+    max: 10,
+  },
+};
+
+export const HalfStar: Story = {
+  args: {
+    value: 3.5,
+  },
+};
+
+--- File: src/components/Form.tsx ---
+
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const formVariants = cva('space-y-4', {
+  variants: {
+    layout: {
+      vertical: 'space-y-4',
+      horizontal: 'sm:flex sm:space-x-4 sm:space-y-0',
+    },
+  },
+  defaultVariants: {
+    layout: 'vertical',
+  },
+});
+
+export interface FormProps extends React.FormHTMLAttributes<HTMLFormElement>, VariantProps<typeof formVariants> {
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
+}
+
+export const Form: React.FC<FormProps> = ({
+  className,
+  layout,
+  children,
+  onSubmit,
+  ...props
+}) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (onSubmit) {
+      onSubmit(event);
+    }
+  };
+
+  return (
+    <form className={formVariants({ layout, className })} onSubmit={handleSubmit} {...props}>
+      {children}
+    </form>
+  );
+};
+
+export const FormGroup: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <div className={`space-y-2 ${className}`} {...props}>
+      {children}
+    </div>
+  );
+};
+
+export const FormLabel: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <label className={`block text-sm font-medium text-gray-700 ${className}`} {...props}>
+      {children}
+    </label>
+  );
+};
+
+export const FormHelperText: React.FC<React.HTMLAttributes<HTMLParagraphElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <p className={`mt-1 text-sm text-gray-500 ${className}`} {...props}>
+      {children}
+    </p>
+  );
+};
+
+Form.displayName = 'Form';
+FormGroup.displayName = 'FormGroup';
+FormLabel.displayName = 'FormLabel';
+FormHelperText.displayName = 'FormHelperText';
+
+--- File: src/components/Carousel.tsx ---
+
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+export interface CarouselProps {
+  slides: React.ReactNode[];
+  interval?: number;
+  showControls?: boolean;
+  showIndicators?: boolean;
+}
+
+export const Carousel: React.FC<CarouselProps> = ({
+  slides,
+  interval = 5000,
+  showControls = true,
+  showIndicators = true,
+}) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [slides.length, interval]);
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  const goToPrevSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
+  };
+
+  const goToNextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+  };
+
+  return (
+    <div className="relative">
+      <div className="overflow-hidden">
+        <div
+          className="flex transition-transform duration-300 ease-in-out"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
+          {slides.map((slide, index) => (
+            <div key={index} className="w-full flex-shrink-0">
+              {slide}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {showControls && (
+        <>
+          <button
+            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2"
+            onClick={goToPrevSlide}
+          >
+            <ChevronLeft />
+          </button>
+          <button
+            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2"
+            onClick={goToNextSlide}
+          >
+            <ChevronRight />
+          </button>
+        </>
+      )}
+
+      {showIndicators && (
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              className={`w-3 h-3 rounded-full ${
+                index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'
+              }`}
+              onClick={() => goToSlide(index)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+Carousel.displayName = 'Carousel';

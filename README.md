@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Your Component Library Name
 
-## Getting Started
+## Table of Contents
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Theming](#theming)
+  - [Using the Default Theme](#using-the-default-theme)
+  - [Customizing the Theme](#customizing-the-theme)
+  - [Creating a Custom Theme](#creating-a-custom-theme)
+  - [Switching Themes](#switching-themes)
+- [Components](#components)
+- [Contributing](#contributing)
+- [License](#license)
 
-First, run the development server:
+## Introduction
+
+[Your introduction to the component library]
+
+## Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install your-component-library
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```jsx
+import React from 'react';
+import { Button, ThemeProvider } from 'your-component-library';
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+function App() {
+  return (
+    <ThemeProvider>
+      <Button variant="primary">Click me!</Button>
+    </ThemeProvider>
+  );
+}
+```
 
-## Learn More
+## Theming
 
-To learn more about Next.js, take a look at the following resources:
+Our component library now supports a flexible theming system that allows you to easily customize the look and feel of all components.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Using the Default Theme
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+To use the default theme, simply wrap your application with the `ThemeProvider`:
 
-## Deploy on Vercel
+```jsx
+import { ThemeProvider } from 'your-component-library';
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+function App() {
+  return (
+    <ThemeProvider>
+      {/* Your app components */}
+    </ThemeProvider>
+  );
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Customizing the Theme
+
+You can customize the theme by passing a theme object to the `ThemeProvider`:
+
+```jsx
+import { ThemeProvider, themeConfig } from 'your-component-library';
+
+const customTheme = {
+  ...themeConfig,
+  colors: {
+    ...themeConfig.colors,
+    primary: {
+      light: '#4DA8DA',
+      DEFAULT: '#007CBC',
+      dark: '#005C8F',
+    },
+    // ... other color overrides
+  },
+  // ... other theme property overrides
+};
+
+function App() {
+  return (
+    <ThemeProvider initialTheme={customTheme}>
+      {/* Your app components */}
+    </ThemeProvider>
+  );
+}
+```
+
+### Creating a Custom Theme
+
+To create a completely custom theme, you can extend the base `ThemeConfig` type:
+
+```typescript
+import { ThemeConfig } from 'your-component-library';
+
+const myCustomTheme: ThemeConfig = {
+  colors: {
+    primary: {
+      light: '#4DA8DA',
+      DEFAULT: '#007CBC',
+      dark: '#005C8F',
+    },
+    // ... other colors
+  },
+  fonts: {
+    sans: 'Roboto, sans-serif',
+    mono: 'Roboto Mono, monospace',
+  },
+  // ... other theme properties
+};
+```
+
+### Switching Themes
+
+You can dynamically switch themes using the `setTheme` function provided by the `useTheme` hook:
+
+```jsx
+import { ThemeProvider, useTheme } from 'your-component-library';
+import { darkTheme } from './darkTheme';
+
+function ThemeSwitcher() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <button onClick={() => setTheme(darkTheme)}>
+      Switch to Dark Theme
+    </button>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <ThemeSwitcher />
+      {/* Other components */}
+    </ThemeProvider>
+  );
+}
+```
+
+## Components
+
+[List and brief description of available components]
+
+## Contributing
+
+[Guidelines for contributing to the project]
+
+## License
+
+[Your license information]

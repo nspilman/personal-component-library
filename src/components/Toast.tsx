@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 const toastVariants = cva(
   'fixed flex items-center w-full max-w-sm rounded-lg shadow-lg p-4 text-white',
@@ -42,6 +43,13 @@ export const Toast: React.FC<ToastProps> = ({
   ...props
 }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--toast-bg-color': theme.colors[variant || 'info']['500'],
+    '--toast-text-color': theme.colors.white,
+    '--toast-icon-color': theme.colors.white,
+  } as React.CSSProperties;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -62,8 +70,17 @@ export const Toast: React.FC<ToastProps> = ({
   }[variant || 'info'];
 
   return (
-    <div className={toastVariants({ variant, position, className })} role="alert" {...props}>
-      <IconComponent className="w-5 h-5 mr-2" />
+    <div 
+      className={toastVariants({ variant, position, className })} 
+      role="alert" 
+      style={{
+        ...customStyles,
+        backgroundColor: 'var(--toast-bg-color)',
+        color: 'var(--toast-text-color)',
+      }}
+      {...props}
+    >
+      <IconComponent className="w-5 h-5 mr-2" style={{ color: 'var(--toast-icon-color)' }} />
       <div className="flex-1">{message}</div>
       <button
         onClick={() => {
@@ -73,7 +90,7 @@ export const Toast: React.FC<ToastProps> = ({
         className="ml-auto bg-white bg-opacity-20 rounded-full p-1 hover:bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-white"
         aria-label="Close"
       >
-        <X className="w-4 h-4" />
+        <X className="w-4 h-4" style={{ color: 'var(--toast-icon-color)' }} />
       </button>
     </div>
   );

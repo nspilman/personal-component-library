@@ -1,6 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Check } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 const stepperVariants = cva('flex items-center');
 
@@ -52,12 +53,37 @@ export const Stepper: React.FC<StepperProps> = ({
   currentStep,
   ...props
 }) => {
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--stepper-incomplete-color': theme.colors.gray['500'],
+    '--stepper-current-color': theme.colors.primary['600'],
+    '--stepper-complete-color': theme.colors.green['600'],
+    '--stepper-incomplete-bg': theme.colors.white,
+    '--stepper-current-bg': theme.colors.primary['600'],
+    '--stepper-complete-bg': theme.colors.green['600'],
+    '--stepper-text-color': theme.colors.gray['700'],
+    '--stepper-description-color': theme.colors.gray['500'],
+    '--stepper-line-color': theme.colors.gray['300'],
+  } as React.CSSProperties;
+
   return (
-    <div className={stepperVariants({ className })} {...props}>
+    <div className={stepperVariants({ className })} style={customStyles} {...props}>
       {steps.map((step, index) => (
         <React.Fragment key={index}>
           <div className={stepVariants({ status: index < currentStep ? 'complete' : index === currentStep ? 'current' : 'incomplete' })}>
-            <div className={stepCircleVariants({ status: index < currentStep ? 'complete' : index === currentStep ? 'current' : 'incomplete' })}>
+            <div 
+              className={stepCircleVariants({ status: index < currentStep ? 'complete' : index === currentStep ? 'current' : 'incomplete' })}
+              style={{
+                backgroundColor: index < currentStep ? 'var(--stepper-complete-bg)' : 
+                                 index === currentStep ? 'var(--stepper-current-bg)' : 
+                                 'var(--stepper-incomplete-bg)',
+                borderColor: index < currentStep ? 'var(--stepper-complete-color)' : 
+                             index === currentStep ? 'var(--stepper-current-color)' : 
+                             'var(--stepper-incomplete-color)',
+                color: index < currentStep || index === currentStep ? 'white' : 'var(--stepper-incomplete-color)',
+              }}
+            >
               {index < currentStep ? (
                 <Check size={16} />
               ) : (
@@ -65,14 +91,14 @@ export const Stepper: React.FC<StepperProps> = ({
               )}
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium">{step.label}</p>
+              <p className="text-sm font-medium" style={{ color: 'var(--stepper-text-color)' }}>{step.label}</p>
               {step.description && (
-                <p className="text-sm text-gray-500">{step.description}</p>
+                <p className="text-sm" style={{ color: 'var(--stepper-description-color)' }}>{step.description}</p>
               )}
             </div>
           </div>
           {index < steps.length - 1 && (
-            <div className="flex-1 border-t-2 border-gray-300 mx-4" />
+            <div className="flex-1 border-t-2 mx-4" style={{ borderColor: 'var(--stepper-line-color)' }} />
           )}
         </React.Fragment>
       ))}

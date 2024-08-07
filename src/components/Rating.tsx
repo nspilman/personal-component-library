@@ -1,5 +1,6 @@
 import React from 'react';
 import { Star } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 export interface RatingProps {
   value: number;
@@ -14,6 +15,13 @@ export const Rating: React.FC<RatingProps> = ({
   max = 5,
   readOnly = false,
 }) => {
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--star-color': theme.colors.yellow['400'],
+    '--star-inactive-color': theme.colors.gray['300'],
+  } as React.CSSProperties;
+
   const handleClick = (newValue: number) => {
     if (!readOnly && onChange) {
       onChange(newValue);
@@ -21,17 +29,22 @@ export const Rating: React.FC<RatingProps> = ({
   };
 
   return (
-    <div className="flex">
+    <div className="flex" style={customStyles}>
       {[...Array(max)].map((_, index) => (
         <Star
           key={index}
           size={24}
           className={`cursor-pointer ${
-            index < value ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
+            index < value ? 'text-yellow-400 fill-current' : 'text-gray-300'
           } ${readOnly ? 'cursor-default' : ''}`}
           onClick={() => handleClick(index + 1)}
+          style={{
+            color: index < value ? 'var(--star-color)' : 'var(--star-inactive-color)',
+          }}
         />
       ))}
     </div>
   );
 };
+
+Rating.displayName = 'Rating';

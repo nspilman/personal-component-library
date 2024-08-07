@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { useTheme } from '../theme/ThemeProvider';
 
 const sliderVariants = cva('relative w-full h-2 bg-gray-200 rounded-full');
 
@@ -39,6 +40,15 @@ export const Slider: React.FC<SliderProps> = ({
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+
+  const customStyles = {
+    '--slider-bg-color': theme.colors.gray['200'],
+    '--slider-fill-color': theme.colors.primary.DEFAULT,
+    '--slider-thumb-color': theme.colors.primary.DEFAULT,
+    '--slider-thumb-border-color': theme.colors.white,
+    '--slider-disabled-color': theme.colors.gray['400'],
+  } as React.CSSProperties;
 
   const handleMove = (clientX: number) => {
     if (sliderRef.current && !disabled) {
@@ -101,15 +111,23 @@ export const Slider: React.FC<SliderProps> = ({
       ref={sliderRef}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
+      style={{ ...customStyles, backgroundColor: 'var(--slider-bg-color)' }}
       {...props}
     >
       <div
-        className="absolute h-full bg-primary rounded-full"
-        style={{ width: `${percentage}%` }}
+        className="absolute h-full rounded-full"
+        style={{ 
+          width: `${percentage}%`, 
+          backgroundColor: disabled ? 'var(--slider-disabled-color)' : 'var(--slider-fill-color)' 
+        }}
       />
       <div
         className={thumbVariants({ disabled })}
-        style={{ left: `${percentage}%` }}
+        style={{ 
+          left: `${percentage}%`,
+          backgroundColor: disabled ? 'var(--slider-disabled-color)' : 'var(--slider-thumb-color)',
+          borderColor: 'var(--slider-thumb-border-color)',
+        }}
       />
     </div>
   );
