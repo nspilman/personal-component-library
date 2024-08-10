@@ -58,14 +58,9 @@ export const FormLabel: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = 
 }) => {
   const { theme } = useTheme();
 
-  const customStyles = {
-    '--label-text-color': theme.colors.gray['700'],
-  } as React.CSSProperties;
-
   return (
     <label 
-      className={`block text-sm font-medium ${className}`} 
-      style={customStyles}
+      className={`block text-sm font-medium color-[${theme.colors.textPrimary}]`} 
       {...props}
     >
       {children}
@@ -80,14 +75,9 @@ export const FormHelperText: React.FC<React.HTMLAttributes<HTMLParagraphElement>
 }) => {
   const { theme } = useTheme();
 
-  const customStyles = {
-    '--helper-text-color': theme.colors.gray['500'],
-  } as React.CSSProperties;
-
   return (
     <p 
-      className={`mt-1 text-sm ${className}`} 
-      style={customStyles}
+      className={`mt-1 text-sm text-[${theme.colors.textSecondary}]`} 
       {...props}
     >
       {children}

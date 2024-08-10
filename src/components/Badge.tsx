@@ -81,9 +81,9 @@ export const Badge: React.FC<BadgeProps> = ({
                       variant === 'danger' ? 'red' : 'gray';
 
     return {
-      '--badge-bg-color': theme.colors[baseColor][outline ? '100' : '500'],
-      '--badge-text-color': theme.colors[baseColor][outline ? '800' : '50'],
-      '--badge-border-color': theme.colors[baseColor]['300'],
+      '--badge-bg-color': theme.colors.backgroundSecondary,
+      '--badge-text-color': theme.colors.textPrimary,
+      '--badge-border-color': theme.colors.borderMedium
     } as React.CSSProperties;
   };
 

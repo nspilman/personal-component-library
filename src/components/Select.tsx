@@ -43,17 +43,17 @@ export const Select: React.FC<SelectProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--select-border-color': theme.colors.gray['300'],
-    '--select-focus-border-color': theme.colors.primary.DEFAULT,
-    '--select-focus-ring-color': theme.colors.primary.DEFAULT,
-    '--select-text-color': theme.colors.gray['700'],
-    '--select-bg-color': theme.colors.white,
+    '--select-border-color': theme.colors.borderLight,
+    '--select-focus-border-color': theme.colors.primary,
+    '--select-focus-ring-color': theme.colors.primary,
+    '--select-text-color': theme.colors.textSecondary,
+    '--select-bg-color': theme.colors.backgroundSecondary,
   } as React.CSSProperties;
 
   return (
     <div className="relative" style={customStyles}>
       {label && (
-        <label htmlFor={selectId} className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor={selectId} className="block text-sm font-medium color-textPrimary mb-1">
           {label}
         </label>
       )}

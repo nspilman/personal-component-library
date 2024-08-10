@@ -18,8 +18,8 @@ export const Rating: React.FC<RatingProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--star-color': theme.colors.yellow['400'],
-    '--star-inactive-color': theme.colors.gray['300'],
+    '--star-color': theme.colors.warning,
+    '--star-inactive-color': theme.colors.interactiveActive,
   } as React.CSSProperties;
 
   const handleClick = (newValue: number) => {

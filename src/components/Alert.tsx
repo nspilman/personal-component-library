@@ -56,9 +56,9 @@ export const Alert: React.FC<AlertProps> = ({
   }[variant || 'info'];
 
   const customStyles = {
-    '--alert-bg-color': theme.colors[variant || 'info']['100'],
-    '--alert-text-color': theme.colors[variant || 'info']['800'],
-    '--alert-icon-color': theme.colors[variant || 'info']['500'],
+    '--alert-bg-color': theme.colors.backgroundSecondary,
+    '--alert-text-color': theme.colors.textPrimary,
+    '--alert-icon-color': theme.colors.warning
   } as React.CSSProperties;
 
   return (

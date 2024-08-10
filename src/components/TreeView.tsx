@@ -15,12 +15,12 @@ interface TreeNodeProps {
 
 const TreeNodeComponent: React.FC<TreeNodeProps> = ({ node, level }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme } = useTheme();
+  const {theme} = useTheme();
 
   const customStyles = {
-    '--tree-text-color': theme.colors.gray['700'],
-    '--tree-icon-color': theme.colors.gray['500'],
-    '--tree-hover-bg-color': theme.colors.gray['100'],
+    '--tree-text-color': theme.colors.textPrimary,
+    '--tree-icon-color': theme.colors.backgroundTertiary,
+    '--tree-hover-bg-color': theme.colors.backgroundPrimary,
   } as React.CSSProperties;
 
   const hasChildren = node.children && node.children.length > 0;
@@ -58,7 +58,7 @@ export const TreeView: React.FC<TreeViewProps> = ({ data }) => {
   const { theme } = useTheme();
 
   const customStyles = {
-    '--tree-border-color': theme.colors.gray['200'],
+    '--tree-border-color': theme.colors.borderHeavy,
   } as React.CSSProperties;
 
   return (

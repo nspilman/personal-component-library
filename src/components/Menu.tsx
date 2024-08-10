@@ -65,11 +65,11 @@ export const Menu: React.FC<MenuProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--menu-bg-color': theme.colors.white,
-    '--menu-text-color': theme.colors.gray['700'],
-    '--menu-border-color': theme.colors.gray['300'],
-    '--menu-hover-bg-color': theme.colors.gray['100'],
-    '--menu-focus-ring-color': theme.colors.primary.DEFAULT,
+    '--menu-bg-color': theme.colors.backgroundSecondary,
+    '--menu-text-color': theme.colors.textPrimary,
+    '--menu-border-color': theme.colors.borderMedium,
+    '--menu-hover-bg-color': theme.colors.backgroundPrimary,
+    '--menu-focus-ring-color': theme.colors.primary
   } as React.CSSProperties;
 
   useEffect(() => {
@@ -124,13 +124,13 @@ export const Menu: React.FC<MenuProps> = ({
                   item.onClick();
                   setIsOpen(false);
                 }}
-                className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
+                className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 hover:bg-[var(--menu-hover-bg-color)]"
                 role="menuitem"
                 style={{
                   color: 'var(--menu-text-color)',
-                  ':hover': {
-                    backgroundColor: 'var(--menu-hover-bg-color)',
-                  },
+                //   ':hover': {
+                //     backgroundColor: 'var(--menu-hover-bg-color)',
+                //   },
                 }}
               >
                 {item.label}

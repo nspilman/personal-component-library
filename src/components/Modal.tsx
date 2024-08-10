@@ -53,10 +53,10 @@ export const Modal: React.FC<ModalProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--modal-bg-color': theme.colors.white,
-    '--modal-text-color': theme.colors.gray['900'],
-    '--modal-border-color': theme.colors.gray['200'],
-    '--modal-shadow-color': 'rgba(0, 0, 0, 0.1)',
+    '--modal-bg-color': theme.colors.backgroundPrimary,
+    '--modal-text-color': theme.colors.textPrimary,
+    '--modal-border-color': theme.colors.borderMedium,
+    '--modal-shadow-color': theme.shadows.shadowLarge,
   } as React.CSSProperties;
 
   useEffect(() => {

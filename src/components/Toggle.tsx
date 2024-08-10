@@ -18,7 +18,7 @@ const toggleVariants = cva(
 );
 
 const toggleSwitchVariants = cva(
-  'pointer-events-none inline-block transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+  'pointer-events-none inline-block transform rounded-full shadow ring-0 transition duration-200 ease-in-out border-borderHeavy border-1 bg-backgroundInverse',
   {
     variants: {
       size: {
@@ -61,7 +61,7 @@ export const Toggle: React.FC<ToggleProps> = ({
           {...props}
         />
         <span
-          className={toggleSwitchVariants({ size })}
+          className={`${toggleSwitchVariants({ size })}`}
           style={{
             transform: checked
               ? size === 'sm'
@@ -70,12 +70,11 @@ export const Toggle: React.FC<ToggleProps> = ({
                 ? 'translateX(28px)'
                 : 'translateX(32px)'
               : 'translateX(0)',
-            backgroundColor: checked ? '#3B82F6' : '#D1D5DB',
           }}
         />
       </div>
       {label && (
-        <span className="ml-3 text-sm font-medium text-gray-900">{label}</span>
+        <span className="ml-3 text-sm font-medium text-textPrimary">{label}</span>
       )}
     </label>
   );

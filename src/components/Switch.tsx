@@ -37,12 +37,14 @@ const toggleVariants = cva(
   }
 );
 
-export interface SwitchProps extends React.HTMLAttributes<HTMLButtonElement>, VariantProps<typeof switchVariants> {
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-  disabled?: boolean;
-  label?: string;
-}
+export interface SwitchProps extends VariantProps<typeof switchVariants> {
+    checked: boolean;
+    onChange: (checked: boolean) => void;
+    disabled?: boolean;
+    label?: string;
+    className?: string;
+    style?: React.CSSProperties;
+  }
 
 export const Switch: React.FC<SwitchProps> = ({
   checked,
@@ -55,11 +57,11 @@ export const Switch: React.FC<SwitchProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--switch-bg-color': checked ? theme.colors.primary.DEFAULT : theme.colors.gray['200'],
-    '--switch-toggle-color': theme.colors.white,
-    '--switch-focus-ring-color': theme.colors.primary.DEFAULT,
+    '--switch-bg-color': checked ? theme.colors.backgroundSecondary : theme.colors.backgroundPrimary,
+    '--switch-toggle-color': theme.colors.backgroundTertiary,
+    '--switch-focus-ring-color': theme.colors.primary,
     '--switch-disabled-opacity': '0.5',
-    '--label-color': theme.colors.gray['700'],
+    '--label-color': theme.colors.textPrimary,
   } as React.CSSProperties;
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {

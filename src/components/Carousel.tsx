@@ -19,11 +19,11 @@ export const Carousel: React.FC<CarouselProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--carousel-bg-color': theme.colors.gray['200'],
-    '--carousel-control-bg-color': theme.colors.white,
-    '--carousel-control-color': theme.colors.gray['700'],
-    '--carousel-indicator-color': theme.colors.white,
-    '--carousel-indicator-active-color': theme.colors.primary.DEFAULT,
+    '--carousel-bg-color': theme.colors.backgroundSecondary,
+    '--carousel-control-bg-color': theme.colors.backgroundTertiary,
+    '--carousel-control-color': theme.colors.info,
+    '--carousel-indicator-color': theme.colors.warning,
+    '--carousel-indicator-active-color': theme.colors.primary,
   } as React.CSSProperties;
 
   useEffect(() => {

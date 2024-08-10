@@ -49,10 +49,10 @@ export const Chip: React.FC<ChipProps> = ({
                       variant === 'danger' ? 'red' : 'gray';
 
     return {
-      '--chip-bg-color': theme.colors[baseColor]['100'],
-      '--chip-text-color': theme.colors[baseColor]['800'],
-      '--chip-hover-bg-color': theme.colors[baseColor]['200'],
-      '--chip-delete-hover-bg-color': theme.colors[baseColor]['200'],
+      '--chip-bg-color': theme.colors.backgroundSecondary,
+      '--chip-text-color': theme.colors.textPrimary,
+      '--chip-hover-bg-color': theme.colors.backgroundTertiary,
+      '--chip-delete-hover-bg-color': theme.colors.warning,
     } as React.CSSProperties;
   };
 

@@ -51,10 +51,10 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--checkbox-border-color': theme.colors.gray['300'],
-    '--checkbox-text-color': theme.colors.primary.DEFAULT,
-    '--checkbox-focus-ring-color': theme.colors.primary.DEFAULT,
-    '--label-text-color': theme.colors.gray['700'],
+    '--checkbox-border-color': theme.colors.borderLight,
+    '--checkbox-text-color': theme.colors.textPrimary,
+    '--checkbox-focus-ring-color': theme.colors.backgroundSecondary,
+    '--label-text-color': theme.colors.textSecondary
   } as React.CSSProperties;
 
   return (

@@ -54,14 +54,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   ...props
 }) => {
   const [openItems, setOpenItems] = useState<boolean[]>(new Array(items.length).fill(false));
-  const { theme } = useTheme();
-
-  const customStyles = {
-    '--accordion-border-color': theme.colors.gray['200'],
-    '--accordion-bg-color': theme.colors.white,
-    '--accordion-text-color': theme.colors.gray['700'],
-    '--accordion-hover-bg-color': theme.colors.gray['100'],
-  } as React.CSSProperties;
+  const {theme} = useTheme();
 
   const toggleItem = (index: number) => {
     setOpenItems((prevOpenItems) => {
@@ -77,12 +70,7 @@ export const Accordion: React.FC<AccordionProps> = ({
 
   return (
     <div 
-      className={accordionVariants({ className })} 
-      style={{
-        ...customStyles,
-        borderColor: 'var(--accordion-border-color)',
-        backgroundColor: 'var(--accordion-bg-color)',
-      }} 
+      className={accordionVariants({ className: `${className} border-[${theme.colors.borderMedium}] bg-[${theme.colors.backgroundPrimary}]` })} 
       {...props}
     >
       {items.map((item, index) => (

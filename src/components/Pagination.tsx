@@ -43,11 +43,11 @@ export const Pagination: React.FC<PaginationProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--pagination-text-color': theme.colors.gray['700'],
-    '--pagination-bg-color': theme.colors.gray['100'],
-    '--pagination-hover-bg-color': theme.colors.gray['200'],
-    '--pagination-active-bg-color': theme.colors.primary.DEFAULT,
-    '--pagination-active-text-color': theme.colors.white,
+    '--pagination-text-color': theme.colors.textPrimary,
+    '--pagination-bg-color': theme.colors.backgroundSecondary,
+    '--pagination-hover-bg-color': theme.colors.backgroundPrimary,
+    '--pagination-active-bg-color': theme.colors.backgroundTertiary,
+    '--pagination-active-text-color': theme.colors.textSecondary,
   } as React.CSSProperties;
 
   const handlePageChange = (page: number) => {

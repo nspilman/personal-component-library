@@ -42,10 +42,10 @@ export const Spinner: React.FC<SpinnerProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--spinner-default-color': theme.colors.gray['600'],
-    '--spinner-primary-color': theme.colors.primary.DEFAULT,
-    '--spinner-secondary-color': theme.colors.secondary.DEFAULT,
-    '--spinner-white-color': theme.colors.white,
+    '--spinner-default-color': theme.colors.interactiveDefault,
+    '--spinner-primary-color': theme.colors.primary,
+    '--spinner-secondary-color': theme.colors.secondary,
+    '--spinner-white-color': theme.colors.backgroundPrimary,
   } as React.CSSProperties;
 
   return (

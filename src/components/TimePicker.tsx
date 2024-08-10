@@ -11,11 +11,11 @@ export const TimePicker: React.FC<TimePickerProps> = ({ value = '', onChange }) 
   const { theme } = useTheme();
 
   const customStyles = {
-    '--timepicker-border-color': theme.colors.gray['300'],
-    '--timepicker-focus-border-color': theme.colors.primary.DEFAULT,
-    '--timepicker-focus-ring-color': theme.colors.primary.DEFAULT,
-    '--timepicker-text-color': theme.colors.gray['700'],
-    '--timepicker-placeholder-color': theme.colors.gray['400'],
+    '--timepicker-border-color': theme.colors.borderMedium,
+    '--timepicker-focus-border-color': theme.colors.borderHeavy,
+    '--timepicker-focus-ring-color': theme.colors.primary,
+    '--timepicker-text-color': theme.colors.textInverse,
+    '--timepicker-placeholder-color': theme.colors.textSecondary,
   } as React.CSSProperties;
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {

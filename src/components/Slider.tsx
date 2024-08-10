@@ -43,11 +43,11 @@ export const Slider: React.FC<SliderProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--slider-bg-color': theme.colors.gray['200'],
-    '--slider-fill-color': theme.colors.primary.DEFAULT,
-    '--slider-thumb-color': theme.colors.primary.DEFAULT,
-    '--slider-thumb-border-color': theme.colors.white,
-    '--slider-disabled-color': theme.colors.gray['400'],
+    '--slider-bg-color': theme.colors.backgroundSecondary,
+    '--slider-fill-color': theme.colors.primary,
+    '--slider-thumb-color': theme.colors.primary,
+    '--slider-thumb-border-color': theme.colors.borderHeavy,
+    '--slider-disabled-color': theme.colors.info
   } as React.CSSProperties;
 
   const handleMove = (clientX: number) => {

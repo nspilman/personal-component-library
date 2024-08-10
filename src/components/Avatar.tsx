@@ -38,9 +38,9 @@ export const Avatar: React.FC<AvatarProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--avatar-bg-color': theme.colors.gray['100'],
-    '--avatar-text-color': theme.colors.gray['600'],
-    '--avatar-fallback-color': theme.colors.gray['300'],
+    '--avatar-bg-color': theme.colors.backgroundSecondary,
+    '--avatar-text-color': theme.colors.textPrimary,
+    '--avatar-fallback-color': theme.colors.backgroundTertiary,
   } as React.CSSProperties;
 
   return (

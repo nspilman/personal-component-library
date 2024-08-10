@@ -56,15 +56,15 @@ export const Stepper: React.FC<StepperProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--stepper-incomplete-color': theme.colors.gray['500'],
-    '--stepper-current-color': theme.colors.primary['600'],
-    '--stepper-complete-color': theme.colors.green['600'],
-    '--stepper-incomplete-bg': theme.colors.white,
-    '--stepper-current-bg': theme.colors.primary['600'],
-    '--stepper-complete-bg': theme.colors.green['600'],
-    '--stepper-text-color': theme.colors.gray['700'],
-    '--stepper-description-color': theme.colors.gray['500'],
-    '--stepper-line-color': theme.colors.gray['300'],
+    "--stepper-incomplete-color": theme.colors.info,
+    "--stepper-current-color": theme.colors.primary,
+    "--stepper-complete-color": theme.colors.success,
+    "--stepper-incomplete-bg": theme.colors.backgroundSecondary,
+    "--stepper-current-bg": theme.colors.backgroundPrimary,
+    "--stepper-complete-bg": theme.colors.backgroundSecondary,
+    "--stepper-text-color": theme.colors.textPrimary,
+    "--stepper-description-color": theme.colors.textSecondary,
+    "--stepper-line-color": theme.colors.borderHeavy,
   } as React.CSSProperties;
 
   return (

@@ -43,8 +43,8 @@ export const List: React.FC<ListProps> = ({ className, variant, items, ...props 
   const { theme } = useTheme();
 
   const customStyles = {
-    '--list-text-color': theme.colors.gray['700'],
-    '--list-bullet-color': theme.colors.gray['500'],
+    '--list-text-color': theme.colors.textPrimary,
+    '--list-bullet-color': theme.colors.textSecondary,
   } as React.CSSProperties;
 
   return (

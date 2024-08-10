@@ -41,9 +41,9 @@ export const Text = React.forwardRef<HTMLElement, TypographyProps>(
     const { theme } = useTheme();
 
     const customStyles = {
-      '--text-default-color': theme.colors.gray['900'],
-      '--text-secondary-color': theme.colors.gray['600'],
-      '--text-primary-color': theme.colors.primary.DEFAULT,
+      '--text-default-color': theme.colors.textPrimary,
+      '--text-secondary-color': theme.colors.textSecondary,
+      '--text-primary-color': theme.colors.textPrimary,
     } as React.CSSProperties;
 
     return (

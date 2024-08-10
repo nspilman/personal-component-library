@@ -36,13 +36,13 @@ export const Table: React.FC<TableProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--table-border-color': theme.colors.gray['200'],
-    '--table-header-bg-color': theme.colors.gray['50'],
-    '--table-header-text-color': theme.colors.gray['700'],
-    '--table-body-bg-color': theme.colors.white,
-    '--table-body-text-color': theme.colors.gray['900'],
-    '--table-hover-bg-color': theme.colors.gray['50'],
-    '--table-stripe-bg-color': theme.colors.gray['50'],
+    '--table-border-color': theme.colors.borderMedium,
+    '--table-header-bg-color': theme.colors.backgroundSecondary,
+    '--table-header-text-color': theme.colors.textPrimary,
+    '--table-body-bg-color': theme.colors.backgroundSecondary,
+    '--table-body-text-color': theme.colors.textPrimary,
+    '--table-hover-bg-color': theme.colors.backgroundPrimary,
+    '--table-stripe-bg-color': theme.colors.borderMedium,
   } as React.CSSProperties;
 
   return (

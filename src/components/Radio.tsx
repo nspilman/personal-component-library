@@ -51,10 +51,10 @@ export const Radio: React.FC<RadioProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--radio-border-color': theme.colors.gray['300'],
-    '--radio-text-color': theme.colors.primary.DEFAULT,
-    '--radio-focus-ring-color': theme.colors.primary.DEFAULT,
-    '--label-text-color': theme.colors.gray['700'],
+    '--radio-border-color': theme.colors.borderLight,
+    '--radio-text-color': theme.colors.primary,
+    '--radio-focus-ring-color': theme.colors.primary,
+    '--label-text-color': theme.colors.textSecondary,
   } as React.CSSProperties;
 
   return (

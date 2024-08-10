@@ -38,13 +38,13 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--uploader-border-color': theme.colors.gray['300'],
-    '--uploader-hover-border-color': theme.colors.gray['400'],
-    '--uploader-drag-border-color': theme.colors.primary['500'],
-    '--uploader-drag-bg-color': theme.colors.primary['50'],
-    '--uploader-error-border-color': theme.colors.red['500'],
-    '--uploader-error-bg-color': theme.colors.red['50'],
-    '--uploader-text-color': theme.colors.gray['700'],
+    '--uploader-border-color': theme.colors.borderLight,
+    '--uploader-hover-border-color': theme.colors.borderMedium,
+    '--uploader-drag-border-color': theme.colors.primary,
+    '--uploader-drag-bg-color': `${theme.colors.primary}20`, // 20 is for 20% opacity
+    '--uploader-error-border-color': theme.colors.error,
+    '--uploader-error-bg-color': `${theme.colors.error}20`, // 20 is for 20% opacity
+    '--uploader-text-color': theme.colors.textSecondary,
   } as React.CSSProperties;
 
   const handleDragEnter = (e: React.DragEvent) => {

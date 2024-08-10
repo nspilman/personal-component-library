@@ -7,8 +7,8 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        elevated: 'shadow-md bg-white',
-        outlined: 'border border-gray-200 bg-white',
+        elevated: 'shadow-md',
+        outlined: 'border border-borderMedium',
       },
       width: {
         fluid: 'w-full',
@@ -32,33 +32,27 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant, width, header, footer, image, children, ...props }, ref) => {
     const { theme } = useTheme();
 
-    const customStyles = {
-      '--card-border-color': theme.colors.gray['200'],
-      '--card-bg-color': theme.colors.white,
-    } as React.CSSProperties;
-
     return (
       <div 
-        className={cardVariants({ variant, width, className })} 
+        className={`${cardVariants({ variant, width, className })} text-textPrimary bg-backgroundSecondary`}
         ref={ref} 
-        style={customStyles}
         {...props}
       >
         {image && (
-          <div className="w-full h-48 bg-gray-200">
+          <div className="w-full h-48 bg-backgroundTertiary">
             <img src={image} alt="Card" className="w-full h-full object-cover" />
           </div>
         )}
         {header && (
-          <div className="px-4 py-3 border-b border-gray-200">
+          <div className="px-spaceMd py-spaceSm border-b border-borderLight">
             {header}
           </div>
         )}
-        <div className="p-4">
+        <div className="p-spaceMd">
           {children}
         </div>
         {footer && (
-          <div className="px-4 py-3 border-t border-gray-200">
+          <div className="px-spaceMd py-spaceSm border-t border-borderLight">
             {footer}
           </div>
         )}

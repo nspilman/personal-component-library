@@ -48,9 +48,9 @@ export const Progress: React.FC<ProgressProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--progress-bg-color': theme.colors.gray['200'],
-    '--progress-bar-color': theme.colors[variant || 'primary'].DEFAULT,
-    '--progress-text-color': theme.colors.gray['600'],
+    '--progress-bg-color': theme.colors.backgroundSecondary,
+    '--progress-bar-color': theme.colors.primary,
+    '--progress-text-color': theme.colors.textPrimary
   } as React.CSSProperties;
 
   return (

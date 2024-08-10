@@ -4,7 +4,7 @@ import { ChevronDown } from 'lucide-react';
 import { useTheme } from '../theme/ThemeProvider';
 
 const dropdownVariants = cva(
-  'relative inline-block text-left',
+  'relative inline-block text-left bg-backgroundSecondary',
   {
     variants: {
       width: {
@@ -19,7 +19,7 @@ const dropdownVariants = cva(
 );
 
 const buttonVariants = cva(
-  'inline-flex justify-between items-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-primary',
+  'inline-flex justify-between items-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-primary bg-backgroundPrimary',
   {
     variants: {
       isOpen: {
@@ -34,7 +34,7 @@ const buttonVariants = cva(
 );
 
 const menuVariants = cva(
-  'origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none',
+  'origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none bg-backgroundSecondary',
   {
     variants: {
       isOpen: {
@@ -64,13 +64,13 @@ export const Dropdown: React.FC<DropdownProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
 
-  const customStyles = {
-    '--dropdown-bg-color': theme.colors.white,
-    '--dropdown-text-color': theme.colors.gray['700'],
-    '--dropdown-border-color': theme.colors.gray['300'],
-    '--dropdown-hover-bg-color': theme.colors.gray['100'],
-    '--dropdown-focus-ring-color': theme.colors.primary.DEFAULT,
-  } as React.CSSProperties;
+//   const customStyles = {
+//     '--dropdown-bg-color': theme.colors.white,
+//     '--dropdown-text-color': theme.colors.gray['700'],
+//     '--dropdown-border-color': theme.colors.gray['300'],
+//     '--dropdown-hover-bg-color': theme.colors.gray['100'],
+//     '--dropdown-focus-ring-color': theme.colors.primary.DEFAULT,
+//   } as React.CSSProperties;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -86,7 +86,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   }, []);
 
   return (
-    <div className={dropdownVariants({ width, className })} ref={dropdownRef} {...props} style={customStyles}>
+    <div className={dropdownVariants({ width, className })} ref={dropdownRef} {...props}>
       <div>
         <button 
           type="button" 
@@ -110,10 +110,6 @@ export const Dropdown: React.FC<DropdownProps> = ({
         role="menu" 
         aria-orientation="vertical" 
         aria-labelledby="options-menu"
-        style={{
-          backgroundColor: 'var(--dropdown-bg-color)',
-          borderColor: 'var(--dropdown-border-color)',
-        }}
       >
         <div className="py-1" role="none">
           {items.map((item, index) => (
@@ -123,7 +119,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 item.onClick();
                 setIsOpen(false);
               }}
-              className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
+              className="block w-full text-left bg-backgroundPrimary px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
               role="menuitem"
               style={{
                 color: 'var(--dropdown-text-color)',

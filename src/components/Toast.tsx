@@ -46,9 +46,9 @@ export const Toast: React.FC<ToastProps> = ({
   const { theme } = useTheme();
 
   const customStyles = {
-    '--toast-bg-color': theme.colors[variant || 'info']['500'],
-    '--toast-text-color': theme.colors.white,
-    '--toast-icon-color': theme.colors.white,
+    '--toast-bg-color': theme.colors.backgroundSecondary,
+    '--toast-text-color': theme.colors.textPrimary,
+    '--toast-icon-color': theme.colors.warning,
   } as React.CSSProperties;
 
   useEffect(() => {

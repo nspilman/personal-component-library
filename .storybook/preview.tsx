@@ -1,8 +1,24 @@
 import type { Preview } from "@storybook/react";
 import "../src/app/globals.css";
 import React from "react";
-import { ThemeProvider } from "../src/theme/ThemeProvider";
+import { ThemeProvider, useTheme } from "../src/theme/ThemeProvider";
 import { darkTheme } from "../src/theme/darkTheme";
+
+const ThemedDecorator = ({children}:{ children: React.ReactElement}) => {
+  const { theme } = useTheme();
+  
+  return (
+    <div 
+      style={{ 
+        backgroundColor: theme.colors.backgroundPrimary,
+        color: theme.colors.textPrimary,
+      }}
+      className="w-full p-8"
+    >
+      {children}
+    </div>
+  );
+};
 
 const preview: Preview = {
   parameters: {
@@ -16,9 +32,9 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <ThemeProvider initialTheme={darkTheme}>
-        <div className="w-full p-8 bg-black">
-          <Story />
-        </div>
+        <ThemedDecorator >
+          <Story/>
+          </ThemedDecorator>
       </ThemeProvider>
     ),
   ],

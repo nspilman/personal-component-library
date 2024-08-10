@@ -28,17 +28,11 @@ export interface DividerProps extends React.HTMLAttributes<HTMLHRElement>, Varia
 export const Divider: React.FC<DividerProps> = ({ className, color, thickness, ...props }) => {
   const { theme } = useTheme();
 
-  const customStyles = {
-    '--divider-color-light': theme.colors.gray['200'],
-    '--divider-color-dark': theme.colors.gray['700'],
-  } as React.CSSProperties;
-
   return (
     <hr 
       className={dividerVariants({ color, thickness, className })} 
       style={{
-        ...customStyles,
-        borderColor: color === 'light' ? 'var(--divider-color-light)' : 'var(--divider-color-dark)',
+        borderColor: theme.colors.borderHeavy
       }}
       {...props} 
     />

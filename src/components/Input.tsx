@@ -31,13 +31,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
     const customStyles = {
-      '--input-border-color': theme.colors.gray['300'],
-      '--input-focus-ring-color': theme.colors.primary.DEFAULT,
-      '--input-text-color': theme.colors.gray['900'],
-      '--input-placeholder-color': theme.colors.gray['400'],
-      '--label-text-color': theme.colors.gray['700'],
-      '--helper-text-color': theme.colors.gray['500'],
-    } as React.CSSProperties;
+        '--input-border-color': theme.colors.borderLight,
+        '--input-focus-ring-color': theme.colors.primary,
+        '--input-text-color': theme.colors.textPrimary,
+        '--input-placeholder-color': theme.colors.textTertiary,
+        '--label-text-color': theme.colors.textSecondary,
+        '--helper-text-color': theme.colors.textTertiary,
+      } as React.CSSProperties;
 
     return (
       <div className="w-full" style={customStyles}>

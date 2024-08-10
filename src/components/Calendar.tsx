@@ -11,14 +11,7 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date(), o
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const { theme } = useTheme();
 
-  const customStyles = {
-    '--calendar-bg-color': theme.colors.white,
-    '--calendar-text-color': theme.colors.gray['700'],
-    '--calendar-selected-bg-color': theme.colors.primary.DEFAULT,
-    '--calendar-selected-text-color': theme.colors.white,
-    '--calendar-today-bg-color': theme.colors.gray['100'],
-    '--calendar-hover-bg-color': theme.colors.gray['200'],
-  } as React.CSSProperties;
+
 
   const daysInMonth = eachDayOfInterval({
     start: startOfMonth(currentMonth),
@@ -30,7 +23,7 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date(), o
   };
 
   return (
-    <div className="w-64" style={{ ...customStyles, backgroundColor: 'var(--calendar-bg-color)', color: 'var(--calendar-text-color)' }}>
+    <div className="w-64" style={{ backgroundColor: 'var(--calendar-bg-color)', color: 'var(--calendar-text-color)' }}>
       <div className="flex justify-between items-center mb-4">
         <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>&lt;</button>
         <h2 className="text-lg font-semibold">{format(currentMonth, 'MMMM yyyy')}</h2>

@@ -40,7 +40,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     // Custom styles that depend on the theme
     const customStyles = {
-      '--button-focus-ring-offset-color': theme.colors.gray['100'],
+      '--button-focus-ring-offset-color': theme.colors.backgroundTertiary,
     } as React.CSSProperties;
 
     return (

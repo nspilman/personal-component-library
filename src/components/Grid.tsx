@@ -38,7 +38,7 @@ export const Grid = React.forwardRef<HTMLDivElement, GridProps>(
     const { theme } = useTheme();
 
     const customStyles = {
-      '--grid-gap-color': theme.colors.gray['200'],
+      '--grid-gap-color': theme.colors.borderMedium
     } as React.CSSProperties;
 
     return (

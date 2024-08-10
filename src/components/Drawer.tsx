@@ -42,12 +42,12 @@ export const Drawer: React.FC<DrawerProps> = ({
   const drawerRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
 
-  const customStyles = {
-    '--drawer-bg-color': theme.colors.white,
-    '--drawer-text-color': theme.colors.gray['700'],
-    '--drawer-close-button-color': theme.colors.gray['500'],
-    '--drawer-close-button-hover-color': theme.colors.gray['700'],
-  } as React.CSSProperties;
+//   const customStyles = {
+//     '--drawer-bg-color': theme.colors.backgroundPrimary,
+//     '--drawer-text-color': theme.colors.gray['700'],
+//     '--drawer-close-button-color': theme.colors.gray['500'],
+//     '--drawer-close-button-hover-color': theme.colors.gray['700'],
+//   } as React.CSSProperties;
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -82,11 +82,11 @@ export const Drawer: React.FC<DrawerProps> = ({
         ref={drawerRef}
         className={drawerVariants({ position, size, className })}
         style={{
-          ...customStyles,
-          backgroundColor: 'var(--drawer-bg-color)',
-          color: 'var(--drawer-text-color)',
+        //   ...customStyles,
+          backgroundColor: theme.colors.backgroundPrimary,
+          color: theme.colors.backgroundPrimary,
           transform: isOpen ? 'translateX(0)' : `translateX(${position === 'left' ? '-100%' : '100%'})`,
-          zIndex: theme.zIndex['50'],
+          zIndex: theme.zIndex.zIndexDropdown
         }}
         {...props}
       >

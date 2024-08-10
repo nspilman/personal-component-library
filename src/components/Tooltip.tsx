@@ -34,11 +34,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
-  const { theme } = useTheme();
+  const {theme}  = useTheme();
 
   const customStyles = {
-    '--tooltip-bg-color': theme.colors.gray['900'],
-    '--tooltip-text-color': theme.colors.white,
+    '--tooltip-bg-color': theme.colors.backgroundSecondary,
+    '--tooltip-text-color': theme.colors.textPrimary,
   } as React.CSSProperties;
 
   useEffect(() => {
