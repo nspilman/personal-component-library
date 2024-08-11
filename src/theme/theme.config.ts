@@ -2,6 +2,9 @@
 
 import colors from "tailwindcss/colors";
 
+type DefaultColors = typeof colors;
+type ColorValue = string | DefaultColors[keyof DefaultColors];
+
 export const themeConfig = {
   colors: {
     // Base Colors
@@ -86,10 +89,17 @@ export const themeConfig = {
     zIndexPopover: 1060,
     zIndexTooltip: 1070,
   },
-};
+} as const;
 
 // Type for the theme configuration
-export type ThemeConfig = typeof themeConfig;
+export type ThemeConfig = {
+  colors: { [K in keyof typeof themeConfig['colors']]: ColorValue };
+  shadows: { [K in keyof typeof themeConfig['shadows']]: string };
+  spacing: { [K in keyof typeof themeConfig['spacing']]: string };
+  fonts: { [K in keyof typeof themeConfig['fonts']]: string | number };
+  borderRadius: { [K in keyof typeof themeConfig['borderRadius']]: string };
+  zIndex: { [K in keyof typeof themeConfig['zIndex']]: number };
+};
 
 // Helper type to access nested properties
 export type NestedKeyOf<ObjectType extends object> =
