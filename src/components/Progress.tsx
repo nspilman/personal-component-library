@@ -19,9 +19,9 @@ const barVariants = cva('h-full rounded-full transition-all duration-300 ease-in
   variants: {
     variant: {
       default: 'bg-primary',
-      success: 'bg-green-500',
-      warning: 'bg-yellow-500',
-      error: 'bg-red-500',
+      success: 'bg-success',
+      warning: 'bg-warning',
+      error: 'bg-error',
     },
   },
   defaultVariants: {
@@ -47,22 +47,17 @@ export const Progress: React.FC<ProgressProps> = ({
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
   const { theme } = useTheme();
 
-  const customStyles = {
-    '--progress-bg-color': theme.colors.backgroundSecondary,
-    '--progress-bar-color': theme.colors.primary,
-    '--progress-text-color': theme.colors.textPrimary
-  } as React.CSSProperties;
+  
 
   return (
-    <div className="w-full" style={customStyles}>
+    <div className="w-full">
       <div 
         className={progressVariants({ size, className })} 
-        style={{ backgroundColor: 'var(--progress-bg-color)' }}
         {...props}
       >
         <div 
           className={barVariants({ variant })}
-          style={{ width: `${percentage}%`, backgroundColor: 'var(--progress-bar-color)' }}
+          style={{ width: `${percentage}%`}}
           role="progressbar"
           aria-valuenow={value}
           aria-valuemin={0}
@@ -70,7 +65,7 @@ export const Progress: React.FC<ProgressProps> = ({
         />
       </div>
       {showLabel && (
-        <div className="mt-1 text-sm" style={{ color: 'var(--progress-text-color)' }}>
+        <div className="mt-1 text-sm" >
           {percentage.toFixed(0)}%
         </div>
       )}

@@ -1,6 +1,29 @@
 import React, { useState } from 'react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay } from 'date-fns';
-import { useTheme } from '../theme/ThemeProvider';
+import { cva } from 'class-variance-authority';
+
+
+const calendarButton = cva('p-2 text-center text-textPrimary hover:text-textPrimary', {
+  variants: {
+    isCurrentMonth: {
+      true: '',
+      false: 'text-textSecondary',
+    },
+    isSelected: {
+      true: 'bg-primary text-white',
+      false: '',
+    },
+    isToday: {
+      true: ' text-primary border-2 rounded-full border-heavy p-0',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    isCurrentMonth: true,
+    isSelected: false,
+    isToday: false,
+  },
+});
 
 export interface CalendarProps {
   selectedDate?: Date;
@@ -9,9 +32,6 @@ export interface CalendarProps {
 
 export const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date(), onDateSelect }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const { theme } = useTheme();
-
-
 
   const daysInMonth = eachDayOfInterval({
     start: startOfMonth(currentMonth),
@@ -23,7 +43,7 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date(), o
   };
 
   return (
-    <div className="w-64" style={{ backgroundColor: 'var(--calendar-bg-color)', color: 'var(--calendar-text-color)' }}>
+    <div className='w-64'>
       <div className="flex justify-between items-center mb-4">
         <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>&lt;</button>
         <h2 className="text-lg font-semibold">{format(currentMonth, 'MMMM yyyy')}</h2>
@@ -36,20 +56,12 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date(), o
         {daysInMonth.map(day => (
           <button
             key={day.toString()}
-            className={`p-2 text-center ${
-              !isSameMonth(day, currentMonth) ? 'text-gray-300' :
-              isSameDay(day, selectedDate) ? 'bg-primary text-white' : ''
-            }`}
+            className={calendarButton({
+              isCurrentMonth: isSameMonth(day, currentMonth),
+              isSelected: isSameDay(day, selectedDate),
+              isToday: isSameDay(day, new Date()),
+            })}
             onClick={() => handleDateClick(day)}
-            style={{
-              backgroundColor: isSameDay(day, selectedDate) ? 'var(--calendar-selected-bg-color)' : 
-                               isSameDay(day, new Date()) ? 'var(--calendar-today-bg-color)' : 'transparent',
-              color: isSameDay(day, selectedDate) ? 'var(--calendar-selected-text-color)' : 
-                     !isSameMonth(day, currentMonth) ? 'var(--calendar-text-color)' : 'inherit',
-              ':hover': {
-                backgroundColor: 'var(--calendar-hover-bg-color)',
-              },
-            }}
           >
             {format(day, 'd')}
           </button>

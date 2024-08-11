@@ -8,10 +8,10 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        success: 'bg-green-500',
-        error: 'bg-red-500',
-        warning: 'bg-yellow-500',
-        info: 'bg-blue-500',
+        success: 'bg-success',
+        error: 'bg-error',
+        warning: 'bg-warning',
+        info: 'bg-info',
       },
       position: {
         'top-right': 'top-4 right-4',
@@ -73,11 +73,6 @@ export const Toast: React.FC<ToastProps> = ({
     <div 
       className={toastVariants({ variant, position, className })} 
       role="alert" 
-      style={{
-        ...customStyles,
-        backgroundColor: 'var(--toast-bg-color)',
-        color: 'var(--toast-text-color)',
-      }}
       {...props}
     >
       <IconComponent className="w-5 h-5 mr-2" style={{ color: 'var(--toast-icon-color)' }} />

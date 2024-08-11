@@ -11,8 +11,8 @@ const buttonVariants = cva(
       variant: {
         primary: 'bg-primary text-white hover:bg-primary-dark focus-visible:ring-primary',
         secondary: 'bg-secondary text-white hover:bg-secondary-dark focus-visible:ring-secondary',
-        ghost: 'bg-transparent hover:bg-gray-100 text-gray-900 focus-visible:ring-gray-500',
-        danger: 'bg-error text-white hover:bg-red-700 focus-visible:ring-red-500',
+        ghost: 'bg-transparent hover:bg-backgroundSecondary text-textPrimary focus-visible:ring-gray-500',
+        danger: 'bg-error text-white hover:bg-error focus-visible:ring-error',
       },
       size: {
         sm: 'h-8 px-3 text-sm',
@@ -38,16 +38,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, leftIcon, rightIcon, children, ...props }, ref) => {
     const { theme } = useTheme();
 
-    // Custom styles that depend on the theme
-    const customStyles = {
-      '--button-focus-ring-offset-color': theme.colors.backgroundTertiary,
-    } as React.CSSProperties;
+
 
     return (
       <button
         className={buttonVariants({ variant, size, className })}
         ref={ref}
-        style={customStyles}
         {...props}
       >
         {leftIcon && <span className="mr-2">{leftIcon}</span>}

@@ -1,7 +1,5 @@
 // tailwind.config.js
 
-const colors = require('tailwindcss/colors')
-const { themeConfig } = require("./src/theme/theme.config")
 
 module.exports = {
   content: [
@@ -24,7 +22,9 @@ module.exports = {
         backgroundTertiary: 'var(--colors-backgroundTertiary)',
         backgroundInverse: 'var(--colors-backgroundInverse)',
         warning: 'var(--colors-warning)',
-        // ... add all other color variables
+        success: 'var(--colors-success)',
+        error: 'var(--colors-error)',
+        info: 'var(--colors-info)',
       },
       boxShadow: {
         shadowSmall: 'var(--shadow-shadowSmall)',

@@ -32,7 +32,7 @@ export const darkTheme: ThemeConfig = {
     interactiveFocus: colors.blue[400],
 
     // Feedback
-    success: colors.emerald[500],
+    success: colors.emerald[600],
     warning: colors.yellow[200],
     error: colors.red[500],
     info: colors.blue[400],

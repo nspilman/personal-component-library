@@ -8,8 +8,8 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        info: 'bg-blue-100 text-blue-800',
-        success: 'bg-green-100 text-green-800',
+        info: 'bg-info text-tertiary',
+        success: 'bg-success text-textPrimary',
         warning: 'bg-yellow-100 text-yellow-800',
         error: 'bg-red-100 text-red-800',
       },
@@ -55,21 +55,11 @@ export const Alert: React.FC<AlertProps> = ({
     error: XCircle,
   }[variant || 'info'];
 
-  const customStyles = {
-    '--alert-bg-color': theme.colors.backgroundSecondary,
-    '--alert-text-color': theme.colors.textPrimary,
-    '--alert-icon-color': theme.colors.warning
-  } as React.CSSProperties;
 
   return (
     <div 
       className={alertVariants({ variant, className })} 
       role="alert" 
-      style={{
-        ...customStyles,
-        backgroundColor: 'var(--alert-bg-color)',
-        color: 'var(--alert-text-color)',
-      }}
       {...props}
     >
       <IconComponent className={iconVariants({ variant })} style={{ color: 'var(--alert-icon-color)' }} />

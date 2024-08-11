@@ -3,6 +3,7 @@ import "../src/app/globals.css";
 import React from "react";
 import { ThemeProvider, useTheme } from "../src/theme/ThemeProvider";
 import { darkTheme } from "../src/theme/darkTheme";
+import { themeConfig } from "../src/theme/theme.config";
 
 const ThemedDecorator = ({children}:{ children: React.ReactElement}) => {
   const { theme } = useTheme();
@@ -31,7 +32,7 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <ThemeProvider initialTheme={darkTheme}>
+      <ThemeProvider initialTheme={themeConfig}>
         <ThemedDecorator >
           <Story/>
           </ThemedDecorator>

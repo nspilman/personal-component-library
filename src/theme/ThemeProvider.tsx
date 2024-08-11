@@ -29,7 +29,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
   initialTheme = defaultThemeConfig,
 }) => {
-  const [theme, setTheme] = useState<ThemeConfig>(darkTheme);
+  const [theme, setTheme] = useState<ThemeConfig>(initialTheme);
 
   useEffect(() => {
     const styleElement = document.createElement('style');
