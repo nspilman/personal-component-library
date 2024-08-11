@@ -1,5 +1,6 @@
 // src/theme/darkTheme.ts
 
+import colors from 'tailwindcss/colors';
 import { ThemeConfig, themeConfig as baseTheme } from './theme.config';
 
 export const darkTheme: ThemeConfig = {
@@ -7,39 +8,39 @@ export const darkTheme: ThemeConfig = {
   colors: {
     ...baseTheme.colors,
     // Base Colors
-    primary: '#60A5FA',
-    secondary: '#34D399',
-    tertiary: '#A78BFA',
-    neutral: '#9CA3AF',
+    primary: colors.blue[400],
+    secondary: colors.emerald[400],
+    tertiary: colors.violet[400],
+    neutral: colors.gray[400],
 
     // Text
-    textPrimary: '#F9FAFB',
-    textSecondary: '#E5E7EB',
-    textTertiary: '#D1D5DB',
-    textInverse: '#1F2937',
+    textPrimary: colors.gray[50],
+    textSecondary: colors.gray[200],
+    textTertiary: colors.gray[300],
+    textInverse: colors.gray[800],
 
     // Background
-    backgroundPrimary: '#1F2937',
-    backgroundSecondary: '#374151',
-    backgroundTertiary: '#4B5563',
-    backgroundInverse: '#F9FAFB',
+    backgroundPrimary: colors.gray[800],
+    backgroundSecondary: colors.gray[700],
+    backgroundTertiary: colors.gray[600],
+    backgroundInverse: colors.gray[50],
 
     // Interactive
-    interactiveDefault: '#60A5FA',
-    interactiveHover: '#3B82F6',
-    interactiveActive: '#2563EB',
-    interactiveFocus: '#60A5FA',
+    interactiveDefault: colors.blue[400],
+    interactiveHover: colors.blue[500],
+    interactiveActive: colors.blue[600],
+    interactiveFocus: colors.blue[400],
 
     // Feedback
-    success: '#10B981',
-    warning: '#F59E0B',
-    error: '#EF4444',
-    info: '#60A5FA',
+    success: colors.emerald[500],
+    warning: colors.yellow[200],
+    error: colors.red[500],
+    info: colors.blue[400],
 
     // Border
-    borderLight: '#4B5563',
-    borderMedium: '#6B7280',
-    borderHeavy: '#9CA3AF',
+    borderLight: colors.gray[600],
+    borderMedium: colors.gray[500],
+    borderHeavy: colors.gray[400],
   },
 
   shadows: {

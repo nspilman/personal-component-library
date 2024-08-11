@@ -1,18 +1,17 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
 const badgeVariants = cva(
   'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
   {
     variants: {
       variant: {
-        default: 'bg-gray-100 text-gray-800',
+        default: 'bg-gray-100 text-textSecondary',
         primary: 'bg-primary-100 text-primary-800',
         secondary: 'bg-secondary-100 text-secondary-800',
-        success: 'bg-green-100 text-green-800',
-        warning: 'bg-yellow-100 text-yellow-800',
-        danger: 'bg-red-100 text-red-800',
+        success: 'bg-success text-green-800',
+        warning: 'bg-warning text-yellow-800',
+        danger: 'bg-red-100 text-textInverse',
       },
       outline: {
         true: 'bg-transparent border',
@@ -47,7 +46,7 @@ const badgeVariants = cva(
       {
         variant: 'danger',
         outline: true,
-        class: 'border-red-300 text-red-800',
+        class: 'border-red-300',
       },
     ],
     defaultVariants: {
@@ -70,34 +69,13 @@ export const Badge: React.FC<BadgeProps> = ({
   children,
   ...props
 }) => {
-  const { theme } = useTheme();
 
-  const getCustomStyles = () => {
-    const baseColor = variant === 'default' ? 'gray' : 
-                      variant === 'primary' ? 'primary' :
-                      variant === 'secondary' ? 'secondary' :
-                      variant === 'success' ? 'green' :
-                      variant === 'warning' ? 'yellow' :
-                      variant === 'danger' ? 'red' : 'gray';
 
-    return {
-      '--badge-bg-color': theme.colors.backgroundSecondary,
-      '--badge-text-color': theme.colors.textPrimary,
-      '--badge-border-color': theme.colors.borderMedium
-    } as React.CSSProperties;
-  };
-
-  const customStyles = getCustomStyles();
 
   return (
     <span 
       className={badgeVariants({ variant, outline, className })} 
-      style={{
-        ...customStyles,
-        backgroundColor: outline ? 'transparent' : 'var(--badge-bg-color)',
-        color: 'var(--badge-text-color)',
-        borderColor: outline ? 'var(--badge-border-color)' : 'transparent',
-      }}
+  
       {...props}
     >
       {children}

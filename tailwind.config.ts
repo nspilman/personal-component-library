@@ -23,6 +23,7 @@ module.exports = {
         backgroundSecondary: 'var(--colors-backgroundSecondary)',
         backgroundTertiary: 'var(--colors-backgroundTertiary)',
         backgroundInverse: 'var(--colors-backgroundInverse)',
+        warning: 'var(--colors-warning)',
         // ... add all other color variables
       },
       boxShadow: {

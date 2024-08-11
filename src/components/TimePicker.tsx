@@ -8,15 +8,6 @@ export interface TimePickerProps {
 
 export const TimePicker: React.FC<TimePickerProps> = ({ value = '', onChange }) => {
   const [time, setTime] = useState(value);
-  const { theme } = useTheme();
-
-  const customStyles = {
-    '--timepicker-border-color': theme.colors.borderMedium,
-    '--timepicker-focus-border-color': theme.colors.borderHeavy,
-    '--timepicker-focus-ring-color': theme.colors.primary,
-    '--timepicker-text-color': theme.colors.textInverse,
-    '--timepicker-placeholder-color': theme.colors.textSecondary,
-  } as React.CSSProperties;
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTime(e.target.value);
@@ -28,17 +19,13 @@ export const TimePicker: React.FC<TimePickerProps> = ({ value = '', onChange }) 
       type="time"
       value={time}
       onChange={handleTimeChange}
-      className="px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1"
-      style={{
-        ...customStyles,
-        borderColor: 'var(--timepicker-border-color)',
-        color: 'var(--timepicker-text-color)',
-        '::placeholder': { color: 'var(--timepicker-placeholder-color)' },
-        ':focus': {
-          borderColor: 'var(--timepicker-focus-border-color)',
-          boxShadow: `0 0 0 1px var(--timepicker-focus-ring-color)`,
-        },
-      }}
+      className={`px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1
+        border-borderMedium
+        text-textInverse
+        placeholder-textSecondary
+        focus:border-borderHeavy
+        focus:ring-primary
+      `}
     />
   );
 };

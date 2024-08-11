@@ -1,41 +1,43 @@
 // src/theme/theme.config.ts
 
+import colors from "tailwindcss/colors";
+
 export const themeConfig = {
   colors: {
     // Base Colors
-    primary: '#3B82F6',
-    secondary: '#10B981',
-    tertiary: '#8B5CF6',
-    neutral: '#6B7280',
+    primary: colors.blue[500],
+    secondary: colors.emerald[500],
+    tertiary: colors.violet[500],
+    neutral: colors.gray[500],
 
     // Text
-    textPrimary: '#1F2937',
-    textSecondary: '#4B5563',
-    textTertiary: '#9CA3AF',
-    textInverse: '#FFFFFF',
+    textPrimary: colors.gray[800],
+    textSecondary: colors.gray[600],
+    textTertiary: colors.gray[400],
+    textInverse: colors.white,
 
     // Background
-    backgroundPrimary: '#FFFFFF',
-    backgroundSecondary: '#F3F4F6',
-    backgroundTertiary: '#E5E7EB',
-    backgroundInverse: '#1F2937',
+    backgroundPrimary: colors.white,
+    backgroundSecondary: colors.gray[100],
+    backgroundTertiary: colors.gray[200],
+    backgroundInverse: colors.gray[800],
 
     // Interactive
-    interactiveDefault: '#3B82F6',
-    interactiveHover: '#2563EB',
-    interactiveActive: '#1D4ED8',
-    interactiveFocus: '#3B82F6',
+    interactiveDefault: colors.blue[500],
+    interactiveHover: colors.blue[600],
+    interactiveActive: colors.blue[700],
+    interactiveFocus: colors.blue[500],
 
     // Feedback
-    success: '#10B981',
-    warning: '#F59E0B',
-    error: '#EF4444',
-    info: '#3B82F6',
+    success: colors.emerald[500],
+    warning: colors.yellow[400],
+    error: colors.red[500],
+    info: colors.blue[500],
 
     // Border
-    borderLight: '#E5E7EB',
-    borderMedium: '#D1D5DB',
-    borderHeavy: '#9CA3AF',
+    borderLight: colors.gray[200],
+    borderMedium: colors.gray[300],
+    borderHeavy: colors.gray[400],
   },
 
   shadows: {
