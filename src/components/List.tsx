@@ -11,9 +11,14 @@ const listVariants = cva(
         ordered: 'pl-8',
         none: '',
       },
+      theme: {
+        light: 'text-textPrimary',
+        dark: 'text-textPrimary',
+      },
     },
     defaultVariants: {
       variant: 'unordered',
+      theme: 'light',
     },
   }
 );
@@ -23,11 +28,17 @@ const listItemVariants = cva(
   {
     variants: {
       variant: {
-        unordered: 'before:content-["•"] before:mr-2 before:text-gray-500',
+        unordered: 'before:mr-2 before:text-textSecondary',
         ordered: '',
         none: '',
       },
     },
+    compoundVariants: [
+      {
+        variant: 'unordered',
+        className: 'before:content-["•"]',
+      },
+    ],
     defaultVariants: {
       variant: 'unordered',
     },
@@ -38,25 +49,18 @@ export interface ListProps extends React.HTMLAttributes<HTMLUListElement | HTMLO
   items: React.ReactNode[];
 }
 
-export const List: React.FC<ListProps> = ({ className, variant, items, ...props }) => {
+export const List: React.FC<ListProps> = ({ className, variant, theme, items, ...props }) => {
   const ListComponent = variant === 'ordered' ? 'ol' : 'ul';
-  const { theme } = useTheme();
+  const { theme: themeContext } = useTheme();
 
-  const customStyles = {
-    '--list-text-color': theme.colors.textPrimary,
-    '--list-bullet-color': theme.colors.textSecondary,
-  } as React.CSSProperties;
+  const currentTheme = theme || themeContext;
 
   return (
-    <ListComponent className={listVariants({ variant, className })} style={customStyles} {...props}>
+    <ListComponent className={listVariants({ variant, className })} {...props}>
       {items.map((item, index) => (
         <li 
           key={index} 
           className={listItemVariants({ variant })}
-          style={{ 
-            color: 'var(--list-text-color)',
-            '::before': { color: 'var(--list-bullet-color)' }
-          }}
         >
           {item}
         </li>

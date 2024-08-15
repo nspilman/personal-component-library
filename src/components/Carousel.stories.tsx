@@ -17,9 +17,9 @@ export default meta;
 type Story = StoryObj<typeof Carousel>;
 
 const slides = [
-  <div key="1" className="bg-red-500 h-64 flex items-center justify-center text-white text-2xl">Slide 1</div>,
-  <div key="2" className="bg-blue-500 h-64 flex items-center justify-center text-white text-2xl">Slide 2</div>,
-  <div key="3" className="bg-green-500 h-64 flex items-center justify-center text-white text-2xl">Slide 3</div>,
+  <div key="1" className="bg-backgroundSecondary h-64 flex items-center justify-center text-textPrimary text-2xl">Slide 1</div>,
+  <div key="2" className="bg-backgroundTertiary h-64 flex items-center justify-center text-textPrimary text-2xl">Slide 2</div>,
+  <div key="3" className="bg-backgroundInverse h-64 flex items-center justify-center text-textInverse text-2xl">Slide 3</div>,
 ];
 
 export const Default: Story = {

@@ -3,7 +3,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ThemeConfig, themeConfig as defaultThemeConfig } from './theme.config';
 import { generateCssVariables } from './generateCssVariables';
-import { darkTheme } from './darkTheme';
 
 interface ThemeContextType {
   theme: ThemeConfig;

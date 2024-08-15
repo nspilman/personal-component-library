@@ -2,7 +2,7 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { useTheme } from '../theme/ThemeProvider';
 
-const gridVariants = cva('grid', {
+const gridVariants = cva('grid border-black bg-white', {
   variants: {
     cols: {
       1: 'grid-cols-1',
@@ -37,18 +37,11 @@ export const Grid = React.forwardRef<HTMLDivElement, GridProps>(
   ({ className, cols, gap, responsive, ...props }, ref) => {
     const { theme } = useTheme();
 
-    const customStyles = {
-      '--grid-gap-color': theme.colors.borderMedium
-    } as React.CSSProperties;
 
     return (
       <div 
         className={gridVariants({ cols, gap, responsive, className })}
         ref={ref}
-        style={{
-          ...customStyles,
-          gap: `var(--grid-gap-${gap})`,
-        }}
         {...props}
       />
     );

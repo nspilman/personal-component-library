@@ -1,8 +1,27 @@
 import React from 'react';
 import { Star } from 'lucide-react';
-import { useTheme } from '../theme/ThemeProvider';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-export interface RatingProps {
+const ratingContainerVariants = cva('flex');
+
+const starVariants = cva('', {
+  variants: {
+    isActive: {
+      true: 'text-warning fill-current',
+      false: 'text-interactiveActive',
+    },
+    isReadOnly: {
+      true: 'cursor-default',
+      false: 'cursor-pointer',
+    },
+  },
+  defaultVariants: {
+    isActive: false,
+    isReadOnly: false,
+  },
+});
+
+export interface RatingProps extends VariantProps<typeof ratingContainerVariants> {
   value: number;
   onChange?: (value: number) => void;
   max?: number;
@@ -15,13 +34,6 @@ export const Rating: React.FC<RatingProps> = ({
   max = 5,
   readOnly = false,
 }) => {
-  const { theme } = useTheme();
-
-  const customStyles = {
-    '--star-color': theme.colors.warning,
-    '--star-inactive-color': theme.colors.interactiveActive,
-  } as React.CSSProperties;
-
   const handleClick = (newValue: number) => {
     if (!readOnly && onChange) {
       onChange(newValue);
@@ -29,18 +41,16 @@ export const Rating: React.FC<RatingProps> = ({
   };
 
   return (
-    <div className="flex" style={customStyles}>
+    <div className={ratingContainerVariants()}>
       {[...Array(max)].map((_, index) => (
         <Star
           key={index}
           size={24}
-          className={`cursor-pointer ${
-            index < value ? 'text-yellow-400 fill-current' : 'text-gray-300'
-          } ${readOnly ? 'cursor-default' : ''}`}
+          className={starVariants({ 
+            isActive: index < value, 
+            isReadOnly: readOnly 
+          })}
           onClick={() => handleClick(index + 1)}
-          style={{
-            color: index < value ? 'var(--star-color)' : 'var(--star-inactive-color)',
-          }}
         />
       ))}
     </div>

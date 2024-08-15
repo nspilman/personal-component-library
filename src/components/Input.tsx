@@ -7,16 +7,58 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        default: 'border-gray-300 focus-visible:ring-primary',
-        success: 'border-green-500 focus-visible:ring-green-500',
-        error: 'border-red-500 focus-visible:ring-red-500',
+        default: 'border-borderLight focus-visible:ring-primary text-textPrimary placeholder:text-textTertiary',
+        success: 'border-success focus-visible:ring-success text-textPrimary placeholder:text-textTertiary',
+        error: 'border-error focus-visible:ring-error text-textPrimary placeholder:text-textTertiary',
+      },
+      theme: {
+        light: '',
+        dark: '',
       },
     },
+    compoundVariants: [
+      {
+        theme: 'dark',
+        variant: 'default',
+        className: 'border-borderLight focus-visible:ring-primary text-textPrimary placeholder:text-textTertiary',
+      },
+    ],
     defaultVariants: {
       variant: 'default',
+      theme: 'light',
     },
   }
 );
+
+const labelVariants = cva('block text-sm font-medium mb-1', {
+  variants: {
+    theme: {
+      light: 'text-textSecondary',
+      dark: 'text-textSecondary',
+    },
+  },
+  defaultVariants: {
+    theme: 'light',
+  },
+});
+
+const helperTextVariants = cva('mt-1 text-sm', {
+  variants: {
+    variant: {
+      default: 'text-textTertiary',
+      success: 'text-success',
+      error: 'text-error',
+    },
+    theme: {
+      light: '',
+      dark: '',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    theme: 'light',
+  },
+});
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
@@ -26,23 +68,16 @@ export interface InputProps
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant, label, helperText, id, ...props }, ref) => {
-    const { theme } = useTheme();
+  ({ className, variant, theme, label, helperText, id, ...props }, ref) => {
+    const { theme: themeContext } = useTheme();
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
-    const customStyles = {
-        '--input-border-color': theme.colors.borderLight,
-        '--input-focus-ring-color': theme.colors.primary,
-        '--input-text-color': theme.colors.textPrimary,
-        '--input-placeholder-color': theme.colors.textTertiary,
-        '--label-text-color': theme.colors.textSecondary,
-        '--helper-text-color': theme.colors.textTertiary,
-      } as React.CSSProperties;
+    const currentTheme = theme || themeContext;
 
     return (
-      <div className="w-full" style={customStyles}>
+      <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="block text-sm font-medium mb-1" style={{ color: 'var(--label-text-color)' }}>
+          <label htmlFor={inputId} className={labelVariants()}>
             {label}
           </label>
         )}
@@ -50,15 +85,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           className={inputVariants({ variant, className })}
           ref={ref}
-          style={{
-            borderColor: 'var(--input-border-color)',
-            color: 'var(--input-text-color)',
-            '::placeholder': { color: 'var(--input-placeholder-color)' },
-          }}
           {...props}
         />
         {helperText && (
-          <p className={`mt-1 text-sm ${variant === 'error' ? 'text-red-500' : ''}`} style={{ color: 'var(--helper-text-color)' }}>
+          <p className={helperTextVariants({ variant })}>
             {helperText}
           </p>
         )}

@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
+
+const tooltipContainerVariants = cva('relative inline-block');
 
 const tooltipVariants = cva(
-  'absolute z-10 px-3 py-2 text-sm font-medium text-white rounded-lg shadow-sm',
+  'absolute z-10 px-3 py-2 text-sm font-medium rounded-lg shadow-sm bg-backgroundSecondary text-textPrimary',
   {
     variants: {
       position: {
@@ -34,12 +35,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
-  const {theme}  = useTheme();
-
-  const customStyles = {
-    '--tooltip-bg-color': theme.colors.backgroundSecondary,
-    '--tooltip-text-color': theme.colors.textPrimary,
-  } as React.CSSProperties;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -58,7 +53,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const handleMouseLeave = () => setIsVisible(false);
 
   return (
-    <div className="relative inline-block">
+    <div className={tooltipContainerVariants()}>
       {React.cloneElement(children, {
         ref: triggerRef,
         onMouseEnter: handleMouseEnter,
@@ -69,11 +64,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
           ref={tooltipRef}
           className={tooltipVariants({ position, className })}
           role="tooltip"
-          style={{
-            ...customStyles,
-            backgroundColor: 'var(--tooltip-bg-color)',
-            color: 'var(--tooltip-text-color)',
-          }}
           {...props}
         >
           {content}

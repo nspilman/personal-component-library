@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
 import { ChevronRight, ChevronDown } from 'lucide-react';
-import { useTheme } from '../theme/ThemeProvider';
+import { cva, type VariantProps } from 'class-variance-authority';
 
 export interface TreeNode {
   id: string;
   label: string;
   children?: TreeNode[];
 }
+
+const treeNodeContainerVariants = cva('ml-4');
+
+const treeNodeItemVariants = cva('flex items-center hover:bg-backgroundPrimary rounded p-1');
+
+const treeNodeButtonVariants = cva('mr-1');
+
+const treeNodeLabelVariants = cva('text-textPrimary');
+
+const treeViewContainerVariants = cva('border border-borderHeavy p-4 rounded-md');
 
 interface TreeNodeProps {
   node: TreeNode;
@@ -15,29 +25,22 @@ interface TreeNodeProps {
 
 const TreeNodeComponent: React.FC<TreeNodeProps> = ({ node, level }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const {theme} = useTheme();
-
-  const customStyles = {
-    '--tree-text-color': theme.colors.textPrimary,
-    '--tree-icon-color': theme.colors.backgroundTertiary,
-    '--tree-hover-bg-color': theme.colors.backgroundPrimary,
-  } as React.CSSProperties;
 
   const hasChildren = node.children && node.children.length > 0;
 
   return (
-    <div className="ml-4" style={customStyles}>
-      <div className="flex items-center hover:bg-gray-100 rounded p-1" style={{ backgroundColor: 'var(--tree-hover-bg-color)' }}>
+    <div className={treeNodeContainerVariants()}>
+      <div className={treeNodeItemVariants()}>
         {hasChildren && (
-          <button onClick={() => setIsOpen(!isOpen)} className="mr-1">
+          <button onClick={() => setIsOpen(!isOpen)} className={treeNodeButtonVariants()}>
             {isOpen ? (
-              <ChevronDown size={16} style={{ color: 'var(--tree-icon-color)' }} />
+              <ChevronDown size={16} className="text-backgroundTertiary" />
             ) : (
-              <ChevronRight size={16} style={{ color: 'var(--tree-icon-color)' }} />
+              <ChevronRight size={16} className="text-backgroundTertiary" />
             )}
           </button>
         )}
-        <span style={{ color: 'var(--tree-text-color)' }}>{node.label}</span>
+        <span className={treeNodeLabelVariants()}>{node.label}</span>
       </div>
       {isOpen && hasChildren && (
         <div className="ml-4">
@@ -50,19 +53,13 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({ node, level }) => {
   );
 };
 
-export interface TreeViewProps {
+export interface TreeViewProps extends VariantProps<typeof treeViewContainerVariants> {
   data: TreeNode[];
 }
 
 export const TreeView: React.FC<TreeViewProps> = ({ data }) => {
-  const { theme } = useTheme();
-
-  const customStyles = {
-    '--tree-border-color': theme.colors.borderHeavy,
-  } as React.CSSProperties;
-
   return (
-    <div className="border p-4 rounded-md" style={{ ...customStyles, borderColor: 'var(--tree-border-color)' }}>
+    <div className={treeViewContainerVariants()}>
       {data.map((node) => (
         <TreeNodeComponent key={node.id} node={node} level={0} />
       ))}
@@ -71,3 +68,5 @@ export const TreeView: React.FC<TreeViewProps> = ({ data }) => {
 };
 
 TreeView.displayName = 'TreeView';
+
+export default TreeView;

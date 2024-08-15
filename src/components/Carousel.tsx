@@ -1,8 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTheme } from '../theme/ThemeProvider';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-export interface CarouselProps {
+const carouselContainer = cva('relative', {
+  variants: {
+    theme: {
+      light: 'bg-backgroundSecondary text-textPrimary',
+      dark: 'bg-backgroundInverse text-textInverse',
+    },
+  },
+  defaultVariants: {
+    theme: 'light',
+  },
+});
+
+const carouselControl = cva(
+  'absolute top-1/2 transform -translate-y-1/2 rounded-full p-2',
+  {
+    variants: {
+      position: {
+        left: 'left-4',
+        right: 'right-4',
+      },
+      theme: {
+        light: 'bg-backgroundTertiary text-info',
+        dark: 'bg-backgroundTertiary text-info',
+      },
+    },
+    defaultVariants: {
+      theme: 'light',
+    },
+  }
+);
+
+const carouselIndicator = cva('w-3 h-3 rounded-full', {
+  variants: {
+    active: {
+      true: 'bg-primary',
+      false: 'bg-warning',
+    },
+    theme: {
+      light: '',
+      dark: '',
+    },
+  },
+  compoundVariants: [
+    { active: true, theme: 'dark', className: 'bg-primary' },
+    { active: false, theme: 'dark', className: 'bg-warning' },
+  ],
+  defaultVariants: {
+    active: false,
+    theme: 'light',
+  },
+});
+
+export interface CarouselProps extends VariantProps<typeof carouselContainer> {
   slides: React.ReactNode[];
   interval?: number;
   showControls?: boolean;
@@ -14,17 +67,10 @@ export const Carousel: React.FC<CarouselProps> = ({
   interval = 5000,
   showControls = true,
   showIndicators = true,
+  theme,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { theme } = useTheme();
-
-  const customStyles = {
-    '--carousel-bg-color': theme.colors.backgroundSecondary,
-    '--carousel-control-bg-color': theme.colors.backgroundTertiary,
-    '--carousel-control-color': theme.colors.info,
-    '--carousel-indicator-color': theme.colors.warning,
-    '--carousel-indicator-active-color': theme.colors.primary,
-  } as React.CSSProperties;
+  const { theme: themeContext } = useTheme();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -47,7 +93,7 @@ export const Carousel: React.FC<CarouselProps> = ({
   };
 
   return (
-    <div className="relative" style={customStyles}>
+    <div className={carouselContainer({ theme })}>
       <div className="overflow-hidden">
         <div
           className="flex transition-transform duration-300 ease-in-out"
@@ -64,16 +110,14 @@ export const Carousel: React.FC<CarouselProps> = ({
       {showControls && (
         <>
           <button
-            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2"
+            className={carouselControl({ position: 'left', theme })}
             onClick={goToPrevSlide}
-            style={{ backgroundColor: 'var(--carousel-control-bg-color)', color: 'var(--carousel-control-color)' }}
           >
             <ChevronLeft />
           </button>
           <button
-            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2"
+            className={carouselControl({ position: 'right', theme })}
             onClick={goToNextSlide}
-            style={{ backgroundColor: 'var(--carousel-control-bg-color)', color: 'var(--carousel-control-color)' }}
           >
             <ChevronRight />
           </button>
@@ -85,15 +129,8 @@ export const Carousel: React.FC<CarouselProps> = ({
           {slides.map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 rounded-full ${
-                index === currentSlide ? 'bg-primary' : 'bg-white bg-opacity-50'
-              }`}
+              className={carouselIndicator({ active: index === currentSlide, theme })}
               onClick={() => goToSlide(index)}
-              style={{ 
-                backgroundColor: index === currentSlide 
-                  ? 'var(--carousel-indicator-active-color)' 
-                  : 'var(--carousel-indicator-color)' 
-              }}
             />
           ))}
         </div>

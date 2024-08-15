@@ -1,14 +1,15 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
+
+const switchContainerVariants = cva('flex items-center');
 
 const switchVariants = cva(
   'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
   {
     variants: {
       checked: {
-        true: 'bg-primary',
-        false: 'bg-gray-200',
+        true: 'bg-backgroundSecondary',
+        false: 'bg-backgroundPrimary',
       },
       disabled: {
         true: 'opacity-50 cursor-not-allowed',
@@ -23,7 +24,7 @@ const switchVariants = cva(
 );
 
 const toggleVariants = cva(
-  'pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200',
+  'pointer-events-none inline-block h-5 w-5 rounded-full bg-backgroundTertiary shadow transform ring-0 transition ease-in-out duration-200',
   {
     variants: {
       checked: {
@@ -37,14 +38,15 @@ const toggleVariants = cva(
   }
 );
 
+const labelVariants = cva('ml-3 text-sm text-textPrimary');
+
 export interface SwitchProps extends VariantProps<typeof switchVariants> {
-    checked: boolean;
-    onChange: (checked: boolean) => void;
-    disabled?: boolean;
-    label?: string;
-    className?: string;
-    style?: React.CSSProperties;
-  }
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
+  label?: string;
+  className?: string;
+}
 
 export const Switch: React.FC<SwitchProps> = ({
   checked,
@@ -54,16 +56,6 @@ export const Switch: React.FC<SwitchProps> = ({
   className,
   ...props
 }) => {
-  const { theme } = useTheme();
-
-  const customStyles = {
-    '--switch-bg-color': checked ? theme.colors.backgroundSecondary : theme.colors.backgroundPrimary,
-    '--switch-toggle-color': theme.colors.backgroundTertiary,
-    '--switch-focus-ring-color': theme.colors.primary,
-    '--switch-disabled-opacity': '0.5',
-    '--label-color': theme.colors.textPrimary,
-  } as React.CSSProperties;
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -74,7 +66,7 @@ export const Switch: React.FC<SwitchProps> = ({
   };
 
   return (
-    <label className="flex items-center" style={customStyles}>
+    <label className={switchContainerVariants()}>
       <button
         type="button"
         className={switchVariants({ checked, disabled, className })}
@@ -83,19 +75,12 @@ export const Switch: React.FC<SwitchProps> = ({
         role="switch"
         aria-checked={checked}
         disabled={disabled}
-        style={{
-          backgroundColor: 'var(--switch-bg-color)',
-          opacity: disabled ? 'var(--switch-disabled-opacity)' : '1',
-        }}
         {...props}
       >
         <span className="sr-only">{label || 'Toggle'}</span>
-        <span 
-          className={toggleVariants({ checked })}
-          style={{ backgroundColor: 'var(--switch-toggle-color)' }}
-        />
+        <span className={toggleVariants({ checked })} />
       </button>
-      {label && <span className="ml-3 text-sm" style={{ color: 'var(--label-color)' }}>{label}</span>}
+      {label && <span className={labelVariants()}>{label}</span>}
     </label>
   );
 };

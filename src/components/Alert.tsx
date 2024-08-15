@@ -8,10 +8,10 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        info: 'bg-info text-tertiary',
+        info: 'bg-backgroundSecondary text-tertiary',
         success: 'bg-success text-textPrimary',
-        warning: 'bg-yellow-100 text-yellow-800',
-        error: 'bg-red-100 text-red-800',
+        warning: 'bg-warning text-textWarning',
+        error: 'bg-error text-textInverse',
       },
     },
     defaultVariants: {
@@ -62,7 +62,7 @@ export const Alert: React.FC<AlertProps> = ({
       role="alert" 
       {...props}
     >
-      <IconComponent className={iconVariants({ variant })} style={{ color: 'var(--alert-icon-color)' }} />
+      <IconComponent className={iconVariants({ variant })} />
       <div className="flex-1">
         {title && <h3 className="font-semibold mb-1">{title}</h3>}
         <div>{children}</div>

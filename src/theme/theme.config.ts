@@ -32,7 +32,7 @@ export const themeConfig = {
     interactiveFocus: colors.blue[500],
 
     // Feedback
-    success: colors.emerald[400],
+    success: colors.green[600],
     warning: colors.yellow[200],
     error: colors.red[700],
     info: colors.blue[800],

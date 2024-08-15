@@ -1,16 +1,37 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
-const sliderVariants = cva('relative w-full h-2 bg-gray-200 rounded-full');
+const sliderVariants = cva('relative w-full h-2 rounded-full', {
+  variants: {
+    disabled: {
+      true: 'bg-backgroundSecondary',
+      false: 'bg-backgroundSecondary',
+    },
+  },
+  defaultVariants: {
+    disabled: false,
+  },
+});
+
+const fillVariants = cva('absolute h-full rounded-full', {
+  variants: {
+    disabled: {
+      true: 'bg-info',
+      false: 'bg-primary',
+    },
+  },
+  defaultVariants: {
+    disabled: false,
+  },
+});
 
 const thumbVariants = cva(
-  'absolute top-1/2 w-4 h-4 bg-primary rounded-full shadow transform -translate-y-1/2 -translate-x-1/2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50',
+  'absolute top-1/2 w-4 h-4 rounded-full shadow transform -translate-y-1/2 -translate-x-1/2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50',
   {
     variants: {
       disabled: {
-        true: 'bg-gray-400 cursor-not-allowed',
-        false: 'cursor-pointer',
+        true: 'bg-info cursor-not-allowed',
+        false: 'bg-primary cursor-pointer',
       },
     },
     defaultVariants: {
@@ -40,15 +61,6 @@ export const Slider: React.FC<SliderProps> = ({
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
-  const { theme } = useTheme();
-
-  const customStyles = {
-    '--slider-bg-color': theme.colors.backgroundSecondary,
-    '--slider-fill-color': theme.colors.primary,
-    '--slider-thumb-color': theme.colors.primary,
-    '--slider-thumb-border-color': theme.colors.borderHeavy,
-    '--slider-disabled-color': theme.colors.info
-  } as React.CSSProperties;
 
   const handleMove = (clientX: number) => {
     if (sliderRef.current && !disabled) {
@@ -107,27 +119,19 @@ export const Slider: React.FC<SliderProps> = ({
 
   return (
     <div
-      className={sliderVariants({ className })}
+      className={sliderVariants({ disabled, className })}
       ref={sliderRef}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
-      style={{ ...customStyles, backgroundColor: 'var(--slider-bg-color)' }}
       {...props}
     >
       <div
-        className="absolute h-full rounded-full"
-        style={{ 
-          width: `${percentage}%`, 
-          backgroundColor: disabled ? 'var(--slider-disabled-color)' : 'var(--slider-fill-color)' 
-        }}
+        className={fillVariants({ disabled })}
+        style={{ width: `${percentage}%` }}
       />
       <div
         className={thumbVariants({ disabled })}
-        style={{ 
-          left: `${percentage}%`,
-          backgroundColor: disabled ? 'var(--slider-disabled-color)' : 'var(--slider-thumb-color)',
-          borderColor: 'var(--slider-thumb-border-color)',
-        }}
+        style={{ left: `${percentage}%` }}
       />
     </div>
   );

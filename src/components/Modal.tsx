@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
 const modalVariants = cva(
   'fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black bg-opacity-50',
@@ -20,7 +19,7 @@ const modalVariants = cva(
 );
 
 const contentVariants = cva(
-  'bg-white rounded-lg shadow-xl',
+  'bg-backgroundPrimary rounded-lg shadow-lg',
   {
     variants: {
       size: {
@@ -31,6 +30,40 @@ const contentVariants = cva(
     },
     defaultVariants: {
       size: 'md',
+    },
+  }
+);
+
+const headerVariants = cva(
+  'px-6 py-4 border-b border-borderMedium',
+  {
+    variants: {
+      hasTitle: {
+        true: '',
+        false: 'hidden',
+      },
+    },
+    defaultVariants: {
+      hasTitle: false,
+    },
+  }
+);
+
+const bodyVariants = cva('px-6 py-4');
+
+const footerVariants = cva('px-6 py-4 border-t border-borderMedium flex justify-end');
+
+const closeButtonVariants = cva(
+  'px-4 py-2 rounded transition-colors',
+  {
+    variants: {
+      variant: {
+        default: 'bg-backgroundSecondary text-textPrimary hover:bg-backgroundTertiary',
+        primary: 'bg-primary text-textInverse hover:bg-interactiveHover',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
     },
   }
 );
@@ -50,14 +83,6 @@ export const Modal: React.FC<ModalProps> = ({
   ...props 
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const { theme } = useTheme();
-
-  const customStyles = {
-    '--modal-bg-color': theme.colors.backgroundPrimary,
-    '--modal-text-color': theme.colors.textPrimary,
-    '--modal-border-color': theme.colors.borderMedium,
-    '--modal-shadow-color': theme.shadows.shadowLarge,
-  } as React.CSSProperties;
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -85,25 +110,17 @@ export const Modal: React.FC<ModalProps> = ({
         className={contentVariants({ size })}
         onClick={(e) => e.stopPropagation()} 
         ref={modalRef}
-        style={{
-          ...customStyles,
-          backgroundColor: 'var(--modal-bg-color)',
-          color: 'var(--modal-text-color)',
-          boxShadow: `0 4px 6px -1px var(--modal-shadow-color), 0 2px 4px -1px var(--modal-shadow-color)`,
-        }}
       >
-        {title && (
-          <div className="px-6 py-4 border-b" style={{ borderColor: 'var(--modal-border-color)' }}>
-            <h3 className="text-lg font-semibold">{title}</h3>
-          </div>
-        )}
-        <div className="px-6 py-4">
+        <div className={headerVariants({ hasTitle: !!title })}>
+          <h3 className="text-lg font-semibold text-textPrimary">{title}</h3>
+        </div>
+        <div className={bodyVariants()}>
           {children}
         </div>
-        <div className="px-6 py-4 border-t flex justify-end" style={{ borderColor: 'var(--modal-border-color)' }}>
+        <div className={footerVariants()}>
           <button 
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
+            className={closeButtonVariants()}
           >
             Close
           </button>

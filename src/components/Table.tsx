@@ -1,9 +1,10 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
+
+const tableContainerVariants = cva('overflow-x-auto');
 
 const tableVariants = cva(
-  'min-w-full divide-y divide-gray-200',
+  'min-w-full divide-y divide-borderMedium',
   {
     variants: {
       size: {
@@ -17,6 +18,26 @@ const tableVariants = cva(
     },
   }
 );
+
+const tableHeadVariants = cva('bg-backgroundSecondary');
+
+const tableBodyVariants = cva('bg-backgroundSecondary divide-y divide-borderMedium');
+
+const tableRowVariants = cva('', {
+  variants: {
+    clickable: {
+      true: 'cursor-pointer',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    clickable: false,
+  },
+});
+
+const tableCellVariants = cva('px-6 py-4 whitespace-nowrap text-textPrimary');
+
+const tableHeaderVariants = cva('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-textPrimary');
 
 export interface TableProps
   extends React.TableHTMLAttributes<HTMLTableElement>,
@@ -33,20 +54,8 @@ export const Table: React.FC<TableProps> = ({
   children,
   ...props
 }) => {
-  const { theme } = useTheme();
-
-  const customStyles = {
-    '--table-border-color': theme.colors.borderMedium,
-    '--table-header-bg-color': theme.colors.backgroundSecondary,
-    '--table-header-text-color': theme.colors.textPrimary,
-    '--table-body-bg-color': theme.colors.backgroundSecondary,
-    '--table-body-text-color': theme.colors.textPrimary,
-    '--table-hover-bg-color': theme.colors.backgroundPrimary,
-    '--table-stripe-bg-color': theme.colors.borderMedium,
-  } as React.CSSProperties;
-
   return (
-    <div className="overflow-x-auto" style={customStyles}>
+    <div className={tableContainerVariants()}>
       <table className={tableVariants({ size, className })} {...props}>
         {children}
       </table>
@@ -60,7 +69,7 @@ export const TableHead: React.FC<React.HTMLAttributes<HTMLTableSectionElement>> 
   ...props
 }) => {
   return (
-    <thead className={`bg-gray-50 ${className}`} style={{ backgroundColor: 'var(--table-header-bg-color)' }} {...props}>
+    <thead className={tableHeadVariants({ className })} {...props}>
       {children}
     </thead>
   );
@@ -72,29 +81,20 @@ export const TableBody: React.FC<React.HTMLAttributes<HTMLTableSectionElement>> 
   ...props
 }) => {
   return (
-    <tbody 
-      className={`bg-white divide-y divide-gray-200 ${className}`} 
-      style={{ 
-        backgroundColor: 'var(--table-body-bg-color)', 
-        borderColor: 'var(--table-border-color)' 
-      }} 
-      {...props}
-    >
+    <tbody className={tableBodyVariants({ className })} {...props}>
       {children}
     </tbody>
   );
 };
 
-export const TableRow: React.FC<React.HTMLAttributes<HTMLTableRowElement>> = ({
+export const TableRow: React.FC<React.HTMLAttributes<HTMLTableRowElement> & { clickable?: boolean }> = ({
   className,
+  clickable,
   children,
   ...props
 }) => {
   return (
-    <tr
-      className={`${className} ${props.onClick ? 'cursor-pointer' : ''}`}
-      {...props}
-    >
+    <tr className={tableRowVariants({ clickable, className })} {...props}>
       {children}
     </tr>
   );
@@ -106,11 +106,7 @@ export const TableCell: React.FC<React.TdHTMLAttributes<HTMLTableCellElement>> =
   ...props
 }) => {
   return (
-    <td 
-      className={`px-6 py-4 whitespace-nowrap ${className}`} 
-      style={{ color: 'var(--table-body-text-color)' }} 
-      {...props}
-    >
+    <td className={tableCellVariants({ className })} {...props}>
       {children}
     </td>
   );
@@ -122,11 +118,7 @@ export const TableHeader: React.FC<React.ThHTMLAttributes<HTMLTableHeaderCellEle
   ...props
 }) => {
   return (
-    <th
-      className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${className}`}
-      style={{ color: 'var(--table-header-text-color)' }}
-      {...props}
-    >
+    <th className={tableHeaderVariants({ className })} {...props}>
       {children}
     </th>
   );

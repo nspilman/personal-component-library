@@ -25,7 +25,7 @@ export default meta;
 type Story = StoryObj<typeof Grid>;
 
 const GridItemWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="bg-gray-200 p-4 text-center">{children}</div>
+  <div className="bg-white p-4 text-center">{children}</div>
 );
 
 export const Default: Story = {
