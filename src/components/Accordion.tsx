@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
-import { useTheme } from '../theme/ThemeProvider';
 
-const accordionVariants = cva('border rounded-md overflow-hidden');
+const accordionVariants = cva('border rounded-md overflow-hidden bg-backgroundPrimary');
 
 const itemVariants = cva('border-b last:border-b-0');
 
@@ -12,8 +11,8 @@ const headerVariants = cva(
   {
     variants: {
       isOpen: {
-        true: 'bg-gray-100',
-        false: 'bg-gray-50 hover:bg-gray-100',
+        true: 'bg-backgroundTertiary',
+        false: 'bg-backgroundSecondary hover:bg-backgroundPrimary',
       },
     },
     defaultVariants: {
@@ -54,7 +53,6 @@ export const Accordion: React.FC<AccordionProps> = ({
   ...props
 }) => {
   const [openItems, setOpenItems] = useState<boolean[]>(new Array(items.length).fill(false));
-  const {theme} = useTheme();
 
   const toggleItem = (index: number) => {
     setOpenItems((prevOpenItems) => {
@@ -70,7 +68,7 @@ export const Accordion: React.FC<AccordionProps> = ({
 
   return (
     <div 
-      className={accordionVariants({ className: `${className} border-[${theme.colors.borderMedium}] bg-[${theme.colors.backgroundPrimary}]` })} 
+      className={accordionVariants({ className: `${className} border-borderMedium` })} 
       {...props}
     >
       {items.map((item, index) => (

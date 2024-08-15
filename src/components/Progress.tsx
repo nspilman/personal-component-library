@@ -1,8 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
-const progressVariants = cva('w-full bg-gray-200 rounded-full', {
+const progressVariants = cva('w-full bg-backgroundSecondary rounded-full', {
   variants: {
     size: {
       sm: 'h-1',
@@ -45,9 +44,6 @@ export const Progress: React.FC<ProgressProps> = ({
   ...props
 }) => {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
-  const { theme } = useTheme();
-
-  
 
   return (
     <div className="w-full">

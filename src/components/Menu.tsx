@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
-import { useTheme } from '../theme/ThemeProvider';
 
 const menuVariants = cva(
   'relative inline-block text-left',
@@ -77,7 +76,6 @@ export const Menu: React.FC<MenuProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const { theme } = useTheme();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

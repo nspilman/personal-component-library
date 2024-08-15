@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
-import { useTheme } from '../theme/ThemeProvider';
 
 const drawerVariants = cva(
   'fixed inset-y-0 bg-white shadow-xl transition-transform duration-300 ease-in-out',
@@ -40,7 +39,6 @@ export const Drawer: React.FC<DrawerProps> = ({
   ...props
 }) => {
   const drawerRef = useRef<HTMLDivElement>(null);
-  const { theme } = useTheme();
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {

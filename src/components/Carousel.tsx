@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useTheme } from '../theme/ThemeProvider';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const carouselContainer = cva('relative', {
@@ -70,7 +69,6 @@ export const Carousel: React.FC<CarouselProps> = ({
   theme,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { theme: themeContext } = useTheme();
 
   useEffect(() => {
     const timer = setInterval(() => {

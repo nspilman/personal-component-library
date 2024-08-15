@@ -1,6 +1,5 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
 const listVariants = cva(
   'list-none',
@@ -51,9 +50,7 @@ export interface ListProps extends React.HTMLAttributes<HTMLUListElement | HTMLO
 
 export const List: React.FC<ListProps> = ({ className, variant, theme, items, ...props }) => {
   const ListComponent = variant === 'ordered' ? 'ol' : 'ul';
-  const { theme: themeContext } = useTheme();
 
-  const currentTheme = theme || themeContext;
 
   return (
     <ListComponent className={listVariants({ variant, className })} {...props}>

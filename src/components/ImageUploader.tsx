@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Upload, X } from 'lucide-react';
-import { useTheme } from '../theme/ThemeProvider';
 
 const uploaderVariants = cva(
   'border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors',
@@ -41,7 +40,6 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const [dragState, setDragState] = useState<'idle' | 'drag' | 'error'>('idle');
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { theme: themeContext } = useTheme();
 
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault();

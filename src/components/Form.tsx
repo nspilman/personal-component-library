@@ -1,6 +1,5 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
 const formVariants = cva('space-y-4', {
   variants: {
@@ -56,7 +55,6 @@ export const FormLabel: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = 
   children,
   ...props
 }) => {
-  const { theme } = useTheme();
 
   return (
     <label 
@@ -73,7 +71,6 @@ export const FormHelperText: React.FC<React.HTMLAttributes<HTMLParagraphElement>
   children,
   ...props
 }) => {
-  const { theme } = useTheme();
 
   return (
     <p 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Check } from 'lucide-react';
-import { useTheme } from '../theme/ThemeProvider';
 
 const stepperVariants = cva('flex items-center text-textSecondary');
 
@@ -53,8 +52,6 @@ export const Stepper: React.FC<StepperProps> = ({
   currentStep,
   ...props
 }) => {
-  const { theme } = useTheme();
-
 
   return (
     <div className={stepperVariants({ className })} {...props}>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTheme } from '../theme/ThemeProvider';
 
 export interface TimePickerProps {
   value?: string;

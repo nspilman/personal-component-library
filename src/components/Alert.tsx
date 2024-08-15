@@ -1,7 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { AlertTriangleIcon as AlertIcon, CheckCircle, XCircle, Info, X } from 'lucide-react';
-import { useTheme } from '../theme/ThemeProvider';
 
 const alertVariants = cva(
   'p-4 rounded-md flex items-start',
@@ -47,7 +46,6 @@ export const Alert: React.FC<AlertProps> = ({
   className,
   ...props 
 }) => {
-  const { theme } = useTheme();
   const IconComponent = {
     info: Info,
     success: CheckCircle,

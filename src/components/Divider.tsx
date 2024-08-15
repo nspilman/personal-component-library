@@ -1,9 +1,8 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
 const dividerVariants = cva(
-  'border-t',
+  'border-t border-borderHeavy',
   {
     variants: {
       color: {
@@ -26,14 +25,11 @@ const dividerVariants = cva(
 export interface DividerProps extends React.HTMLAttributes<HTMLHRElement>, VariantProps<typeof dividerVariants> {}
 
 export const Divider: React.FC<DividerProps> = ({ className, color, thickness, ...props }) => {
-  const { theme } = useTheme();
 
   return (
     <hr 
       className={dividerVariants({ color, thickness, className })} 
-      style={{
-        borderColor: theme.colors.borderHeavy
-      }}
+   
       {...props} 
     />
   );

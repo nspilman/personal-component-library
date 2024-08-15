@@ -1,6 +1,5 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
 const gridVariants = cva('grid border-black bg-white', {
   variants: {
@@ -35,7 +34,6 @@ export interface GridProps
 
 export const Grid = React.forwardRef<HTMLDivElement, GridProps>(
   ({ className, cols, gap, responsive, ...props }, ref) => {
-    const { theme } = useTheme();
 
 
     return (

@@ -1,6 +1,5 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
 const cardVariants = cva(
   'rounded-lg overflow-hidden',
@@ -30,7 +29,6 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement>, Variant
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant, width, header, footer, image, children, ...props }, ref) => {
-    const { theme } = useTheme();
 
     return (
       <div 

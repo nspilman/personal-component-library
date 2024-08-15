@@ -1,6 +1,5 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
 const inputVariants = cva(
   'w-full rounded-md border px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
@@ -30,12 +29,9 @@ const inputVariants = cva(
   }
 );
 
-const labelVariants = cva('block text-sm font-medium mb-1', {
+const labelVariants = cva('block text-sm font-medium mb-1 text-textSecondary', {
   variants: {
-    theme: {
-      light: 'text-textSecondary',
-      dark: 'text-textSecondary',
-    },
+
   },
   defaultVariants: {
     theme: 'light',
@@ -69,10 +65,8 @@ export interface InputProps
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, variant, theme, label, helperText, id, ...props }, ref) => {
-    const { theme: themeContext } = useTheme();
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
-    const currentTheme = theme || themeContext;
 
     return (
       <div className="w-full">
