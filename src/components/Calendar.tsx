@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay } from 'date-fns';
 import { cva } from 'class-variance-authority';

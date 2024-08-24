@@ -1,4 +1,4 @@
-// src/theme/ThemeProvider.tsx
+"use client"
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ThemeConfig, themeConfig as defaultThemeConfig } from './theme.config';

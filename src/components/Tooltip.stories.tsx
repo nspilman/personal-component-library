@@ -74,7 +74,7 @@ export const WithinText: Story = {
   render: (args) => (
     <p>
       This is a paragraph with a 
-      <Tooltip content="I'm a tooltip within text!" {...args}>
+      <Tooltip {...args}>
         <span className="text-blue-500 cursor-help"> tooltip </span>
       </Tooltip>
       inside it.

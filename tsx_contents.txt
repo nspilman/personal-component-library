@@ -1,8 +1,9 @@
 --- File: src/components/Calendar.stories.tsx ---
 
-import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Calendar } from './Calendar';
+import { addDays } from 'date-fns';
+
 
 const meta: Meta<typeof Calendar> = {
   title: 'Components/Inputs/Calendar',
@@ -23,7 +24,7 @@ export const Default: Story = {
 
 export const WithSelectedDate: Story = {
   args: {
-    selectedDate: new Date(2023, 5, 15),
+    selectedDate: addDays(new Date(), 2),
   },
 };
 
@@ -206,6 +207,111 @@ export const ComplexForm: Story = {
   ),
 };
 
+--- File: src/components/Navbar.tsx ---
+
+"use client"
+import React, { useState } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { Menu, X } from 'lucide-react';
+
+const navbarVariants = cva(
+  'bg-backgroundSecondary shadow-md',
+  {
+    variants: {
+      sticky: {
+        true: 'sticky top-0 z-50',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      sticky: false,
+    },
+  }
+);
+
+const navLinkVariants = cva(
+  'text-textPrimary hover:text-primary transition-colors',
+  {
+    variants: {
+      active: {
+        true: 'font-semibold',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      active: false,
+    },
+  }
+);
+
+export interface NavLink {
+  label: string;
+  href: string;
+}
+
+export interface NavbarProps extends React.HTMLAttributes<HTMLElement>, VariantProps<typeof navbarVariants> {
+  logo: React.ReactNode;
+  links: NavLink[];
+}
+
+export const Navbar: React.FC<NavbarProps> = ({
+  className,
+  sticky,
+  logo,
+  links,
+  ...props
+}) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <nav className={navbarVariants({ sticky, className })} {...props}>
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center py-4">
+          <div className="flex items-center">
+            {logo}
+          </div>
+          <div className="hidden md:flex space-x-4">
+            {links.map((link, index) => (
+              <a
+                key={index}
+                href={link.href}
+                className={navLinkVariants()}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-textPrimary hover:text-primary transition-colors"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+      </div>
+      {isMenuOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {links.map((link, index) => (
+              <a
+                key={index}
+                href={link.href}
+                className={navLinkVariants({ className: 'block px-3 py-2 rounded-md text-base font-medium' })}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+};
+
+Navbar.displayName = 'Navbar';
+
 --- File: src/components/Input.stories.tsx ---
 
 import React from 'react';
@@ -311,12 +417,12 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const paginationVariants = cva('flex items-center justify-center space-x-1');
 
 const pageButtonVariants = cva(
-  'px-3 py-1 rounded-md text-sm font-medium',
+  'px-3 py-1 rounded-md text-sm font-medium transition-colors',
   {
     variants: {
       isActive: {
-        true: 'bg-primary text-white',
-        false: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+        true: 'bg-backgroundTertiary text-textSecondary',
+        false: 'bg-backgroundSecondary text-textPrimary hover:bg-backgroundPrimary',
       },
       isDisabled: {
         true: 'opacity-50 cursor-not-allowed',
@@ -418,10 +524,9 @@ export const Pagination: React.FC<PaginationProps> = ({
 
 Pagination.displayName = 'Pagination';
 
-export default Pagination;
-
 --- File: src/components/ImageUploader.tsx ---
 
+"use client"
 import React, { useState, useRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Upload, X } from 'lucide-react';
@@ -431,13 +536,18 @@ const uploaderVariants = cva(
   {
     variants: {
       state: {
-        idle: 'border-gray-300 hover:border-gray-400',
-        drag: 'border-primary-500 bg-primary-50',
-        error: 'border-red-500 bg-red-50',
+        idle: 'border-borderLight hover:border-borderMedium bg-transparent',
+        drag: 'border-primary bg-primary/20',
+        error: 'border-error bg-error/20',
+      },
+      theme: {
+        light: 'text-textSecondary',
+        dark: 'text-textSecondary',
       },
     },
     defaultVariants: {
       state: 'idle',
+      theme: 'light',
     },
   }
 );
@@ -453,6 +563,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   onImageUpload,
   maxSizeInMB = 5,
   acceptedFileTypes = ['image/jpeg', 'image/png', 'image/gif'],
+  theme,
   ...props
 }) => {
   const [dragState, setDragState] = useState<'idle' | 'drag' | 'error'>('idle');
@@ -501,7 +612,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
   return (
     <div
-      className={uploaderVariants({ state: dragState, className })}
+      className={uploaderVariants({ state: dragState, theme, className })}
       onDragEnter={handleDragEnter}
       onDragOver={handleDragEnter}
       onDragLeave={handleDragLeave}
@@ -524,7 +635,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
               e.stopPropagation();
               removeImage();
             }}
-            className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+            className="absolute top-0 right-0 bg-error text-textInverse rounded-full p-1"
           >
             <X size={16} />
           </button>
@@ -533,7 +644,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         <div>
           <Upload className="mx-auto mb-2" size={24} />
           <p>Drag and drop an image here, or click to select a file</p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-textTertiary mt-1">
             Max size: {maxSizeInMB}MB. Accepted types: {acceptedFileTypes.join(', ')}
           </p>
         </div>
@@ -701,6 +812,7 @@ export const ManySteps: Story = {
 
 --- File: src/components/Tabs.tsx ---
 
+"use client"
 import React, { useState } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -1013,12 +1125,12 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const cardVariants = cva(
-  'bg-white rounded-lg overflow-hidden',
+  'rounded-lg overflow-hidden',
   {
     variants: {
       variant: {
         elevated: 'shadow-md',
-        outlined: 'border border-gray-200',
+        outlined: 'border border-borderMedium',
       },
       width: {
         fluid: 'w-full',
@@ -1040,23 +1152,28 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement>, Variant
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant, width, header, footer, image, children, ...props }, ref) => {
+
     return (
-      <div className={cardVariants({ variant, width, className })} ref={ref} {...props}>
+      <div 
+        className={`${cardVariants({ variant, width, className })} text-textPrimary bg-backgroundSecondary`}
+        ref={ref} 
+        {...props}
+      >
         {image && (
-          <div className="w-full h-48 bg-gray-200">
+          <div className="w-full h-48 bg-backgroundTertiary">
             <img src={image} alt="Card" className="w-full h-full object-cover" />
           </div>
         )}
         {header && (
-          <div className="px-4 py-3 border-b border-gray-200">
+          <div className="px-spaceMd py-spaceSm border-b border-borderLight">
             {header}
           </div>
         )}
-        <div className="p-4">
+        <div className="p-spaceMd">
           {children}
         </div>
         {footer && (
-          <div className="px-4 py-3 border-t border-gray-200">
+          <div className="px-spaceMd py-spaceSm border-t border-borderLight">
             {footer}
           </div>
         )}
@@ -1067,22 +1184,43 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
 Card.displayName = 'Card';
 
-
-
 --- File: src/components/Slider.tsx ---
 
+"use client"
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const sliderVariants = cva('relative w-full h-2 bg-gray-200 rounded-full');
+const sliderVariants = cva('relative w-full h-2 rounded-full', {
+  variants: {
+    disabled: {
+      true: 'bg-backgroundSecondary',
+      false: 'bg-backgroundSecondary',
+    },
+  },
+  defaultVariants: {
+    disabled: false,
+  },
+});
+
+const fillVariants = cva('absolute h-full rounded-full', {
+  variants: {
+    disabled: {
+      true: 'bg-info',
+      false: 'bg-primary',
+    },
+  },
+  defaultVariants: {
+    disabled: false,
+  },
+});
 
 const thumbVariants = cva(
-  'absolute top-1/2 w-4 h-4 bg-primary rounded-full shadow transform -translate-y-1/2 -translate-x-1/2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50',
+  'absolute top-1/2 w-4 h-4 rounded-full shadow transform -translate-y-1/2 -translate-x-1/2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50',
   {
     variants: {
       disabled: {
-        true: 'bg-gray-400 cursor-not-allowed',
-        false: 'cursor-pointer',
+        true: 'bg-info cursor-not-allowed',
+        false: 'bg-primary cursor-pointer',
       },
     },
     defaultVariants: {
@@ -1170,14 +1308,14 @@ export const Slider: React.FC<SliderProps> = ({
 
   return (
     <div
-      className={sliderVariants({ className })}
+      className={sliderVariants({ disabled, className })}
       ref={sliderRef}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
       {...props}
     >
       <div
-        className="absolute h-full bg-primary rounded-full"
+        className={fillVariants({ disabled })}
         style={{ width: `${percentage}%` }}
       />
       <div
@@ -1190,9 +1328,9 @@ export const Slider: React.FC<SliderProps> = ({
 
 Slider.displayName = 'Slider';
 
-
 --- File: src/components/Popover.tsx ---
 
+"use client"
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -1282,13 +1420,78 @@ export const Popover: React.FC<PopoverProps> = ({
 
 Popover.displayName = 'Popover';
 
+--- File: src/components/Navbar.stories.tsx ---
+
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Navbar } from './Navbar';
+
+const meta: Meta<typeof Navbar> = {
+  title: 'Components/Navigation/Navbar',
+  component: Navbar,
+  argTypes: {
+    sticky: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Navbar>;
+
+const DefaultLogo = () => (
+  <div className="text-2xl font-bold text-primary">Logo</div>
+);
+
+export const Default: Story = {
+  args: {
+    logo: <DefaultLogo />,
+    links: [
+      { label: 'Home', href: '#' },
+      { label: 'About', href: '#' },
+      { label: 'Services', href: '#' },
+      { label: 'Contact', href: '#' },
+    ],
+  },
+};
+
+export const Sticky: Story = {
+  args: {
+    ...Default.args,
+    sticky: true,
+  },
+};
+
+export const WithImage: Story = {
+  args: {
+    ...Default.args,
+    logo: <img src="/api/placeholder/120/40" alt="Logo" />,
+  },
+};
+
+export const LongNavigation: Story = {
+  args: {
+    logo: <DefaultLogo />,
+    links: [
+      { label: 'Home', href: '#' },
+      { label: 'About', href: '#' },
+      { label: 'Services', href: '#' },
+      { label: 'Products', href: '#' },
+      { label: 'Blog', href: '#' },
+      { label: 'Contact', href: '#' },
+      { label: 'FAQ', href: '#' },
+    ],
+  },
+};
+
 --- File: src/components/Radio.tsx ---
 
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+const radioGroupVariants = cva('flex items-center');
+
 const radioVariants = cva(
-  'h-4 w-4 border-gray-300 text-primary focus:ring-primary',
+  'border text-primary focus:ring-primary',
   {
     variants: {
       size: {
@@ -1304,7 +1507,7 @@ const radioVariants = cva(
 );
 
 const labelVariants = cva(
-  'ml-2 text-gray-700',
+  'ml-2 text-textSecondary',
   {
     variants: {
       size: {
@@ -1335,7 +1538,7 @@ export const Radio: React.FC<RadioProps> = ({
   const radioId = id || `radio-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
-    <div className="flex items-center">
+    <div className={radioGroupVariants()}>
       <input
         type="radio"
         id={radioId}
@@ -1343,7 +1546,10 @@ export const Radio: React.FC<RadioProps> = ({
         {...props}
       />
       {label && (
-        <label htmlFor={radioId} className={labelVariants({ size })}>
+        <label 
+          htmlFor={radioId} 
+          className={labelVariants({ size })}
+        >
           {label}
         </label>
       )}
@@ -1358,7 +1564,7 @@ Radio.displayName = 'Radio';
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const progressVariants = cva('w-full bg-gray-200 rounded-full', {
+const progressVariants = cva('w-full bg-backgroundSecondary rounded-full', {
   variants: {
     size: {
       sm: 'h-1',
@@ -1375,9 +1581,9 @@ const barVariants = cva('h-full rounded-full transition-all duration-300 ease-in
   variants: {
     variant: {
       default: 'bg-primary',
-      success: 'bg-green-500',
-      warning: 'bg-yellow-500',
-      error: 'bg-red-500',
+      success: 'bg-success',
+      warning: 'bg-warning',
+      error: 'bg-error',
     },
   },
   defaultVariants: {
@@ -1404,10 +1610,13 @@ export const Progress: React.FC<ProgressProps> = ({
 
   return (
     <div className="w-full">
-      <div className={progressVariants({ size, className })} {...props}>
+      <div 
+        className={progressVariants({ size, className })} 
+        {...props}
+      >
         <div 
           className={barVariants({ variant })}
-          style={{ width: `${percentage}%` }}
+          style={{ width: `${percentage}%`}}
           role="progressbar"
           aria-valuenow={value}
           aria-valuemin={0}
@@ -1415,7 +1624,7 @@ export const Progress: React.FC<ProgressProps> = ({
         />
       </div>
       {showLabel && (
-        <div className="mt-1 text-sm text-gray-600">
+        <div className="mt-1 text-sm" >
           {percentage.toFixed(0)}%
         </div>
       )}
@@ -1787,7 +1996,7 @@ export default meta;
 type Story = StoryObj<typeof Grid>;
 
 const GridItemWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="bg-gray-200 p-4 text-center">{children}</div>
+  <div className="bg-white p-4 text-center">{children}</div>
 );
 
 export const Default: Story = {
@@ -2288,7 +2497,7 @@ export const WithContent: Story = {
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const gridVariants = cva('grid', {
+const gridVariants = cva('grid border-black bg-white', {
   variants: {
     cols: {
       1: 'grid-cols-1',
@@ -2321,6 +2530,8 @@ export interface GridProps
 
 export const Grid = React.forwardRef<HTMLDivElement, GridProps>(
   ({ className, cols, gap, responsive, ...props }, ref) => {
+
+
     return (
       <div 
         className={gridVariants({ cols, gap, responsive, className })}
@@ -2374,8 +2585,6 @@ export const GridItem = React.forwardRef<HTMLDivElement, GridItemProps>(
 
 GridItem.displayName = 'GridItem';
 
-
-
 --- File: src/components/List.tsx ---
 
 import React from 'react';
@@ -2390,9 +2599,14 @@ const listVariants = cva(
         ordered: 'pl-8',
         none: '',
       },
+      theme: {
+        light: 'text-textPrimary',
+        dark: 'text-textPrimary',
+      },
     },
     defaultVariants: {
       variant: 'unordered',
+      theme: 'light',
     },
   }
 );
@@ -2402,11 +2616,17 @@ const listItemVariants = cva(
   {
     variants: {
       variant: {
-        unordered: 'before:content-["•"] before:mr-2 before:text-gray-500',
+        unordered: 'before:mr-2 before:text-textSecondary',
         ordered: '',
         none: '',
       },
     },
+    compoundVariants: [
+      {
+        variant: 'unordered',
+        className: 'before:content-["•"]',
+      },
+    ],
     defaultVariants: {
       variant: 'unordered',
     },
@@ -2417,19 +2637,25 @@ export interface ListProps extends React.HTMLAttributes<HTMLUListElement | HTMLO
   items: React.ReactNode[];
 }
 
-export const List: React.FC<ListProps> = ({ className, variant, items, ...props }) => {
+export const List: React.FC<ListProps> = ({ className, variant, theme, items, ...props }) => {
   const ListComponent = variant === 'ordered' ? 'ol' : 'ul';
+
 
   return (
     <ListComponent className={listVariants({ variant, className })} {...props}>
       {items.map((item, index) => (
-        <li key={index} className={listItemVariants({ variant })}>
+        <li 
+          key={index} 
+          className={listItemVariants({ variant })}
+        >
           {item}
         </li>
       ))}
     </ListComponent>
   );
 };
+
+List.displayName = 'List';
 
 --- File: src/components/Backdrop.tsx ---
 
@@ -2669,7 +2895,7 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const dividerVariants = cva(
-  'border-t',
+  'border-t border-borderHeavy',
   {
     variants: {
       color: {
@@ -2692,8 +2918,17 @@ const dividerVariants = cva(
 export interface DividerProps extends React.HTMLAttributes<HTMLHRElement>, VariantProps<typeof dividerVariants> {}
 
 export const Divider: React.FC<DividerProps> = ({ className, color, thickness, ...props }) => {
-  return <hr className={dividerVariants({ color, thickness, className })} {...props} />;
+
+  return (
+    <hr 
+      className={dividerVariants({ color, thickness, className })} 
+   
+      {...props} 
+    />
+  );
 };
+
+Divider.displayName = 'Divider';
 
 --- File: src/components/Breadcrumbs.tsx ---
 
@@ -2703,11 +2938,11 @@ import { ChevronRight } from 'lucide-react';
 
 const breadcrumbsVariants = cva('flex items-center space-x-2');
 
-const itemVariants = cva('text-sm', {
+const itemVariants = cva('text-sm text-textSecondary hover:font-semibold', {
   variants: {
     isLast: {
-      true: 'font-semibold text-gray-900',
-      false: 'text-gray-500 hover:text-gray-700',
+      true: 'font-semibold text-textPrimary',
+      false: '',
     },
   },
   defaultVariants: {
@@ -2729,16 +2964,25 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   className,
   ...props
 }) => {
+
+
   return (
     <nav aria-label="Breadcrumb">
       <ol className={breadcrumbsVariants({ className })} {...props}>
         {items.map((item, index) => (
           <li key={index} className="flex items-center">
-            {index > 0 && <ChevronRight className="w-4 h-4 text-gray-400 mx-2" />}
+            {index > 0 && <ChevronRight className="w-4 h-4 mx-2 color-borderHeavy" />}
             {index === items.length - 1 ? (
-              <span className={itemVariants({ isLast: true })}>{item.label}</span>
+              <span 
+                className={itemVariants({ isLast: true })}
+              >
+                {item.label}
+              </span>
             ) : (
-              <a href={item.href} className={itemVariants()}>
+              <a 
+                href={item.href} 
+                className={itemVariants()}
+              >
                 {item.label}
               </a>
             )}
@@ -2753,21 +2997,22 @@ Breadcrumbs.displayName = 'Breadcrumbs';
 
 --- File: src/components/Accordion.tsx ---
 
+"use client"
 import React, { useState } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
 
-const accordionVariants = cva('border border-gray-200 rounded-md overflow-hidden');
+const accordionVariants = cva('border rounded-md overflow-hidden bg-backgroundPrimary');
 
 const itemVariants = cva('border-b last:border-b-0');
 
 const headerVariants = cva(
-  'flex justify-between items-center p-4 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors',
+  'flex justify-between items-center p-4 cursor-pointer transition-colors',
   {
     variants: {
       isOpen: {
-        true: 'bg-gray-100',
-        false: '',
+        true: 'bg-backgroundTertiary',
+        false: 'bg-backgroundSecondary hover:bg-backgroundPrimary',
       },
     },
     defaultVariants: {
@@ -2822,9 +3067,12 @@ export const Accordion: React.FC<AccordionProps> = ({
   };
 
   return (
-    <div className={accordionVariants({ className })} {...props}>
+    <div 
+      className={accordionVariants({ className: `${className} border-borderMedium` })} 
+      {...props}
+    >
       {items.map((item, index) => (
-        <div key={index} className={itemVariants()}>
+        <div key={index} className={itemVariants()} >
           <div
             className={headerVariants({ isOpen: openItems[index] })}
             onClick={() => toggleItem(index)}
@@ -2835,7 +3083,7 @@ export const Accordion: React.FC<AccordionProps> = ({
             />
           </div>
           <div className={contentVariants({ isOpen: openItems[index] })}>
-            <div className="p-4">{item.content}</div>
+            <div className="p-4" >{item.content}</div>
           </div>
         </div>
       ))}
@@ -2845,9 +3093,9 @@ export const Accordion: React.FC<AccordionProps> = ({
 
 Accordion.displayName = 'Accordion';
 
-
 --- File: src/components/Drawer.tsx ---
 
+"use client"
 import React, { useEffect, useRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
@@ -2918,13 +3166,10 @@ export const Drawer: React.FC<DrawerProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-40" />
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-zIndexPopover" />
       <div
         ref={drawerRef}
         className={drawerVariants({ position, size, className })}
-        style={{
-          transform: isOpen ? 'translateX(0)' : `translateX(${position === 'left' ? '-100%' : '100%'})`,
-        }}
         {...props}
       >
         <button
@@ -2946,11 +3191,14 @@ Drawer.displayName = 'Drawer';
 
 --- File: src/components/Tooltip.tsx ---
 
+"use client"
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+const tooltipContainerVariants = cva('relative inline-block');
+
 const tooltipVariants = cva(
-  'absolute z-10 px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm',
+  'absolute z-10 px-3 py-2 text-sm font-medium rounded-lg shadow-sm bg-backgroundSecondary text-textPrimary',
   {
     variants: {
       position: {
@@ -2999,7 +3247,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const handleMouseLeave = () => setIsVisible(false);
 
   return (
-    <div className="relative inline-block">
+    <div className={tooltipContainerVariants()}>
       {React.cloneElement(children, {
         ref: triggerRef,
         onMouseEnter: handleMouseEnter,
@@ -3027,17 +3275,17 @@ export default Tooltip;
 
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { AlertTriangleIcon as AlertIcon, CheckCircle, XCircle, Info } from 'lucide-react';
+import { AlertTriangleIcon as AlertIcon, CheckCircle, XCircle, Info, X } from 'lucide-react';
 
 const alertVariants = cva(
   'p-4 rounded-md flex items-start',
   {
     variants: {
       variant: {
-        info: 'bg-blue-100 text-blue-800',
-        success: 'bg-green-100 text-green-800',
-        warning: 'bg-yellow-100 text-yellow-800',
-        error: 'bg-red-100 text-red-800',
+        info: 'bg-backgroundSecondary text-tertiary',
+        success: 'bg-success text-textPrimary',
+        warning: 'bg-warning text-textWarning',
+        error: 'bg-error text-textInverse',
       },
     },
     defaultVariants: {
@@ -3080,8 +3328,13 @@ export const Alert: React.FC<AlertProps> = ({
     error: XCircle,
   }[variant || 'info'];
 
+
   return (
-    <div className={alertVariants({ variant, className })} role="alert" {...props}>
+    <div 
+      className={alertVariants({ variant, className })} 
+      role="alert" 
+      {...props}
+    >
       <IconComponent className={iconVariants({ variant })} />
       <div className="flex-1">
         {title && <h3 className="font-semibold mb-1">{title}</h3>}
@@ -3093,7 +3346,7 @@ export const Alert: React.FC<AlertProps> = ({
           className="ml-auto -mr-1 -mt-1 p-1 rounded-full hover:bg-black hover:bg-opacity-10 transition-colors"
           aria-label="Close alert"
         >
-          <XCircle className="w-5 h-5" />
+          <X className="w-5 h-5" />
         </button>
       )}
     </div>
@@ -3197,6 +3450,7 @@ export const WithDefaultValue: Story = {
 
 --- File: src/components/TimePicker.tsx ---
 
+"use client"
 import React, { useState } from 'react';
 
 export interface TimePickerProps {
@@ -3217,10 +3471,19 @@ export const TimePicker: React.FC<TimePickerProps> = ({ value = '', onChange }) 
       type="time"
       value={time}
       onChange={handleTimeChange}
-      className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+      className={`px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1
+        border-borderMedium
+        text-textInverse
+        placeholder-textSecondary
+        focus:border-borderHeavy
+        focus:ring-primary
+      `}
     />
   );
 };
+
+TimePicker.displayName = 'TimePicker';
+
 
 --- File: src/components/Chip.tsx ---
 
@@ -3229,14 +3492,14 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 
 const chipVariants = cva(
-  'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+  'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-backgroundSecondary',
   {
     variants: {
       variant: {
-        default: 'bg-gray-100 text-gray-800',
-        primary: 'bg-primary-100 text-primary-800',
-        secondary: 'bg-secondary-100 text-secondary-800',
-        success: 'bg-green-100 text-green-800',
+        default: '',
+        primary: 'text-textPrimary',
+        secondary: 'bg-backgroundSecondary text-textSecondary',
+        success: 'bg-success text-green-800',
         warning: 'bg-yellow-100 text-yellow-800',
         danger: 'bg-red-100 text-red-800',
       },
@@ -3263,7 +3526,7 @@ export const Chip: React.FC<ChipProps> = ({
   children,
   onDelete,
   ...props
-}) => {
+}) => { 
   return (
     <div
       className={chipVariants({ variant, clickable, className })}
@@ -3276,7 +3539,7 @@ export const Chip: React.FC<ChipProps> = ({
             e.stopPropagation();
             onDelete();
           }}
-          className="ml-1 p-0.5 rounded-full hover:bg-gray-200"
+          className="ml-1 p-0.5 rounded-full hover:bg-gray-200"    
         >
           <X size={12} />
         </button>
@@ -3289,14 +3552,26 @@ Chip.displayName = 'Chip';
 
 --- File: src/components/TreeView.tsx ---
 
+"use client"
 import React, { useState } from 'react';
 import { ChevronRight, ChevronDown } from 'lucide-react';
+import { cva, type VariantProps } from 'class-variance-authority';
 
 export interface TreeNode {
   id: string;
   label: string;
   children?: TreeNode[];
 }
+
+const treeNodeContainerVariants = cva('ml-4');
+
+const treeNodeItemVariants = cva('flex items-center hover:bg-backgroundPrimary rounded p-1');
+
+const treeNodeButtonVariants = cva('mr-1');
+
+const treeNodeLabelVariants = cva('text-textPrimary');
+
+const treeViewContainerVariants = cva('border border-borderHeavy p-4 rounded-md');
 
 interface TreeNodeProps {
   node: TreeNode;
@@ -3309,14 +3584,18 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({ node, level }) => {
   const hasChildren = node.children && node.children.length > 0;
 
   return (
-    <div className="ml-4">
-      <div className="flex items-center">
+    <div className={treeNodeContainerVariants()}>
+      <div className={treeNodeItemVariants()}>
         {hasChildren && (
-          <button onClick={() => setIsOpen(!isOpen)} className="mr-1">
-            {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+          <button onClick={() => setIsOpen(!isOpen)} className={treeNodeButtonVariants()}>
+            {isOpen ? (
+              <ChevronDown size={16} className="text-backgroundTertiary" />
+            ) : (
+              <ChevronRight size={16} className="text-backgroundTertiary" />
+            )}
           </button>
         )}
-        <span>{node.label}</span>
+        <span className={treeNodeLabelVariants()}>{node.label}</span>
       </div>
       {isOpen && hasChildren && (
         <div className="ml-4">
@@ -3329,13 +3608,13 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({ node, level }) => {
   );
 };
 
-export interface TreeViewProps {
+export interface TreeViewProps extends VariantProps<typeof treeViewContainerVariants> {
   data: TreeNode[];
 }
 
 export const TreeView: React.FC<TreeViewProps> = ({ data }) => {
   return (
-    <div className="border p-4 rounded-md">
+    <div className={treeViewContainerVariants()}>
       {data.map((node) => (
         <TreeNodeComponent key={node.id} node={node} level={0} />
       ))}
@@ -3343,18 +3622,24 @@ export const TreeView: React.FC<TreeViewProps> = ({ data }) => {
   );
 };
 
+TreeView.displayName = 'TreeView';
+
+export default TreeView;
+
 --- File: src/components/Switch.tsx ---
 
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+
+const switchContainerVariants = cva('flex items-center');
 
 const switchVariants = cva(
   'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
   {
     variants: {
       checked: {
-        true: 'bg-primary',
-        false: 'bg-gray-200',
+        true: 'bg-backgroundSecondary',
+        false: 'bg-backgroundPrimary',
       },
       disabled: {
         true: 'opacity-50 cursor-not-allowed',
@@ -3369,7 +3654,7 @@ const switchVariants = cva(
 );
 
 const toggleVariants = cva(
-  'pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200',
+  'pointer-events-none inline-block h-5 w-5 rounded-full bg-backgroundTertiary shadow transform ring-0 transition ease-in-out duration-200',
   {
     variants: {
       checked: {
@@ -3383,11 +3668,14 @@ const toggleVariants = cva(
   }
 );
 
-export interface SwitchProps extends React.HTMLAttributes<HTMLButtonElement>, VariantProps<typeof switchVariants> {
+const labelVariants = cva('ml-3 text-sm text-textPrimary');
+
+export interface SwitchProps extends VariantProps<typeof switchVariants> {
   checked: boolean;
   onChange: (checked: boolean) => void;
   disabled?: boolean;
   label?: string;
+  className?: string;
 }
 
 export const Switch: React.FC<SwitchProps> = ({
@@ -3408,7 +3696,7 @@ export const Switch: React.FC<SwitchProps> = ({
   };
 
   return (
-    <label className="flex items-center">
+    <label className={switchContainerVariants()}>
       <button
         type="button"
         className={switchVariants({ checked, disabled, className })}
@@ -3422,18 +3710,42 @@ export const Switch: React.FC<SwitchProps> = ({
         <span className="sr-only">{label || 'Toggle'}</span>
         <span className={toggleVariants({ checked })} />
       </button>
-      {label && <span className="ml-3 text-sm">{label}</span>}
+      {label && <span className={labelVariants()}>{label}</span>}
     </label>
   );
 };
 
 Switch.displayName = 'Switch';
 
-
 --- File: src/components/Calendar.tsx ---
 
+"use client"
 import React, { useState } from 'react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay } from 'date-fns';
+import { cva } from 'class-variance-authority';
+
+
+const calendarButton = cva('p-2 text-center text-textPrimary hover:text-textPrimary', {
+  variants: {
+    isCurrentMonth: {
+      true: '',
+      false: 'text-textSecondary',
+    },
+    isSelected: {
+      true: 'bg-primary text-white',
+      false: '',
+    },
+    isToday: {
+      true: ' text-primary border-2 rounded-full border-heavy p-0',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    isCurrentMonth: true,
+    isSelected: false,
+    isToday: false,
+  },
+});
 
 export interface CalendarProps {
   selectedDate?: Date;
@@ -3453,7 +3765,7 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date(), o
   };
 
   return (
-    <div className="w-64">
+    <div className='w-64'>
       <div className="flex justify-between items-center mb-4">
         <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>&lt;</button>
         <h2 className="text-lg font-semibold">{format(currentMonth, 'MMMM yyyy')}</h2>
@@ -3466,10 +3778,11 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date(), o
         {daysInMonth.map(day => (
           <button
             key={day.toString()}
-            className={`p-2 text-center ${
-              !isSameMonth(day, currentMonth) ? 'text-gray-300' :
-              isSameDay(day, selectedDate) ? 'bg-blue-500 text-white' : ''
-            }`}
+            className={calendarButton({
+              isCurrentMonth: isSameMonth(day, currentMonth),
+              isSelected: isSameDay(day, selectedDate),
+              isToday: isSameDay(day, new Date()),
+            })}
             onClick={() => handleDateClick(day)}
           >
             {format(day, 'd')}
@@ -3913,12 +4226,13 @@ export const AllVariants: Story = {
 
 --- File: src/components/Dropdown.tsx ---
 
+"use client"
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
 
 const dropdownVariants = cva(
-  'relative inline-block text-left',
+  'relative inline-block text-left bg-backgroundSecondary',
   {
     variants: {
       width: {
@@ -3933,7 +4247,7 @@ const dropdownVariants = cva(
 );
 
 const buttonVariants = cva(
-  'inline-flex justify-between items-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-primary',
+  'inline-flex justify-between items-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-primary bg-backgroundPrimary',
   {
     variants: {
       isOpen: {
@@ -3948,7 +4262,7 @@ const buttonVariants = cva(
 );
 
 const menuVariants = cva(
-  'origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none',
+  'origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none bg-backgroundSecondary',
   {
     variants: {
       isOpen: {
@@ -4005,7 +4319,12 @@ export const Dropdown: React.FC<DropdownProps> = ({
         </button>
       </div>
 
-      <div className={menuVariants({ isOpen })} role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+      <div 
+        className={menuVariants({ isOpen })} 
+        role="menu" 
+        aria-orientation="vertical" 
+        aria-labelledby="options-menu"
+      >
         <div className="py-1" role="none">
           {items.map((item, index) => (
             <button
@@ -4014,7 +4333,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 item.onClick();
                 setIsOpen(false);
               }}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="block w-full text-left bg-backgroundPrimary px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
               role="menuitem"
             >
               {item.label}
@@ -4027,7 +4346,6 @@ export const Dropdown: React.FC<DropdownProps> = ({
 };
 
 Dropdown.displayName = 'Dropdown';
-
 
 --- File: src/components/TimePicker.stories.tsx ---
 
@@ -4063,8 +4381,9 @@ export const WithInitialValue: Story = {
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+
 const avatarVariants = cva(
-  'inline-flex items-center justify-center overflow-hidden rounded-full bg-gray-100',
+  'inline-flex items-center justify-center overflow-hidden rounded-full bg-backgroundSecondary text-textPrimary',
   {
     variants: {
       size: {
@@ -4096,14 +4415,20 @@ export const Avatar: React.FC<AvatarProps> = ({
   initials,
   ...props
 }) => {
+
+
+
   return (
-    <div className={avatarVariants({ size, className })} {...props}>
+    <div 
+      className={avatarVariants({ size, className })} 
+      {...props}
+    >
       {src ? (
         <img src={src} alt={alt || 'Avatar'} className="w-full h-full object-cover" />
       ) : initials ? (
-        <span className="font-medium text-gray-600">{initials}</span>
+        <span className="font-medium" >{initials}</span>
       ) : (
-        <svg className="w-full h-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-full h-full bg-backgroundTertiary" fill="currentColor" viewBox="0 0 24 24">
           <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
       )}
@@ -4366,6 +4691,7 @@ export const TableSkeleton: Story = {
 
 --- File: src/components/Menu.tsx ---
 
+"use client"
 import React, { useState, useRef, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
@@ -4386,7 +4712,7 @@ const menuVariants = cva(
 );
 
 const menuButtonVariants = cva(
-  'inline-flex justify-center items-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-primary',
+  'inline-flex justify-center items-center rounded-md border shadow-sm px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2',
   {
     variants: {
       fullWidth: {
@@ -4401,16 +4727,31 @@ const menuButtonVariants = cva(
 );
 
 const menuItemsVariants = cva(
-  'absolute z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none',
+  'absolute z-10 mt-2 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none',
   {
     variants: {
       fullWidth: {
         true: 'w-full',
-        false: '',
+        false: 'w-56',
       },
     },
     defaultVariants: {
       fullWidth: false,
+    },
+  }
+);
+
+const menuItemVariants = cva(
+  'block w-full text-left px-4 py-2 text-sm',
+  {
+    variants: {
+      active: {
+        true: 'bg-backgroundPrimary',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      active: false,
     },
   }
 );
@@ -4453,14 +4794,19 @@ export const Menu: React.FC<MenuProps> = ({
           aria-haspopup="true"
           aria-expanded={isOpen}
         >
-          {label}
-          <ChevronDown className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
+          <span className="text-textPrimary">{label}</span>
+          <ChevronDown className="ml-2 -mr-1 h-5 w-5 text-textSecondary" aria-hidden="true" />
         </button>
       </div>
 
       {isOpen && (
-        <div className={menuItemsVariants({ fullWidth })} role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-          <div className="py-1" role="none">
+        <div 
+          className={menuItemsVariants({ fullWidth })} 
+          role="menu" 
+          aria-orientation="vertical" 
+          aria-labelledby="options-menu"
+        >
+          <div className="py-1 bg-backgroundSecondary" role="none">
             {items.map((item, index) => (
               <button
                 key={index}
@@ -4468,10 +4814,10 @@ export const Menu: React.FC<MenuProps> = ({
                   item.onClick();
                   setIsOpen(false);
                 }}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                className={menuItemVariants({ active: false })}
                 role="menuitem"
               >
-                {item.label}
+                <span className="text-textPrimary">{item.label}</span>
               </button>
             ))}
           </div>
@@ -4493,12 +4839,12 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-gray-100 text-gray-800',
-        primary: 'bg-primary-100 text-primary-800',
-        secondary: 'bg-secondary-100 text-secondary-800',
-        success: 'bg-green-100 text-green-800',
-        warning: 'bg-yellow-100 text-yellow-800',
-        danger: 'bg-red-100 text-red-800',
+        default: 'bg-backgroundSecondary text-textSecondary',
+        primary: 'bg-backgroundSecondary text-textPrimary',
+        secondary: 'bg-backgroundSecondary text-textSecondary',
+        success: 'bg-success text-textSuccess',
+        warning: 'bg-warning text-textWarning',
+        danger: 'bg-error text-textInverse',
       },
       outline: {
         true: 'bg-transparent border',
@@ -4508,32 +4854,32 @@ const badgeVariants = cva(
       {
         variant: 'default',
         outline: true,
-        class: 'border-gray-300 text-gray-800',
+        class: 'border-borderMedium text-textSecondary',
       },
       {
         variant: 'primary',
         outline: true,
-        class: 'border-primary-300 text-primary-800',
+        class: 'border-borderMedium text-textPrimary',
       },
       {
         variant: 'secondary',
         outline: true,
-        class: 'border-secondary-300 text-secondary-800',
+        class: 'border-borderMedium text-textSecondary',
       },
       {
         variant: 'success',
         outline: true,
-        class: 'border-green-300 text-green-800',
+        class: 'border-success text-textPrimary',
       },
       {
         variant: 'warning',
         outline: true,
-        class: 'border-yellow-300 text-yellow-800',
+        class: 'border-warning text-textWarning',
       },
       {
         variant: 'danger',
         outline: true,
-        class: 'border-red-300 text-red-800',
+        class: 'border-error',
       },
     ],
     defaultVariants: {
@@ -4556,8 +4902,15 @@ export const Badge: React.FC<BadgeProps> = ({
   children,
   ...props
 }) => {
+
+
+
   return (
-    <span className={badgeVariants({ variant, outline, className })} {...props}>
+    <span 
+      className={badgeVariants({ variant, outline, className })} 
+  
+      {...props}
+    >
       {children}
     </span>
   );
@@ -4628,8 +4981,28 @@ export const WithComplexItems: Story = {
 
 import React from 'react';
 import { Star } from 'lucide-react';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-export interface RatingProps {
+const ratingContainerVariants = cva('flex');
+
+const starVariants = cva('', {
+  variants: {
+    isActive: {
+      true: 'text-warning fill-current',
+      false: 'text-interactiveActive',
+    },
+    isReadOnly: {
+      true: 'cursor-default',
+      false: 'cursor-pointer',
+    },
+  },
+  defaultVariants: {
+    isActive: false,
+    isReadOnly: false,
+  },
+});
+
+export interface RatingProps extends VariantProps<typeof ratingContainerVariants> {
   value: number;
   onChange?: (value: number) => void;
   max?: number;
@@ -4649,14 +5022,15 @@ export const Rating: React.FC<RatingProps> = ({
   };
 
   return (
-    <div className="flex">
+    <div className={ratingContainerVariants()}>
       {[...Array(max)].map((_, index) => (
         <Star
           key={index}
           size={24}
-          className={`cursor-pointer ${
-            index < value ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
-          } ${readOnly ? 'cursor-default' : ''}`}
+          className={starVariants({ 
+            isActive: index < value, 
+            isReadOnly: readOnly 
+          })}
           onClick={() => handleClick(index + 1)}
         />
       ))}
@@ -4664,13 +5038,17 @@ export const Rating: React.FC<RatingProps> = ({
   );
 };
 
+Rating.displayName = 'Rating';
+
 --- File: src/components/Table.tsx ---
 
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+const tableContainerVariants = cva('overflow-x-auto');
+
 const tableVariants = cva(
-  'min-w-full divide-y divide-gray-200',
+  'min-w-full divide-y divide-borderMedium',
   {
     variants: {
       size: {
@@ -4684,6 +5062,26 @@ const tableVariants = cva(
     },
   }
 );
+
+const tableHeadVariants = cva('bg-backgroundSecondary');
+
+const tableBodyVariants = cva('bg-backgroundSecondary divide-y divide-borderMedium');
+
+const tableRowVariants = cva('', {
+  variants: {
+    clickable: {
+      true: 'cursor-pointer',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    clickable: false,
+  },
+});
+
+const tableCellVariants = cva('px-6 py-4 whitespace-nowrap text-textPrimary');
+
+const tableHeaderVariants = cva('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-textPrimary');
 
 export interface TableProps
   extends React.TableHTMLAttributes<HTMLTableElement>,
@@ -4701,7 +5099,7 @@ export const Table: React.FC<TableProps> = ({
   ...props
 }) => {
   return (
-    <div className="overflow-x-auto">
+    <div className={tableContainerVariants()}>
       <table className={tableVariants({ size, className })} {...props}>
         {children}
       </table>
@@ -4715,7 +5113,7 @@ export const TableHead: React.FC<React.HTMLAttributes<HTMLTableSectionElement>> 
   ...props
 }) => {
   return (
-    <thead className={`bg-gray-50 ${className}`} {...props}>
+    <thead className={tableHeadVariants({ className })} {...props}>
       {children}
     </thead>
   );
@@ -4727,22 +5125,20 @@ export const TableBody: React.FC<React.HTMLAttributes<HTMLTableSectionElement>> 
   ...props
 }) => {
   return (
-    <tbody className={`bg-white divide-y divide-gray-200 ${className}`} {...props}>
+    <tbody className={tableBodyVariants({ className })} {...props}>
       {children}
     </tbody>
   );
 };
 
-export const TableRow: React.FC<React.HTMLAttributes<HTMLTableRowElement>> = ({
+export const TableRow: React.FC<React.HTMLAttributes<HTMLTableRowElement> & { clickable?: boolean }> = ({
   className,
+  clickable,
   children,
   ...props
 }) => {
   return (
-    <tr
-      className={`${className} ${props.onClick ? 'cursor-pointer' : ''}`}
-      {...props}
-    >
+    <tr className={tableRowVariants({ clickable, className })} {...props}>
       {children}
     </tr>
   );
@@ -4754,7 +5150,7 @@ export const TableCell: React.FC<React.TdHTMLAttributes<HTMLTableCellElement>> =
   ...props
 }) => {
   return (
-    <td className={`px-6 py-4 whitespace-nowrap ${className}`} {...props}>
+    <td className={tableCellVariants({ className })} {...props}>
       {children}
     </td>
   );
@@ -4766,10 +5162,7 @@ export const TableHeader: React.FC<React.ThHTMLAttributes<HTMLTableHeaderCellEle
   ...props
 }) => {
   return (
-    <th
-      className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${className}`}
-      {...props}
-    >
+    <th className={tableHeaderVariants({ className })} {...props}>
       {children}
     </th>
   );
@@ -5061,7 +5454,6 @@ export const WithActions: Story = {
 
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTheme } from '../theme/ThemeProvider';
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
@@ -5070,8 +5462,8 @@ const buttonVariants = cva(
       variant: {
         primary: 'bg-primary text-white hover:bg-primary-dark focus-visible:ring-primary',
         secondary: 'bg-secondary text-white hover:bg-secondary-dark focus-visible:ring-secondary',
-        ghost: 'bg-transparent hover:bg-gray-100 text-gray-900 focus-visible:ring-gray-500',
-        danger: 'bg-error text-white hover:bg-red-700 focus-visible:ring-red-500',
+        ghost: 'bg-transparent hover:bg-backgroundSecondary text-textPrimary focus-visible:ring-gray-500',
+        danger: 'bg-error text-white hover:bg-error focus-visible:ring-error',
       },
       size: {
         sm: 'h-8 px-3 text-sm',
@@ -5095,18 +5487,11 @@ export interface ButtonProps
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, leftIcon, rightIcon, children, ...props }, ref) => {
-    const { theme } = useTheme();
-
-    // Custom styles that depend on the theme
-    const customStyles = {
-      '--button-focus-ring-offset-color': theme.colors.gray['100'],
-    } as React.CSSProperties;
 
     return (
       <button
         className={buttonVariants({ variant, size, className })}
         ref={ref}
-        style={customStyles}
         {...props}
       >
         {leftIcon && <span className="mr-2">{leftIcon}</span>}
@@ -5141,7 +5526,7 @@ const toggleVariants = cva(
 );
 
 const toggleSwitchVariants = cva(
-  'pointer-events-none inline-block transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+  'pointer-events-none inline-block transform rounded-full shadow ring-0 transition duration-200 ease-in-out border-borderHeavy border-1 bg-backgroundInverse',
   {
     variants: {
       size: {
@@ -5184,7 +5569,7 @@ export const Toggle: React.FC<ToggleProps> = ({
           {...props}
         />
         <span
-          className={toggleSwitchVariants({ size })}
+          className={`${toggleSwitchVariants({ size })}`}
           style={{
             transform: checked
               ? size === 'sm'
@@ -5193,12 +5578,11 @@ export const Toggle: React.FC<ToggleProps> = ({
                 ? 'translateX(28px)'
                 : 'translateX(32px)'
               : 'translateX(0)',
-            backgroundColor: checked ? '#3B82F6' : '#D1D5DB',
           }}
         />
       </div>
       {label && (
-        <span className="ml-3 text-sm font-medium text-gray-900">{label}</span>
+        <span className="ml-3 text-sm font-medium text-textPrimary">{label}</span>
       )}
     </label>
   );
@@ -5208,6 +5592,7 @@ Toggle.displayName = 'Toggle';
 
 --- File: src/components/Modal.tsx ---
 
+"use client"
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -5229,7 +5614,7 @@ const modalVariants = cva(
 );
 
 const contentVariants = cva(
-  'bg-white rounded-lg shadow-xl',
+  'bg-backgroundPrimary rounded-lg shadow-lg',
   {
     variants: {
       size: {
@@ -5240,6 +5625,40 @@ const contentVariants = cva(
     },
     defaultVariants: {
       size: 'md',
+    },
+  }
+);
+
+const headerVariants = cva(
+  'px-6 py-4 border-b border-borderMedium',
+  {
+    variants: {
+      hasTitle: {
+        true: '',
+        false: 'hidden',
+      },
+    },
+    defaultVariants: {
+      hasTitle: false,
+    },
+  }
+);
+
+const bodyVariants = cva('px-6 py-4');
+
+const footerVariants = cva('px-6 py-4 border-t border-borderMedium flex justify-end');
+
+const closeButtonVariants = cva(
+  'px-4 py-2 rounded transition-colors',
+  {
+    variants: {
+      variant: {
+        default: 'bg-backgroundSecondary text-textPrimary hover:bg-backgroundTertiary',
+        primary: 'bg-primary text-textInverse hover:bg-interactiveHover',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
     },
   }
 );
@@ -5287,18 +5706,16 @@ export const Modal: React.FC<ModalProps> = ({
         onClick={(e) => e.stopPropagation()} 
         ref={modalRef}
       >
-        {title && (
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold">{title}</h3>
-          </div>
-        )}
-        <div className="px-6 py-4">
+        <div className={headerVariants({ hasTitle: !!title })}>
+          <h3 className="text-lg font-semibold text-textPrimary">{title}</h3>
+        </div>
+        <div className={bodyVariants()}>
           {children}
         </div>
-        <div className="px-6 py-4 border-t border-gray-200 flex justify-end">
+        <div className={footerVariants()}>
           <button 
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
+            className={closeButtonVariants()}
           >
             Close
           </button>
@@ -5310,7 +5727,6 @@ export const Modal: React.FC<ModalProps> = ({
 };
 
 Modal.displayName = 'Modal';
-
 
 --- File: src/components/Slider.stories.tsx ---
 
@@ -5412,8 +5828,8 @@ const textVariants = cva('', {
       caption: 'text-xs',
     },
     color: {
-      default: 'text-gray-900',
-      secondary: 'text-gray-600',
+      default: 'text-textPrimary',
+      secondary: 'text-textSecondary',
       primary: 'text-primary',
     },
   },
@@ -5434,6 +5850,7 @@ export interface TypographyProps
 export const Text = React.forwardRef<HTMLElement, TypographyProps>(
   ({ className, variant, color, component, ...props }, ref) => {
     const Component = component || 'p';
+
     return (
       <Component
         className={textVariants({ variant, color, className })}
@@ -5448,9 +5865,9 @@ Text.displayName = 'Text';
 
 export default Text;
 
-
 --- File: src/components/Toast.tsx ---
 
+"use client"
 import React, { useState, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
@@ -5460,10 +5877,10 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        success: 'bg-green-500',
-        error: 'bg-red-500',
-        warning: 'bg-yellow-500',
-        info: 'bg-blue-500',
+        success: 'bg-success',
+        error: 'bg-error',
+        warning: 'bg-warning',
+        info: 'bg-info',
       },
       position: {
         'top-right': 'top-4 right-4',
@@ -5515,7 +5932,11 @@ export const Toast: React.FC<ToastProps> = ({
   }[variant || 'info'];
 
   return (
-    <div className={toastVariants({ variant, position, className })} role="alert" {...props}>
+    <div 
+      className={toastVariants({ variant, position, className })} 
+      role="alert" 
+      {...props}
+    >
       <IconComponent className="w-5 h-5 mr-2" />
       <div className="flex-1">{message}</div>
       <button
@@ -5606,7 +6027,10 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         {...props}
       />
       {label && (
-        <label htmlFor={checkboxId} className={labelVariants({ size })}>
+        <label 
+          htmlFor={checkboxId} 
+          className={labelVariants({ size })}
+        >
           {label}
         </label>
       )}
@@ -5622,7 +6046,7 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Check } from 'lucide-react';
 
-const stepperVariants = cva('flex items-center');
+const stepperVariants = cva('flex items-center text-textSecondary');
 
 const stepVariants = cva(
   'flex items-center',
@@ -5645,9 +6069,9 @@ const stepCircleVariants = cva(
   {
     variants: {
       status: {
-        incomplete: 'border-gray-300 bg-white',
-        current: 'border-primary-600 bg-primary-600 text-white',
-        complete: 'border-green-600 bg-green-600 text-white',
+        incomplete: 'border-borderHeavy bg-backgroundSecondary',
+        current: 'border-primary bg-backgroundPrimary text-textPrimary',
+        complete: 'border-success bg-success text-white',
       },
     },
     defaultVariants: {
@@ -5672,12 +6096,15 @@ export const Stepper: React.FC<StepperProps> = ({
   currentStep,
   ...props
 }) => {
+
   return (
     <div className={stepperVariants({ className })} {...props}>
       {steps.map((step, index) => (
         <React.Fragment key={index}>
           <div className={stepVariants({ status: index < currentStep ? 'complete' : index === currentStep ? 'current' : 'incomplete' })}>
-            <div className={stepCircleVariants({ status: index < currentStep ? 'complete' : index === currentStep ? 'current' : 'incomplete' })}>
+            <div 
+              className={stepCircleVariants({ status: index < currentStep ? 'complete' : index === currentStep ? 'current' : 'incomplete' })}
+            >
               {index < currentStep ? (
                 <Check size={16} />
               ) : (
@@ -5685,14 +6112,14 @@ export const Stepper: React.FC<StepperProps> = ({
               )}
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium">{step.label}</p>
+              <p className="text-sm font-medium" >{step.label}</p>
               {step.description && (
-                <p className="text-sm text-gray-500">{step.description}</p>
+                <p className="text-sm" >{step.description}</p>
               )}
             </div>
           </div>
           {index < steps.length - 1 && (
-            <div className="flex-1 border-t-2 border-gray-300 mx-4" />
+            <div className="flex-1 border-t-2 mx-4"  />
           )}
         </React.Fragment>
       ))}
@@ -5718,10 +6145,10 @@ const spinnerVariants = cva(
         xl: 'h-12 w-12 border-4',
       },
       color: {
-        default: 'text-gray-600',
+        default: 'text-interactiveDefault',
         primary: 'text-primary',
         secondary: 'text-secondary',
-        white: 'text-white',
+        white: 'text-backgroundPrimary',
       },
     },
     defaultVariants: {
@@ -5745,7 +6172,11 @@ export const Spinner: React.FC<SpinnerProps> = ({
   ...props
 }) => {
   return (
-    <div className={spinnerVariants({ size, color, className })} role="status" {...props}>
+    <div 
+      className={spinnerVariants({ size, color, className })} 
+      role="status" 
+      {...props}
+    >
       <span className="sr-only">{srText}</span>
     </div>
   );
@@ -5774,9 +6205,9 @@ export default meta;
 type Story = StoryObj<typeof Carousel>;
 
 const slides = [
-  <div key="1" className="bg-red-500 h-64 flex items-center justify-center text-white text-2xl">Slide 1</div>,
-  <div key="2" className="bg-blue-500 h-64 flex items-center justify-center text-white text-2xl">Slide 2</div>,
-  <div key="3" className="bg-green-500 h-64 flex items-center justify-center text-white text-2xl">Slide 3</div>,
+  <div key="1" className="bg-backgroundSecondary h-64 flex items-center justify-center text-textPrimary text-2xl">Slide 1</div>,
+  <div key="2" className="bg-backgroundTertiary h-64 flex items-center justify-center text-textPrimary text-2xl">Slide 2</div>,
+  <div key="3" className="bg-backgroundInverse h-64 flex items-center justify-center text-textInverse text-2xl">Slide 3</div>,
 ];
 
 export const Default: Story = {
@@ -6056,8 +6487,12 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
 
+const selectContainerVariants = cva('relative');
+
+const labelVariants = cva('block text-sm font-medium text-textPrimary mb-1');
+
 const selectVariants = cva(
-  'block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50',
+  'block w-full rounded-md border-borderLight shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-backgroundSecondary text-textSecondary',
   {
     variants: {
       size: {
@@ -6070,6 +6505,10 @@ const selectVariants = cva(
       size: 'md',
     },
   }
+);
+
+const iconContainerVariants = cva(
+  'pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-textTertiary'
 );
 
 export interface SelectOption {
@@ -6095,9 +6534,9 @@ export const Select: React.FC<SelectProps> = ({
   const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
-    <div className="relative">
+    <div className={selectContainerVariants()}>
       {label && (
-        <label htmlFor={selectId} className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor={selectId} className={labelVariants()}>
           {label}
         </label>
       )}
@@ -6113,7 +6552,7 @@ export const Select: React.FC<SelectProps> = ({
             </option>
           ))}
         </select>
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <div className={iconContainerVariants()}>
           <ChevronDown className="h-4 w-4" />
         </div>
       </div>
@@ -6219,20 +6658,59 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const inputVariants = cva(
-  'w-full rounded-md border bg-white px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+  'w-full rounded-md border px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
   {
     variants: {
       variant: {
-        default: 'border-gray-300 focus-visible:ring-primary',
-        success: 'border-green-500 focus-visible:ring-green-500',
-        error: 'border-red-500 focus-visible:ring-red-500',
+        default: 'border-borderLight focus-visible:ring-primary text-textPrimary placeholder:text-textTertiary',
+        success: 'border-success focus-visible:ring-success text-textPrimary placeholder:text-textTertiary',
+        error: 'border-error focus-visible:ring-error text-textPrimary placeholder:text-textTertiary',
+      },
+      theme: {
+        light: '',
+        dark: '',
       },
     },
+    compoundVariants: [
+      {
+        theme: 'dark',
+        variant: 'default',
+        className: 'border-borderLight focus-visible:ring-primary text-textPrimary placeholder:text-textTertiary',
+      },
+    ],
     defaultVariants: {
       variant: 'default',
+      theme: 'light',
     },
   }
 );
+
+const labelVariants = cva('block text-sm font-medium mb-1 text-textSecondary', {
+  variants: {
+
+  },
+  defaultVariants: {
+    theme: 'light',
+  },
+});
+
+const helperTextVariants = cva('mt-1 text-sm', {
+  variants: {
+    variant: {
+      default: 'text-textTertiary',
+      success: 'text-success',
+      error: 'text-error',
+    },
+    theme: {
+      light: '',
+      dark: '',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    theme: 'light',
+  },
+});
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
@@ -6242,14 +6720,17 @@ export interface InputProps
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant, label, helperText, id, ...props }, ref) => {
+  ({ className, variant, theme, label, helperText, id, ...props }, ref) => {
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
+
 
     return (
       <div className="w-full">
-        <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1">
-          {label}
-        </label>
+        {label && (
+          <label htmlFor={inputId} className={labelVariants()}>
+            {label}
+          </label>
+        )}
         <input
           id={inputId}
           className={inputVariants({ variant, className })}
@@ -6257,7 +6738,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {helperText && (
-          <p className={`mt-1 text-sm ${variant === 'error' ? 'text-red-500' : 'text-gray-500'}`}>
+          <p className={helperTextVariants({ variant })}>
             {helperText}
           </p>
         )}
@@ -6267,7 +6748,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName = 'Input';
-
 
 --- File: src/components/Skeleton.tsx ---
 
@@ -6436,8 +6916,12 @@ export const FormLabel: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = 
   children,
   ...props
 }) => {
+
   return (
-    <label className={`block text-sm font-medium text-gray-700 ${className}`} {...props}>
+    <label 
+      className={`block text-sm font-medium color-[${theme.colors.textPrimary}]`} 
+      {...props}
+    >
       {children}
     </label>
   );
@@ -6448,8 +6932,12 @@ export const FormHelperText: React.FC<React.HTMLAttributes<HTMLParagraphElement>
   children,
   ...props
 }) => {
+
   return (
-    <p className={`mt-1 text-sm text-gray-500 ${className}`} {...props}>
+    <p 
+      className={`mt-1 text-sm text-[${theme.colors.textSecondary}]`} 
+      {...props}
+    >
       {children}
     </p>
   );
@@ -6462,10 +6950,64 @@ FormHelperText.displayName = 'FormHelperText';
 
 --- File: src/components/Carousel.tsx ---
 
+"use client"
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-export interface CarouselProps {
+const carouselContainer = cva('relative', {
+  variants: {
+    theme: {
+      light: 'bg-backgroundSecondary text-textPrimary',
+      dark: 'bg-backgroundInverse text-textInverse',
+    },
+  },
+  defaultVariants: {
+    theme: 'light',
+  },
+});
+
+const carouselControl = cva(
+  'absolute top-1/2 transform -translate-y-1/2 rounded-full p-2',
+  {
+    variants: {
+      position: {
+        left: 'left-4',
+        right: 'right-4',
+      },
+      theme: {
+        light: 'bg-backgroundTertiary text-info',
+        dark: 'bg-backgroundTertiary text-info',
+      },
+    },
+    defaultVariants: {
+      theme: 'light',
+    },
+  }
+);
+
+const carouselIndicator = cva('w-3 h-3 rounded-full', {
+  variants: {
+    active: {
+      true: 'bg-primary',
+      false: 'bg-warning',
+    },
+    theme: {
+      light: '',
+      dark: '',
+    },
+  },
+  compoundVariants: [
+    { active: true, theme: 'dark', className: 'bg-primary' },
+    { active: false, theme: 'dark', className: 'bg-warning' },
+  ],
+  defaultVariants: {
+    active: false,
+    theme: 'light',
+  },
+});
+
+export interface CarouselProps extends VariantProps<typeof carouselContainer> {
   slides: React.ReactNode[];
   interval?: number;
   showControls?: boolean;
@@ -6477,6 +7019,7 @@ export const Carousel: React.FC<CarouselProps> = ({
   interval = 5000,
   showControls = true,
   showIndicators = true,
+  theme,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -6501,7 +7044,7 @@ export const Carousel: React.FC<CarouselProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className={carouselContainer({ theme })}>
       <div className="overflow-hidden">
         <div
           className="flex transition-transform duration-300 ease-in-out"
@@ -6518,13 +7061,13 @@ export const Carousel: React.FC<CarouselProps> = ({
       {showControls && (
         <>
           <button
-            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2"
+            className={carouselControl({ position: 'left', theme })}
             onClick={goToPrevSlide}
           >
             <ChevronLeft />
           </button>
           <button
-            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2"
+            className={carouselControl({ position: 'right', theme })}
             onClick={goToNextSlide}
           >
             <ChevronRight />
@@ -6537,9 +7080,7 @@ export const Carousel: React.FC<CarouselProps> = ({
           {slides.map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 rounded-full ${
-                index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'
-              }`}
+              className={carouselIndicator({ active: index === currentSlide, theme })}
               onClick={() => goToSlide(index)}
             />
           ))}

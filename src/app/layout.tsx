@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/theme/ThemeProvider";
 import { darkTheme } from '@/theme/darkTheme';
+import { themeConfig } from "@/theme/theme.config";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <body className={inter.className}>
-        <ThemeProvider initialTheme={darkTheme}>
+        <ThemeProvider initialTheme={themeConfig}>
         {children}
         </ThemeProvider>
         </body>

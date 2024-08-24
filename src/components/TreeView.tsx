@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { ChevronRight, ChevronDown } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
