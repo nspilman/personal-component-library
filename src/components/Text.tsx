@@ -1,7 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const textVariants = cva('', {
+const textVariants = cva('text-textPrimary', {
   variants: {
     variant: {
       h1: 'text-4xl font-bold',

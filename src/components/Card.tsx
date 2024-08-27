@@ -1,8 +1,9 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/theme/merge-styles';
 
 const cardVariants = cva(
-  'rounded-lg overflow-hidden',
+  'rounded-lg overflow-hidden bg-backgroundSecondary p-2',
   {
     variants: {
       variant: {
@@ -32,7 +33,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
     return (
       <div 
-        className={`${cardVariants({ variant, width, className })} text-textPrimary bg-backgroundSecondary`}
+        className={`${cn(cardVariants({ variant, width, className }), className)}`}
         ref={ref} 
         {...props}
       >

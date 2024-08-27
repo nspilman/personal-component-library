@@ -1,7 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const gridVariants = cva('grid border-black bg-white', {
+const gridVariants = cva('grid', {
   variants: {
     cols: {
       1: 'grid-cols-1',
@@ -17,6 +17,9 @@ const gridVariants = cva('grid border-black bg-white', {
       4: 'gap-4',
       6: 'gap-6',
       8: 'gap-8',
+      12: 'gap-12',
+      16: 'gap-16',
+      20: 'gap-20'
     },
     responsive: {
       true: 'md:grid-cols-2 lg:grid-cols-3',

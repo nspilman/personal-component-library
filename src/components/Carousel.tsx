@@ -3,12 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const carouselContainer = cva('relative', {
+const carouselContainer = cva('relative px-12', {
   variants: {
-    theme: {
-      light: 'bg-backgroundSecondary text-textPrimary',
-      dark: 'bg-backgroundInverse text-textInverse',
-    },
+
   },
   defaultVariants: {
     theme: 'light',
@@ -40,18 +37,13 @@ const carouselIndicator = cva('w-3 h-3 rounded-full', {
       true: 'bg-primary',
       false: 'bg-warning',
     },
-    theme: {
-      light: '',
-      dark: '',
-    },
   },
   compoundVariants: [
-    { active: true, theme: 'dark', className: 'bg-primary' },
-    { active: false, theme: 'dark', className: 'bg-warning' },
+    { active: true,  className: 'bg-primary' },
+    { active: false,  className: 'bg-warning' },
   ],
   defaultVariants: {
     active: false,
-    theme: 'light',
   },
 });
 
@@ -67,7 +59,6 @@ export const Carousel: React.FC<CarouselProps> = ({
   interval = 5000,
   showControls = true,
   showIndicators = true,
-  theme,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -92,7 +83,7 @@ export const Carousel: React.FC<CarouselProps> = ({
   };
 
   return (
-    <div className={carouselContainer({ theme })}>
+    <div className={carouselContainer()}>
       <div className="overflow-hidden">
         <div
           className="flex transition-transform duration-300 ease-in-out"
@@ -109,13 +100,13 @@ export const Carousel: React.FC<CarouselProps> = ({
       {showControls && (
         <>
           <button
-            className={carouselControl({ position: 'left', theme })}
+            className={carouselControl({ position: 'left' })}
             onClick={goToPrevSlide}
           >
             <ChevronLeft />
           </button>
           <button
-            className={carouselControl({ position: 'right', theme })}
+            className={carouselControl({ position: 'right' })}
             onClick={goToNextSlide}
           >
             <ChevronRight />
@@ -128,7 +119,7 @@ export const Carousel: React.FC<CarouselProps> = ({
           {slides.map((_, index) => (
             <button
               key={index}
-              className={carouselIndicator({ active: index === currentSlide, theme })}
+              className={carouselIndicator({ active: index === currentSlide })}
               onClick={() => goToSlide(index)}
             />
           ))}

@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Menu, X } from 'lucide-react';
+import {Text} from "./Text"
+import Link from 'next/link';
 
 const navbarVariants = cva(
   'bg-backgroundSecondary shadow-md',
@@ -40,6 +42,7 @@ export interface NavLink {
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement>, VariantProps<typeof navbarVariants> {
   logo: React.ReactNode;
+  title?: string;
   links: NavLink[];
 }
 
@@ -48,6 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   sticky,
   logo,
   links,
+  title,
   ...props
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,9 +60,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     <nav className={navbarVariants({ sticky, className })} {...props}>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
+            <Link href="/">
           <div className="flex items-center">
-            {logo}
+            {logo} {title && <Text className="ml-2 text-lg font-semibold">{title}</Text>}
           </div>
+          </Link>
           <div className="hidden md:flex space-x-4">
             {links.map((link, index) => (
               <a

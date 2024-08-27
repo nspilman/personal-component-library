@@ -6,7 +6,8 @@ const LandingPage = () => {
     <div className="min-h-screen bg-backgroundPrimary">
       {/* Navigation */}
       <Navbar
-        logo={<img src="/api/placeholder/120/40" alt="Logo" />}
+        logo={<img src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/component-library-logo.png?t=2024-08-25T18%3A51%3A40.801Z" alt="Logo" className="h-12 w-12" />}
+        title="My Company"
         links={[
           { label: 'Home', href: '#' },
           { label: 'Features', href: '#features' },
@@ -16,23 +17,23 @@ const LandingPage = () => {
       />
 
       {/* Hero Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <Grid cols={2} gap={8}>
-            <GridItem>
+      <section className="py-10">
+        <Card className="container mx-auto p-4">
+          <Grid cols={2} gap={20}>
+            <GridItem className='p-4'>
               <Text variant="h1" className="mb-4">Welcome to Our Amazing Product</Text>
               <Text variant="body1" className="mb-6">Discover the power of innovation with our cutting-edge solution. Streamline your workflow and boost productivity like never before.</Text>
               <Button size="lg">Get Started</Button>
             </GridItem>
             <GridItem>
-              <img src="/api/placeholder/600/400" alt="Product showcase" className="rounded-lg shadow-lg" />
+              <img src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/product_image.png?t=2024-08-27T03%3A45%3A31.833Z" alt="Product showcase" className="rounded-lg shadow-lg h-[300px]" />
             </GridItem>
           </Grid>
-        </div>
+        </Card>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-backgroundSecondary">
+      <section id="features" className="py-10 bg-backgroundSecondary">
         <div className="container mx-auto px-4">
           <Text variant="h2" className="text-center mb-12">Key Features</Text>
           <Grid cols={3} gap={6}>
@@ -42,7 +43,7 @@ const LandingPage = () => {
               { title: '24/7 Support', description: 'Our dedicated team is always ready to assist you.' },
             ].map((feature, index) => (
               <GridItem key={index}>
-                <Card>
+                <Card className='bg-backgroundPrimary p-8'>
                   <Text variant="h4" className="mb-2">{feature.title}</Text>
                   <Text variant="body2">{feature.description}</Text>
                 </Card>
@@ -53,25 +54,25 @@ const LandingPage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20">
+      <section className="py-10">
         <div className="container mx-auto px-4">
           <Text variant="h2" className="text-center mb-12">What Our Customers Say</Text>
           <Carousel
             slides={[
-              <div className="p-6 bg-backgroundPrimary rounded-lg shadow-lg">
+              <Card className="p-6 bg-backgroundPrimary rounded-lg shadow-lg">
                 <Text variant="body1" className="mb-4">"This product has revolutionized our business processes. Highly recommended!"</Text>
                 <div className="flex items-center">
-                  <Avatar src="/api/placeholder/40/40" alt="John Doe" size="sm" />
+                  <Avatar src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/default-user.png?t=2024-08-27T04%3A23%3A01.082Z" alt="John Doe" size="sm" />
                   <Text variant="body2" className="ml-2">John Doe, CEO of TechCorp</Text>
                 </div>
-              </div>,
-              <div className="p-6 bg-backgroundPrimary rounded-lg shadow-lg">
+              </Card>,
+              <Card className="p-6 bg-backgroundPrimary rounded-lg shadow-lg">
                 <Text variant="body1" className="mb-4">"The customer support is outstanding. They're always there when you need them."</Text>
                 <div className="flex items-center">
-                  <Avatar src="/api/placeholder/40/40" alt="Jane Smith" size="sm" />
+                  <Avatar src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/default-user.png?t=2024-08-27T04%3A23%3A38.620Z" alt="Jane Smith" size="sm" />
                   <Text variant="body2" className="ml-2">Jane Smith, CTO of InnovateTech</Text>
                 </div>
-              </div>,
+              </Card>,
             ]}
             showControls={true}
             showIndicators={true}
@@ -80,7 +81,7 @@ const LandingPage = () => {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-backgroundSecondary">
+      <section id="pricing" className="py-10 bg-backgroundSecondary">
         <div className="container mx-auto px-4">
           <Text variant="h2" className="text-center mb-12">Flexible Pricing Plans</Text>
           <Grid cols={3} gap={6}>
@@ -90,7 +91,7 @@ const LandingPage = () => {
               { title: 'Enterprise', price: 'Custom', features: ['Custom Solutions', 'Dedicated Account Manager', '24/7 Premium Support'] },
             ].map((plan, index) => (
               <GridItem key={index}>
-                <Card className="text-center">
+                <Card className="text-center py-4 bg-backgroundPrimary">
                   <Text variant="h3" className="mb-2">{plan.title}</Text>
                   <Text variant="h2" className="mb-4">{plan.price}</Text>
                   <List
@@ -109,7 +110,7 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
+      <section className="py-10">
         <div className="container mx-auto px-4 text-center">
           <Text variant="h2" className="mb-4">Ready to Get Started?</Text>
           <Text variant="body1" className="mb-6">Join thousands of satisfied customers and take your business to the next level.</Text>
@@ -118,7 +119,7 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-backgroundInverse text-textInverse py-10">
+      <footer className="text-textInverse py-10 bg-backgroundSecondary">
         <div className="container mx-auto px-4">
           <Grid cols={4} gap={6}>
             <GridItem>
