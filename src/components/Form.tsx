@@ -58,7 +58,7 @@ export const FormLabel: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = 
 
   return (
     <label 
-      className={`block text-sm font-medium color-[${theme.colors.textPrimary}]`} 
+      className={`block text-sm font-medium color-textPrimary`} 
       {...props}
     >
       {children}
@@ -74,7 +74,7 @@ export const FormHelperText: React.FC<React.HTMLAttributes<HTMLParagraphElement>
 
   return (
     <p 
-      className={`mt-1 text-sm text-[${theme.colors.textSecondary}]`} 
+      className={`mt-1 text-sm text-textSecondary`} 
       {...props}
     >
       {children}
