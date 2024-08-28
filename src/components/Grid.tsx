@@ -11,6 +11,30 @@ const gridVariants = cva('grid', {
       6: 'grid-cols-6',
       12: 'grid-cols-12',
     },
+    sm: {
+      1: 'sm:grid-cols-1',
+      2: 'sm:grid-cols-2',
+      3: 'sm:grid-cols-3',
+      4: 'sm:grid-cols-4',
+      6: 'sm:grid-cols-6',
+      12: 'sm:grid-cols-12',
+    },
+    md: {
+      1: 'md:grid-cols-1',
+      2: 'md:grid-cols-2',
+      3: 'md:grid-cols-3',
+      4: 'md:grid-cols-4',
+      6: 'md:grid-cols-6',
+      12: 'md:grid-cols-12',
+    },
+    lg: {
+      1: 'lg:grid-cols-1',
+      2: 'lg:grid-cols-2',
+      3: 'lg:grid-cols-3',
+      4: 'lg:grid-cols-4',
+      6: 'lg:grid-cols-6',
+      12: 'lg:grid-cols-12',
+    },
     gap: {
       1: 'gap-1',
       2: 'gap-2',
@@ -21,9 +45,6 @@ const gridVariants = cva('grid', {
       16: 'gap-16',
       20: 'gap-20'
     },
-    responsive: {
-      true: 'md:grid-cols-2 lg:grid-cols-3',
-    },
   },
   defaultVariants: {
     cols: 12,
@@ -31,25 +52,26 @@ const gridVariants = cva('grid', {
   },
 });
 
-export interface GridProps 
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof gridVariants> {}
+type GridVariantProps = VariantProps<typeof gridVariants>;
 
-export const Grid = React.forwardRef<HTMLDivElement, GridProps>(
-  ({ className, cols, gap, responsive, ...props }, ref) => {
+export interface GridProps extends React.HTMLAttributes<HTMLDivElement>, GridVariantProps {}
 
-
-    return (
-      <div 
-        className={gridVariants({ cols, gap, responsive, className })}
-        ref={ref}
-        {...props}
-      />
-    );
-  }
-);
-
-Grid.displayName = 'Grid';
+export const Grid: React.FC<GridProps> = ({ 
+  className, 
+  cols, 
+  sm, 
+  md, 
+  lg, 
+  gap, 
+  ...props 
+}) => {
+  return (
+    <div 
+      className={gridVariants({ cols, sm, md, lg, gap, className })}
+      {...props}
+    />
+  );
+};
 
 const colVariants = cva('', {
   variants: {
@@ -74,20 +96,19 @@ const colVariants = cva('', {
   },
 });
 
-export interface GridItemProps 
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof colVariants> {}
+type ColVariantProps = VariantProps<typeof colVariants>;
 
-export const GridItem = React.forwardRef<HTMLDivElement, GridItemProps>(
-  ({ className, span, ...props }, ref) => {
-    return (
-      <div 
-        className={colVariants({ span, className })}
-        ref={ref}
-        {...props}
-      />
-    );
-  }
-);
+export interface GridItemProps extends React.HTMLAttributes<HTMLDivElement>, ColVariantProps {}
 
-GridItem.displayName = 'GridItem';
+export const GridItem: React.FC<GridItemProps> = ({ 
+  className, 
+  span, 
+  ...props 
+}) => {
+  return (
+    <div 
+      className={colVariants({ span, className })}
+      {...props}
+    />
+  );
+};

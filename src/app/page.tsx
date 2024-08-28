@@ -6,7 +6,7 @@ const LandingPage = () => {
     <div className="min-h-screen bg-backgroundPrimary">
       {/* Navigation */}
       <Navbar
-        logo={<img src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/component-library-logo.png?t=2024-08-25T18%3A51%3A40.801Z" alt="Logo" className="h-12 w-12" />}
+        logo={<img src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/component-library-logo.png?t=2024-08-25T18%3A51%3A40.801Z" alt="Logo" className="h-8 w-8 sm:h-12 sm:w-12" />}
         title="My Company"
         links={[
           { label: 'Home', href: '#' },
@@ -17,26 +17,26 @@ const LandingPage = () => {
       />
 
       {/* Hero Section */}
-      <section className="py-10">
+      <section className="py-6 sm:py-10">
         <Card className="container mx-auto p-4">
-          <Grid cols={2} gap={20}>
+          <Grid cols={1} md={2} gap={4}>
             <GridItem className='p-4'>
-              <Text variant="h1" className="mb-4">Welcome to Our Amazing Product</Text>
+              <Text variant="h1" className="mb-4 text-3xl sm:text-4xl md:text-5xl">Welcome to Our Amazing Product</Text>
               <Text variant="body1" className="mb-6">Discover the power of innovation with our cutting-edge solution. Streamline your workflow and boost productivity like never before.</Text>
-              <Button size="lg">Get Started</Button>
+              <Button size="lg" className="w-full sm:w-auto">Get Started</Button>
             </GridItem>
-            <GridItem>
-              <img src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/product_image.png?t=2024-08-27T03%3A45%3A31.833Z" alt="Product showcase" className="rounded-lg shadow-lg h-[300px]" />
+            <GridItem className="mt-6 md:mt-0">
+              <img src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/product_image.png?t=2024-08-27T03%3A45%3A31.833Z" alt="Product showcase" className="rounded-lg shadow-lg w-full h-auto md:h-[300px] object-cover" />
             </GridItem>
           </Grid>
         </Card>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-10 bg-backgroundSecondary">
+      <section id="features" className="py-8 sm:py-10 bg-backgroundSecondary">
         <div className="container mx-auto px-4">
-          <Text variant="h2" className="text-center mb-12">Key Features</Text>
-          <Grid cols={3} gap={6}>
+          <Text variant="h2" className="text-center mb-8 sm:mb-12 text-2xl sm:text-3xl">Key Features</Text>
+          <Grid cols={1} sm={2} md={3} gap={6}>
             {[
               { title: 'Easy Integration', description: 'Seamlessly integrate with your existing tools and workflows.' },
               { title: 'Advanced Analytics', description: 'Gain valuable insights with our powerful analytics dashboard.' },
@@ -54,19 +54,19 @@ const LandingPage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-10">
+      <section className="py-8 sm:py-10">
         <div className="container mx-auto px-4">
-          <Text variant="h2" className="text-center mb-12">What Our Customers Say</Text>
+          <Text variant="h2" className="text-center mb-8 sm:mb-12 text-2xl sm:text-3xl">What Our Customers Say</Text>
           <Carousel
             slides={[
-              <Card className="p-6 bg-backgroundPrimary rounded-lg shadow-lg">
+              <Card key="testimonial1" className="p-6 bg-backgroundPrimary rounded-lg shadow-lg">
                 <Text variant="body1" className="mb-4">"This product has revolutionized our business processes. Highly recommended!"</Text>
                 <div className="flex items-center">
                   <Avatar src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/default-user.png?t=2024-08-27T04%3A23%3A01.082Z" alt="John Doe" size="sm" />
                   <Text variant="body2" className="ml-2">John Doe, CEO of TechCorp</Text>
                 </div>
               </Card>,
-              <Card className="p-6 bg-backgroundPrimary rounded-lg shadow-lg">
+              <Card key="testimonial2" className="p-6 bg-backgroundPrimary rounded-lg shadow-lg">
                 <Text variant="body1" className="mb-4">"The customer support is outstanding. They're always there when you need them."</Text>
                 <div className="flex items-center">
                   <Avatar src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/default-user.png?t=2024-08-27T04%3A23%3A38.620Z" alt="Jane Smith" size="sm" />
@@ -81,10 +81,10 @@ const LandingPage = () => {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-10 bg-backgroundSecondary">
+      <section id="pricing" className="py-8 sm:py-10 bg-backgroundSecondary">
         <div className="container mx-auto px-4">
-          <Text variant="h2" className="text-center mb-12">Flexible Pricing Plans</Text>
-          <Grid cols={3} gap={6}>
+          <Text variant="h2" className="text-center mb-8 sm:mb-12 text-2xl sm:text-3xl">Flexible Pricing Plans</Text>
+          <Grid cols={1} sm={2} md={3} gap={6}>
             {[
               { title: 'Basic', price: '$29', features: ['5 Projects', '10GB Storage', 'Basic Support'] },
               { title: 'Pro', price: '$59', features: ['Unlimited Projects', '100GB Storage', 'Priority Support'] },
@@ -110,18 +110,18 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-10">
+      <section className="py-8 sm:py-10">
         <div className="container mx-auto px-4 text-center">
-          <Text variant="h2" className="mb-4">Ready to Get Started?</Text>
+          <Text variant="h2" className="mb-4 text-2xl sm:text-3xl">Ready to Get Started?</Text>
           <Text variant="body1" className="mb-6">Join thousands of satisfied customers and take your business to the next level.</Text>
-          <Button size="lg">Sign Up Now</Button>
+          <Button size="lg" className="w-full sm:w-auto">Sign Up Now</Button>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="text-textInverse py-10 bg-backgroundSecondary">
+      <footer className="text-textInverse py-8 sm:py-10 bg-backgroundSecondary">
         <div className="container mx-auto px-4">
-          <Grid cols={4} gap={6}>
+          <Grid cols={1} sm={2} md={4} gap={6}>
             <GridItem>
               <Text variant="h6" className="mb-4">About Us</Text>
               <Text variant="body2">We are dedicated to providing innovative solutions for businesses of all sizes.</Text>
