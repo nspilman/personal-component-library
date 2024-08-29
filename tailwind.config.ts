@@ -43,6 +43,7 @@ module.exports = {
       fontFamily: {
         primary: 'var(--font-fontFamilyPrimary)',
         secondary: 'var(--font-fontFamilySecondary)',
+        header: 'var(--font-fontFamilyHeader)',
       },
       fontSize: {
         xs: 'var(--font-fontSizeXs)',

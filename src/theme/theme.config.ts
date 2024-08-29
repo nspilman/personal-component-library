@@ -59,7 +59,8 @@ export const themeConfig = {
     spaceXxl: '3rem',
   },
 
-  fonts: {
+  font: {
+    fontFamilyHeader: 'Baskervville SC, serif',
     fontFamilyPrimary: 'Inter, sans-serif',
     fontFamilySecondary: 'Roboto, sans-serif',
     fontSizeXs: '0.75rem',
@@ -96,7 +97,7 @@ export type ThemeConfig = {
   colors: { [K in keyof typeof themeConfig['colors']]: ColorValue };
   shadows: { [K in keyof typeof themeConfig['shadows']]: string };
   spacing: { [K in keyof typeof themeConfig['spacing']]: string };
-  fonts: { [K in keyof typeof themeConfig['fonts']]: string | number };
+  fonts: { [K in keyof typeof themeConfig['font']]: string | number };
   borderRadius: { [K in keyof typeof themeConfig['borderRadius']]: string };
   zIndex: { [K in keyof typeof themeConfig['zIndex']]: number };
 };
