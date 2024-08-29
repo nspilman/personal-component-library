@@ -2,20 +2,15 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const backdropVariants = cva(
-  'fixed inset-0 z-40 flex items-center justify-center transition-opacity',
+  'fixed inset-0 z-40 flex items-center bg-backgroundSecondary bg-opacity-50 justify-center transition-opacity',
   {
     variants: {
-      color: {
-        dark: 'bg-black bg-opacity-50',
-        light: 'bg-white bg-opacity-50',
-      },
       blur: {
         true: 'backdrop-blur-sm',
         false: '',
       },
     },
     defaultVariants: {
-      color: 'dark',
       blur: false,
     },
   }
@@ -29,7 +24,6 @@ export interface BackdropProps extends React.HTMLAttributes<HTMLDivElement>, Var
 export const Backdrop: React.FC<BackdropProps> = ({
   open,
   onClose,
-  color,
   blur,
   children,
   className,
@@ -39,7 +33,7 @@ export const Backdrop: React.FC<BackdropProps> = ({
 
   return (
     <div
-      className={backdropVariants({ color, blur, className })}
+      className={backdropVariants({ blur, className })}
       onClick={onClose}
       {...props}
     >

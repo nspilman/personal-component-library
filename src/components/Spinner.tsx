@@ -11,16 +11,9 @@ const spinnerVariants = cva(
         lg: 'h-8 w-8 border-3',
         xl: 'h-12 w-12 border-4',
       },
-      color: {
-        default: 'text-interactiveDefault',
-        primary: 'text-primary',
-        secondary: 'text-secondary',
-        white: 'text-backgroundPrimary',
-      },
     },
     defaultVariants: {
       size: 'md',
-      color: 'default',
     },
   }
 );
@@ -40,7 +33,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
 }) => {
   return (
     <div 
-      className={spinnerVariants({ size, color, className })} 
+      className={spinnerVariants({ size, className })} 
       role="status" 
       {...props}
     >

@@ -60,14 +60,14 @@ const LandingPage = () => {
           <Carousel
             slides={[
               <Card key="testimonial1" className="p-6 bg-backgroundPrimary rounded-lg shadow-lg">
-                <Text variant="body1" className="mb-4">"This product has revolutionized our business processes. Highly recommended!"</Text>
+                <Text variant="body1" className="mb-4">&quot;This product has revolutionized our business processes. Highly recommended!&quot;</Text>
                 <div className="flex items-center">
                   <Avatar src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/default-user.png?t=2024-08-27T04%3A23%3A01.082Z" alt="John Doe" size="sm" />
                   <Text variant="body2" className="ml-2">John Doe, CEO of TechCorp</Text>
                 </div>
               </Card>,
               <Card key="testimonial2" className="p-6 bg-backgroundPrimary rounded-lg shadow-lg">
-                <Text variant="body1" className="mb-4">"The customer support is outstanding. They're always there when you need them."</Text>
+                <Text variant="body1" className="mb-4">&quot;The customer support is outstanding. They&pos;re always there when you need them.&quot;</Text>
                 <div className="flex items-center">
                   <Avatar src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/default-user.png?t=2024-08-27T04%3A23%3A38.620Z" alt="Jane Smith" size="sm" />
                   <Text variant="body2" className="ml-2">Jane Smith, CTO of InnovateTech</Text>
@@ -97,7 +97,7 @@ const LandingPage = () => {
                   <List
                     variant="none"
                     items={plan.features.map(feature => (
-                      <Text variant="body2">{feature}</Text>
+                      <Text key={feature} variant="body2">{feature}</Text>
                     ))}
                     className="mb-6"
                   />
@@ -131,10 +131,10 @@ const LandingPage = () => {
               <List
                 variant="none"
                 items={[
-                  <a href="#" className="hover:underline">Home</a>,
-                  <a href="#features" className="hover:underline">Features</a>,
-                  <a href="#pricing" className="hover:underline">Pricing</a>,
-                  <a href="#contact" className="hover:underline">Contact</a>,
+                  <a href="#" key="home" className="hover:underline">Home</a>,
+                  <a href="#features" key="features" className="hover:underline">Features</a>,
+                  <a href="#pricing" key="pricing" className="hover:underline">Pricing</a>,
+                  <a href="#contact" key="contact" className="hover:underline">Contact</a>,
                 ]}
               />
             </GridItem>

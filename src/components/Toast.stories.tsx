@@ -108,8 +108,6 @@ export const MultipleToasts: Story = {
         <Toast
           key={Date.now()}
           variant={variant}
-          message={`This is a ${variant} toast`}
-          onClose={() => setToasts((prev) => prev.slice(1))}
           {...args}
         />
       );

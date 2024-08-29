@@ -19,13 +19,12 @@ const popoverVariants = cva(
   }
 );
 
-export interface PopoverProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof popoverVariants> {
+export interface PopoverProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'>, VariantProps<typeof popoverVariants> {
   trigger: React.ReactElement;
   content: React.ReactNode;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
 }
-
 export const Popover: React.FC<PopoverProps> = ({
   className,
   position,

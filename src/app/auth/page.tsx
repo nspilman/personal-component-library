@@ -3,12 +3,13 @@ import React from 'react';
 import { Navbar, Text, Card } from '@/components';
 import Link from 'next/link';
 import { AuthButtons } from './AuthButtons';
+import Image from 'next/image';
 
 const AuthPage = () => {
   return (
     <div className="min-h-screen bg-backgroundPrimary">
       <Navbar
-        logo={<img src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/component-library-logo.png?t=2024-08-25T18%3A51%3A40.801Z" alt="Logo" className="h-12 w-12" />}
+        logo={<Image src="https://ihkgojiseqpwinwdowvm.supabase.co/storage/v1/object/public/component-library-placeholder-images/component-library-logo.png?t=2024-08-25T18%3A51%3A40.801Z" alt="Logo" width={48} height={48} />}
         title="My Company"
         links={[]}
       />

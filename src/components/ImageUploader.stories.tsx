@@ -7,7 +7,7 @@ const meta: Meta<typeof ImageUploader> = {
   component: ImageUploader,
   argTypes: {
     maxSizeInMB: { control: 'number' },
-    acceptedFileTypes: { control: 'array' },
+    acceptedFileTypes: { control: 'file'},
   },
 };
 

@@ -14,9 +14,6 @@ const meta: Meta<typeof Grid> = {
       control: 'select',
       options: [1, 2, 4, 6, 8],
     },
-    responsive: {
-      control: 'boolean',
-    },
   },
 };
 
@@ -48,7 +45,6 @@ export const Default: Story = {
 export const Responsive: Story = {
   args: {
     ...Default.args,
-    responsive: true,
   },
 };
 

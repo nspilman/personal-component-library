@@ -21,7 +21,7 @@ export interface BreadcrumbItem {
   href: string;
 }
 
-export interface BreadcrumbsProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof breadcrumbsVariants> {
+export interface BreadcrumbsProps extends React.HTMLAttributes<HTMLOListElement>, VariantProps<typeof breadcrumbsVariants> {
   items: BreadcrumbItem[];
 }
 

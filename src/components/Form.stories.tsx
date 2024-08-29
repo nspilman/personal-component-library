@@ -29,7 +29,7 @@ export const Default: Story = {
       <FormGroup>
         <FormLabel htmlFor="email">Email</FormLabel>
         <Input id="email" type="email" placeholder="Enter your email" />
-        <FormHelperText>We'll never share your email with anyone else.</FormHelperText>
+        <FormHelperText>We&pos;ll never share your email with anyone else.</FormHelperText>
       </FormGroup>
       <Button type="submit">Submit</Button>
     </Form>

@@ -46,7 +46,7 @@ export interface SliderProps extends React.HTMLAttributes<HTMLDivElement>, Varia
   max: number;
   step?: number;
   value: number;
-  onChange: (value: number) => void;
+  onValueChange: (value: number) => void;
   disabled?: boolean;
 }
 
@@ -55,7 +55,7 @@ export const Slider: React.FC<SliderProps> = ({
   max,
   step = 1,
   value,
-  onChange,
+  onValueChange,
   disabled = false,
   className,
   ...props
@@ -68,7 +68,7 @@ export const Slider: React.FC<SliderProps> = ({
       const rect = sliderRef.current.getBoundingClientRect();
       const percentage = (clientX - rect.left) / rect.width;
       const newValue = Math.round((percentage * (max - min) + min) / step) * step;
-      onChange(Math.max(min, Math.min(max, newValue)));
+      onValueChange(Math.max(min, Math.min(max, newValue)));
     }
   };
 

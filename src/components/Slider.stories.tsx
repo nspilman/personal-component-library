@@ -22,7 +22,7 @@ const SliderTemplate: Story = {
     const [value, setValue] = useState(args.value);
     return (
       <div className="w-64">
-        <Slider {...args} value={value} onChange={setValue} />
+        <Slider {...args} value={value} onValueChange={setValue} />
         <p className="mt-2">Current value: {value}</p>
       </div>
     );

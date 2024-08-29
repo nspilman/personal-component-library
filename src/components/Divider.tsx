@@ -5,10 +5,6 @@ const dividerVariants = cva(
   'border-t border-borderHeavy',
   {
     variants: {
-      color: {
-        light: 'border-gray-200',
-        dark: 'border-gray-700',
-      },
       thickness: {
         thin: 'border-t',
         medium: 'border-t-2',
@@ -16,7 +12,6 @@ const dividerVariants = cva(
       },
     },
     defaultVariants: {
-      color: 'light',
       thickness: 'thin',
     },
   }
@@ -28,7 +23,7 @@ export const Divider: React.FC<DividerProps> = ({ className, color, thickness, .
 
   return (
     <hr 
-      className={dividerVariants({ color, thickness, className })} 
+      className={dividerVariants({ thickness, className })} 
    
       {...props} 
     />

@@ -91,9 +91,9 @@ export const AllVariants: Story = {
       <Text variant="h4">Heading 4</Text>
       <Text variant="h5">Heading 5</Text>
       <Text variant="h6">Heading 6</Text>
-      <Text variant="body1">This is Body1 text. It's the default size for body copy.</Text>
-      <Text variant="body2">This is Body2 text. It's slightly smaller than Body1.</Text>
-      <Text variant="caption">This is Caption text. It's the smallest text size.</Text>
+      <Text variant="body1">This is Body1 text. Ita&pos;s the default size for body copy.</Text>
+      <Text variant="body2">This is Body2 text. It&pos;s slightly smaller than Body1.</Text>
+      <Text variant="caption">This is Caption text. It&pos;s the smallest text size.</Text>
     </div>
   ),
 };
